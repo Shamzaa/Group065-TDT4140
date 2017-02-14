@@ -6,10 +6,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClientConnection implements Runnable{
 	private Socket clientSocket;
+	private BufferedReader in;
+	private PrintWriter out;
 	
 	public ClientConnection(Socket clientSocket){
 		this.clientSocket = clientSocket;
@@ -21,33 +24,21 @@ public class ClientConnection implements Runnable{
 		
 		// verify bla bla bla
 		
-		DataInputStream inputStream;
+		
 		try{
-			inputStream = new DataInputStream(clientSocket.getInputStream());
-		} catch(IOException e) {
+			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			out = new PrintWriter(clientSocket.getOutputStream(), true);
+		
+			String recievedString;
+			while(true){
+				System.out.println("Listens for new input");
+				String input = in.readLine();
+				// listen to data from client and process into JSON into application/database/assign role(student/lecturer)
+			}
+		}catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
-		
-		
-		String recievedString;
-		while(true){
-			// listen to data from client and process into application/database
-			try{
-				/*if(inputStream.readByte() == 1){
-					recievedString = inputStream.readUTF();
-					System.out.println(recievedString);
-				}
-				
-				output.writeBytes(recievedString + "\n\r");
-				output.flush();*/
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-		
 	}
 	
 

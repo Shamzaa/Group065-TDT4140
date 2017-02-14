@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 
 public class ClientsManager {
 	private Collection<ClientConnection> clientsConnected;
-	
 	public ClientsManager(int portNumber){
+		
 		
 		
 		
