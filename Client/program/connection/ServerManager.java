@@ -18,11 +18,6 @@ public class ServerManager {
 			output.flush();
 			output.close();*/
 			
-			// added a loop to keep the client active and not stop running(causes connection to drop)
-			// TODO: remove once we have a javafx app running so the client won't stop running
-			while(true){
-				
-			}
 		} catch (IOException e){
 			System.out.println(e);
 		}

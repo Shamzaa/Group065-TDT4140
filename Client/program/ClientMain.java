@@ -1,14 +1,66 @@
 package program;
+import java.io.IOException;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import program.connection.*;
-public class ClientMain {
+import program.uiController.AppBinder;
+public class ClientMain extends Application{
+	
+	// UI elements
+	private Stage stage;
+	private BorderPane root;
+	
 	private ServerManager serverManager;
 	
-	private void init(){
-		serverManager = new ServerManager("10.22.7.157", 2222);
+	private void startConnection(String serverAdress){
+		serverManager = new ServerManager(serverAdress, 2222);
 	}
 	
 	public static void main(String[] args){
 		ClientMain main = new ClientMain();
-		main.init();
+		main.startConnection("10.22.52.135");
+		launch(ClientMain.class, args);
+
+	}
+	
+	public void loadUI(String path){
+		try {
+			// Load overview.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(ClientMain.class.getResource(path));
+			AnchorPane overview = (AnchorPane) loader.load();
+
+			// Set overview into the center of root layout.
+			root.setCenter(overview);
+			
+			// give controller access to main app
+			AppBinder controller = loader.getController();
+			controller.setMainApp(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		this.stage = primaryStage;
+		stage.setTitle("HearMe");
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
+		root = (BorderPane) loader.load();
+
+		// Show the scene containing the root layout.
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		loadUI("ui/RoleSelector.fxml");
 	}
 }
