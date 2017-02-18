@@ -9,13 +9,26 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ClientConnection implements Runnable{
 	private Socket clientSocket;
+	private CommandsManager comManager;
+	
+	
+	private String role;
 	private BufferedReader in;
 	private PrintWriter out;
 	
-	public ClientConnection(Socket clientSocket){
+	public ClientConnection(Socket clientSocket, CommandsManager comManager){
 		this.clientSocket = clientSocket;
+		this.comManager = comManager;
+	}
+	
+	public void setRole(String role){
+		System.out.println("role: '" + role + "' assigned to socket");
+		this.role = role;
 	}
 	
 	@Override
@@ -33,6 +46,13 @@ public class ClientConnection implements Runnable{
 			while(true){
 				System.out.println("Listens for new input");
 				String input = in.readLine();
+				try{
+					JSONObject obj = new JSONObject(input);
+					comManager.analyzeFunction(obj, this);
+				}catch(JSONException e){
+					// data recieved wasn't a json object
+					// close connection or ignore.
+				}
 				// listen to data from client and process into JSON into application/database/assign role(student/lecturer)
 			}
 		}catch (IOException e) {

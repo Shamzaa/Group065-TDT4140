@@ -10,11 +10,11 @@ import java.util.concurrent.Executors;
 
 public class ClientsManager {
 	private Collection<ClientConnection> clientsConnected;
+	private CommandsManager comManager;
+	
+	
 	public ClientsManager(int portNumber){
-		
-		
-		
-		
+		comManager = new CommandsManager();
 		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 		
 		Runnable serverTask = new Runnable(){
@@ -25,7 +25,7 @@ public class ClientsManager {
 					System.out.println("Waiting for clients...");
 					while(true){
 						Socket clientSocket = serverSocket.accept();
-						clientProcessingPool.submit(new ClientConnection(clientSocket));
+						clientProcessingPool.submit(new ClientConnection(clientSocket, comManager));
 					}
 				}catch(IOException e){
 					System.out.println("couldn't process client request");

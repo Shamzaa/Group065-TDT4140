@@ -16,6 +16,7 @@ public class ClientMain extends Application{
 	private Stage stage;
 	private BorderPane root;
 	
+	// socket elements
 	private ServerManager serverManager;
 	
 	private void startConnection(String serverAdress){
@@ -23,8 +24,6 @@ public class ClientMain extends Application{
 	}
 	
 	public static void main(String[] args){
-		ClientMain main = new ClientMain();
-		main.startConnection("10.22.52.135");
 		launch(ClientMain.class, args);
 
 	}
@@ -50,6 +49,10 @@ public class ClientMain extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// starts server connection
+		startConnection("192.168.1.102");
+		
+		// loads ui
 		this.stage = primaryStage;
 		stage.setTitle("HearMe");
 		
@@ -62,5 +65,9 @@ public class ClientMain extends Application{
 		stage.setScene(scene);
 		stage.show();
 		loadUI("ui/RoleSelector.fxml");
+	}
+	
+	public ServerManager getServerManager(){
+		return serverManager;
 	}
 }
