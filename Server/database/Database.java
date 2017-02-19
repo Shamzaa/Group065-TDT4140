@@ -11,10 +11,14 @@ import java.sql.Statement;
  * @author pgjerstad
  *
  * For å bruke koblingen mot MySQL må alle som skal kjøre ServerMain, egentlig Database, ha mysql-connector-java-5.1.40-bin.jar på classpath.
+ * 
+ * jdbc-URLen krever DatabaseKey.java som ikke er sjekket inn i git.
+ * 
  */
 
 public class Database implements AutoCloseable {
 	Connection conn = null;
+	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
 	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
 		System.out.println("test");
@@ -27,7 +31,7 @@ public class Database implements AutoCloseable {
 	public void connect() throws Exception {
 		// Class.forName("com.mysql.jdbc.Driver");  Not needed if Eclipse?
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://mysql.stud.ntnu.no/pedergj_hearme_db?user=pedergj_hearme&password=hearme");
+			conn = DriverManager.getConnection(KEY_URL);
 		}
 		catch (SQLException ex) {
 			System.out.println("SQLEcxeption: " + ex.getMessage());
