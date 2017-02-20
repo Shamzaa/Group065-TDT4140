@@ -5,16 +5,22 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.json.JSONObject;
+
 public class ClientsManager {
 	private Collection<ClientConnection> clientsConnected;
+	private Map<String, ClientConnection> classIDToConnection;
 	private CommandsManager comManager;
 	
 	
 	public ClientsManager(int portNumber){
 		comManager = new CommandsManager();
+		classIDToConnection = new HashMap<String, ClientConnection>();
 		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 		
 		Runnable serverTask = new Runnable(){
@@ -39,6 +45,22 @@ public class ClientsManager {
 	
 	public Collection<ClientConnection> getClientsConnected(){
 		return clientsConnected;
+	}
+	
+	public void addLecturerToLecture(ClientConnection client, String classID){
+		if(!classIDToConnection.containsKey(classID)){
+			classIDToConnection.put(classID, client);
+		}else{
+			// TODO: return error message to client requesting classID
+		}
+	}
+	
+	public void sendInfoToLecturer(JSONObject obj, String classID){
+		if(classIDToConnection.containsKey(classID)){
+			classIDToConnection.get(classID).sendJSON(obj);
+		}else{
+			throw new IllegalArgumentException("No lecturer holding a lecture in " + classID);
+		}
 	}
 
 }

@@ -31,6 +31,11 @@ public class ClientConnection implements Runnable{
 		this.role = role;
 	}
 	
+	public void sendJSON(JSONObject obj){
+		String json_data = obj.toString();
+		out.println(json_data);
+	}
+	
 	@Override
 	public void run() {
 		System.out.println("new connection!");
