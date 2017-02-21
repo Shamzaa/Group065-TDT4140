@@ -19,7 +19,7 @@ public class ClientsManager {
 	
 	
 	public ClientsManager(int portNumber){
-		comManager = new CommandsManager();
+		comManager = new CommandsManager(this);
 		classIDToConnection = new HashMap<String, ClientConnection>();
 		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 		
@@ -48,7 +48,7 @@ public class ClientsManager {
 	}
 	
 	public void addLecturerToLecture(ClientConnection client, String classID){
-		if(!classIDToConnection.containsKey(classID)){
+		if(!doesLectureExcist(classID)){
 			classIDToConnection.put(classID, client);
 		}else{
 			// TODO: return error message to client requesting classID
@@ -56,11 +56,17 @@ public class ClientsManager {
 	}
 	
 	public void sendInfoToLecturer(JSONObject obj, String classID){
-		if(classIDToConnection.containsKey(classID)){
+		if(doesLectureExcist(classID)){
+			// is case sensetive
 			classIDToConnection.get(classID).sendJSON(obj);
 		}else{
 			throw new IllegalArgumentException("No lecturer holding a lecture in " + classID);
 		}
 	}
-
+	
+	public boolean doesLectureExcist(String classID){
+		// is case sensetive
+		return classIDToConnection.containsKey(classID);
+	}
+	
 }

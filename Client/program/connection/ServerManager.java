@@ -1,12 +1,10 @@
 package program.connection;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
 import org.json.JSONObject;
 
 
@@ -33,5 +31,18 @@ public class ServerManager {
 		out.println(json_data);
 		
 	}
+	
+	public Socket getSocket(){
+		return client;
+	}
+	
+	public BufferedReader getInputStream(){
+		return in;
+	}
+	
+	public PrintWriter getOutputStream(){
+		return out;
+	}
+	
 	
 }
