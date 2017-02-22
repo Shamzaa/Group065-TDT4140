@@ -47,10 +47,10 @@ public class StudentListener implements Runnable{
 					 */
 					switch(obj.getString("Function")){
 						case "StudentLost":
-							// controller.studentLost();
+							controller.studentLost();
 							break;
 						case "JoinedLecture":
-							// controller.studentJoined();
+							controller.studentJoined();
 							break;
 					}
 				}catch(JSONException e){

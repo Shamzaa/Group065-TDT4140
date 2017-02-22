@@ -2,6 +2,8 @@ package program.uiController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +15,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import program.ClientMain;
+import program.connection.ClientConnection;
+import program.connection.StudentListener;
 
 public class LecturerWindowController implements AppBinder {
 	ClientMain main;
 	ArrayList<String> questionList = new ArrayList<>();
 	private int connectedStudents = 0;
+	private int lostStudents = 0;
 	
+	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 	
 	@FXML VBox QuestionContainer;
 	@FXML Arc lostMeRedArc;
@@ -44,15 +50,25 @@ public class LecturerWindowController implements AppBinder {
 		addQuestion("TEST: 7");
 		addQuestion("TEST: 8");
 		
-		setPieChartValues(0);
-		setStudentsConnectedAmount(0);
+		updatePieChartValues();
+		updateStudentsConnectedAmount();
+		
 	}
-	public void setStudentsConnectedAmount(int ant){
-		studentsConnectedText.setText(String.valueOf(ant) + " Students connected");
+	public void updateStudentsConnectedAmount(){
+		studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
 	}
 	
-	public void setPieChartValues(double percentRed){
-		System.out.println("Setting angles");
+	public void updatePieChartValues(){
+		double percentRed = 0;		
+		if(connectedStudents == 0){
+			percentRed = 0;
+		} else {
+			percentRed =100*lostStudents/connectedStudents;	
+		}
+		
+
+		System.out.println("Setting angles, ["+String.valueOf(percentRed));
+		
 		lostMeRedText.setText(String.valueOf(percentRed)+"%");
 		lostMeGreenText.setText(String.valueOf(100 - percentRed)+"%");
 		System.out.println("text done");
@@ -71,7 +87,16 @@ public class LecturerWindowController implements AppBinder {
 		System.out.println(newAngle);
 	}
 	
-	//public void studentJoined
+	public void studentJoined(){
+		connectedStudents++;
+		updateStudentsConnectedAmount();
+		updatePieChartValues();
+	}
+	
+	public void studentLost(){
+		lostStudents ++;
+		updatePieChartValues();
+	}
 	
 	
 	public void addQuestion(String question){		
@@ -107,5 +132,6 @@ public class LecturerWindowController implements AppBinder {
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
+		clientProcessingPool.submit(new StudentListener(main, this));
 	}		
 }

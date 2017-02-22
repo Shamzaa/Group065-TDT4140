@@ -18,10 +18,12 @@ public class ClientsManager {
 	private CommandsManager comManager;
 	
 	
+	
 	public ClientsManager(int portNumber){
 		comManager = new CommandsManager(this);
 		classIDToConnection = new HashMap<String, ClientConnection>();
 		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+		
 		
 		Runnable serverTask = new Runnable(){
 			@Override
