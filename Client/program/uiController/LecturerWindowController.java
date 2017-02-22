@@ -97,6 +97,7 @@ public class LecturerWindowController implements AppBinder {
 	}
 	
 	
+	
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
