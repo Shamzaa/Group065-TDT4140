@@ -3,6 +3,9 @@ package program.uiController;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -86,8 +89,22 @@ public class StudentWindowController implements AppBinder {
 	}
 
 	private void handleLostMeButtonAction() {
-		// TODO Auto-generated method stub
-		System.out.println();
+		String classID = main.getClassID();
+		
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "LostMe");
+			obj.put("ClassID", classID);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		main.getServerManager().sendJSON(obj);
+		
+		// TODO: some visual feedback for the student to let him know that he sendt the notification
+		
+		
 	}
 
 	private void handleQuestionButtonAction() {

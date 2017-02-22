@@ -43,7 +43,8 @@ public class LectureSelectorController implements AppBinder{
 			return;
 		}
 		
-		
+		main.setClassID(CourseCodeField.getText());
+		main.loadUI("ui/StudentWindow.fxml");
 		// TODO: lecture is running, change ui to student view, where they can make queries for questions, and send "you lost me"
 
 		

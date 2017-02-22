@@ -55,6 +55,9 @@ public class CreateLectureController implements AppBinder{
 		main.getServerManager().sendJSON(obj);
 		
 		
+		
+		main.setClassID(classID);
+		main.loadUI("ui/LecturerWindow.fxml");
 		// load ui and pass on what class ID the lecturer will associate with, client side
 		
 		

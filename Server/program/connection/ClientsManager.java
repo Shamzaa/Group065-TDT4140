@@ -69,4 +69,8 @@ public class ClientsManager {
 		return classIDToConnection.containsKey(classID);
 	}
 	
+	public ClientConnection getLecturer(String classID){
+		return classIDToConnection.get(classID);
+	}
+	
 }

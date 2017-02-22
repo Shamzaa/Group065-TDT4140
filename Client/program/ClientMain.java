@@ -19,6 +19,9 @@ public class ClientMain extends Application{
 	// reference elements
 	private ServerManager serverManager;
 	
+	// attributes
+	private String classID;
+	
 	public void startConnection(String serverAdress){
 		serverManager = new ServerManager(serverAdress, 2222);
 	}
@@ -69,5 +72,13 @@ public class ClientMain extends Application{
 	
 	public ServerManager getServerManager(){
 		return serverManager;
+	}
+	
+	public void setClassID(String classID){
+		this.classID = classID;
+	}
+	
+	public String getClassID(){
+		return classID;
 	}
 }
