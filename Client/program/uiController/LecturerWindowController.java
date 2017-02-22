@@ -17,6 +17,7 @@ import program.ClientMain;
 public class LecturerWindowController implements AppBinder {
 	ClientMain main;
 	ArrayList<String> questionList = new ArrayList<>();
+	private int connectedStudents = 0;
 	
 	
 	@FXML VBox QuestionContainer;
@@ -29,6 +30,8 @@ public class LecturerWindowController implements AppBinder {
 	
 	@FXML
 	public void initialize(){
+		
+		
 		addQuestion("TEST: monotonectally administrate leveraged initiatives");
 		addQuestion("TEST: interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
 		addQuestion("TEST: continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
@@ -41,8 +44,8 @@ public class LecturerWindowController implements AppBinder {
 		addQuestion("TEST: 7");
 		addQuestion("TEST: 8");
 		
-		setPieChartValues(90);
-		setStudentsConnectedAmount(58);
+		setPieChartValues(0);
+		setStudentsConnectedAmount(0);
 	}
 	public void setStudentsConnectedAmount(int ant){
 		studentsConnectedText.setText(String.valueOf(ant) + " Students connected");
@@ -67,6 +70,9 @@ public class LecturerWindowController implements AppBinder {
 		System.out.print(" -> ");
 		System.out.println(newAngle);
 	}
+	
+	//public void studentJoined
+	
 	
 	public void addQuestion(String question){		
 		questionList.add(question);
