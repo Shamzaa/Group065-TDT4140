@@ -80,16 +80,28 @@ public class StudentWindowController implements AppBinder {
 	private void handleSubmitButtonAction() {
 		// TODO Auto-generated method stub
 		String question = askQuestionTextField.getText();
+		askQuestionTextField.setText("");
+		askQuestionContainer.setVisible(false);		
+		
 		if (!question.equals("")) {
 			System.out.println("Submitting question:" + question);
-			askQuestionTextField.setText("");
-			askQuestionContainer.setVisible(false);
-			addQuestion(question);
+			String classID = main.getClassID();
+			JSONObject obj = new JSONObject();
+			
+		try {
+			obj.put("Function", "NewQuestion");
+			obj.put("ClassID", classID);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		main.getServerManager().sendJSON(obj);
 		}
 	}
 
 	private void handleLostMeButtonAction() {
 		String classID = main.getClassID();
+		lostMeButton.setDisable(true);
+		lostMeButton.setText("Sendt!");
 		
 		JSONObject obj = new JSONObject();
 		try {
