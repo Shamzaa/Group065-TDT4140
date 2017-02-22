@@ -44,9 +44,10 @@ public class LectureSelectorController implements AppBinder{
 		}
 		
 		main.setClassID(CourseCodeField.getText());
+		joinLectureNotify();
 		main.loadUI("ui/StudentWindow.fxml");
-		// TODO: lecture is running, change ui to student view, where they can make queries for questions, and send "you lost me"
-
+		
+		
 		
 	}
 	
@@ -54,6 +55,18 @@ public class LectureSelectorController implements AppBinder{
 		// sends request to server to see if a lecture is happening
 		return ServerRequests.serverHasClass(main.getServerManager(), classID);
 		
+	}
+	
+	private void joinLectureNotify(){
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "JoinLecture");
+			obj.put("ClassID", main.getClassID());
+			main.getServerManager().sendJSON(obj);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

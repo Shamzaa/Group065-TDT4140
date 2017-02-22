@@ -40,10 +40,7 @@ public class ClientConnection implements Runnable{
 	
 	@Override
 	public void run() {
-		System.out.println("new connection!");
-		
-		// verify bla bla bla
-		
+		System.out.println("New connection!");
 		
 		try{
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));

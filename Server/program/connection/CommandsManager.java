@@ -26,6 +26,8 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> createLecture(obj, client));
 		stringToFunction.put("LostMe",
 				(JSONObject obj, ClientConnection client) -> studentLost(obj, client));
+		stringToFunction.put("JoinLecture", 
+				(JSONObject obj, ClientConnection client) -> studentJoin(obj, client));
 	}
 	
 	
@@ -93,6 +95,22 @@ public class CommandsManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void studentJoin(JSONObject obj, ClientConnection client){
+		JSONObject notification = new JSONObject();
+		try {
+			System.out.println("Student joined lecture in " + obj.getString("ClassID"));
+			ClientConnection lecturer = clientsManager.getLecturer(obj.getString("ClassID"));
+			
+			notification.put("Function", "JoinedLecture");
+			
+			lecturer.sendJSON(notification);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
