@@ -2,19 +2,17 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.RoleSelectorController">
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60" fx:controller="program.uiController.RoleSelectorController">
    <children>
       <Pane prefHeight="300.0" prefWidth="400.0">
          <children>
-            <Button fx:id="selectStudent" layoutX="101.0" layoutY="103.0" mnemonicParsing="false" text="Student" />
-            <Button fx:id="selectLecturer" layoutX="241.0" layoutY="103.0" mnemonicParsing="false" text="Lecturer" />
+            <Button fx:id="selectStudent" layoutX="101.0" layoutY="138.0" mnemonicParsing="false" text="Student" />
+            <Button fx:id="selectLecturer" layoutX="241.0" layoutY="138.0" mnemonicParsing="false" text="Lecturer" />
             <Label layoutX="159.0" layoutY="73.0" text="Select your role" />
-            <TextField fx:id="serverField" layoutX="126.0" layoutY="27.0" promptText="Server IP" />
-            <Label fx:id="errorLabel" layoutX="186.0" layoutY="169.0" text="ErrorLabel" textFill="RED" />
          </children>
       </Pane>
    </children>

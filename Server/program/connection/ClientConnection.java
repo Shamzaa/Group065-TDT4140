@@ -13,13 +13,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ClientConnection implements Runnable{
-	// references to external objects to help with features
+	private Socket clientSocket;
 	private CommandsManager comManager;
 	
-	// connection atributes
-	private Socket clientSocket;
+	
 	private String role;
-	// in and out data channels
 	private BufferedReader in;
 	private PrintWriter out;
 	
@@ -33,11 +31,6 @@ public class ClientConnection implements Runnable{
 		this.role = role;
 	}
 	
-	public void sendJSON(JSONObject obj){
-		String json_data = obj.toString();
-		out.println(json_data);
-	}
-	
 	@Override
 	public void run() {
 		System.out.println("new connection!");
@@ -49,6 +42,7 @@ public class ClientConnection implements Runnable{
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 		
+			String recievedString;
 			while(true){
 				System.out.println("Listens for new input");
 				String input = in.readLine();
@@ -59,6 +53,7 @@ public class ClientConnection implements Runnable{
 					// data recieved wasn't a json object
 					// close connection or ignore.
 				}
+				// listen to data from client and process into JSON into application/database/assign role(student/lecturer)
 			}
 		}catch (IOException e) {
 			e.printStackTrace();
