@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import program.connection.*;
 import program.uiController.AppBinder;
@@ -16,12 +15,9 @@ public class ClientMain extends Application{
 	private Stage stage;
 	private BorderPane root;
 	
-	// socket elements
+	// references
 	private ServerManager serverManager;
-	
-	private void startConnection(String serverAdress){
-		serverManager = new ServerManager(serverAdress, 2222);
-	}
+
 	
 	public static void main(String[] args){
 		launch(ClientMain.class, args);
@@ -50,7 +46,7 @@ public class ClientMain extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// starts server connection
-		startConnection("192.168.1.102");
+		//startConnection("192.168.38.169");
 		
 		// loads ui
 		this.stage = primaryStage;
@@ -70,4 +66,11 @@ public class ClientMain extends Application{
 	public ServerManager getServerManager(){
 		return serverManager;
 	}
+	
+	
+	public void startConnection(String serverAdress){
+		serverManager = new ServerManager(serverAdress, 2222);
+	}
+	
+
 }
