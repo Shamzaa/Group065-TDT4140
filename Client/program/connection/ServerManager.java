@@ -34,4 +34,17 @@ public class ServerManager {
 		
 	}
 	
+	
+	
+	public Socket getSocket(){
+		return client;
+	}
+	
+	public BufferedReader getInputStream(){
+		return in;
+	}
+	
+	public PrintWriter getOutputStream(){
+		return out;
+	}
 }

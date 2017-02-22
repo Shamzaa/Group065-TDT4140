@@ -16,10 +16,10 @@ public class ClientMain extends Application{
 	private Stage stage;
 	private BorderPane root;
 	
-	// socket elements
+	// reference elements
 	private ServerManager serverManager;
 	
-	private void startConnection(String serverAdress){
+	public void startConnection(String serverAdress){
 		serverManager = new ServerManager(serverAdress, 2222);
 	}
 	
@@ -50,7 +50,7 @@ public class ClientMain extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// starts server connection
-		startConnection("192.168.1.102");
+		// startConnection("192.168.1.102");
 		
 		// loads ui
 		this.stage = primaryStage;
