@@ -22,10 +22,10 @@ public class Database implements AutoCloseable {
 	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
 	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
-		System.out.println("test");
 		try (Database db = new Database()) {   // Fordi den implementerer AutoCloseable, vil den automatisk close.
 			db.connect();
-			db.postNewQuestion("Hei, hei hei. Dette er et spørsmål", 1);
+			// db.postNewQuestion("Hei, hei hei. Dette er et spørsmål", 1);
+			db.testSporring();
 		}
 	}
 	
