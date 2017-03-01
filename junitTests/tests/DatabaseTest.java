@@ -19,11 +19,12 @@ public class DatabaseTest extends junit.framework.TestCase {
 	}
 	
 	public void testSporring() {
+		db.connect();
 		db.postNewQuestion("#test", 1);
 		ArrayList<Map<String, String>> question = db.getLastestQuestions(1, 1);
 		assertEquals("#test", question.get(0).get("question"));
 		assertTrue(question.get(0).get("time") instanceof String);
-		assertEquals(0, question.get(0).get("rating"));		
+		assertEquals("0", question.get(0).get("rating"));		
 	}
 	
 	public void tearDown() {
