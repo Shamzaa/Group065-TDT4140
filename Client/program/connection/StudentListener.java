@@ -15,6 +15,7 @@ import program.uiController.LecturerWindowController;
 public class StudentListener implements Runnable{
 	// references
 	ClientMain main;
+	
 	LecturerWindowController controller;
 	
 	
@@ -46,12 +47,13 @@ public class StudentListener implements Runnable{
 					 * what the lecturer will listen to, compared to the server
 					 */
 					switch(obj.getString("Function")){
+						//Lecturer Only
 						case "StudentLost":
 							controller.studentLost();
 							break;
 						case "JoinedLecture":
 							controller.studentJoined();
-							break;
+							break;						
 					}
 				}catch(JSONException e){
 					// data recieved wasn't a json object
@@ -63,10 +65,4 @@ public class StudentListener implements Runnable{
 			return;
 		}
 	}
-	
-	
-	private void studentLost(){
-		
-	}
-
 }

@@ -2,6 +2,9 @@ package program.uiController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +21,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import program.ClientMain;
+import program.connection.QuestionsListener;
+import program.connection.StudentListener;
 
 public class StudentWindowController implements AppBinder {
 	ArrayList<String> questionList = new ArrayList<>();
+	
+	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 	
 	ClientMain main;
 	
@@ -44,12 +51,37 @@ public class StudentWindowController implements AppBinder {
 		submitQuestionButton.setOnAction(
 				e -> handleSubmitButtonAction());
 		
-		addQuestion("monotonectally administrate leveraged initiatives");
-		addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
-		addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
-		
+		//addQuestion("monotonectally administrate leveraged initiatives");
+		//addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
+		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
 	}
-	public void addQuestion(String question){
+	
+	//Fetches the 'numberOfQuestions' latest questions from the database
+	private void fetchQuestions(int numberOfQuestions){
+		JSONObject obj = new JSONObject();
+		
+		try{
+			obj.put("Function", "GetLatestQuestions");
+			obj.put("QuestionAmount", numberOfQuestions);
+			obj.put("ClassID", main.getClassID());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		main.getServerManager().sendJSON(obj);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void addQuestions(Object questions, int numberOfQuestions){
+		System.out.println("New Questions recieved");
+		System.out.println(questions);
+		
+		/*for (Object map : castQuestions) {
+			System.out.println(map);
+		}*/
+	}
+	
+	
+	private void addQuestion(String question){
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
 		try {
@@ -129,5 +161,8 @@ public class StudentWindowController implements AppBinder {
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
+		//fetches all lecture question to fill the list
+		clientProcessingPool.submit(new QuestionsListener(main, this));
+		fetchQuestions(Integer.MAX_VALUE);
 	}
 }
