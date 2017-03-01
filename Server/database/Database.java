@@ -24,6 +24,8 @@ public class Database implements AutoCloseable {
 	private Connection conn = null;
 	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
+	
+	// delete this
 	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
 		try (Database db = new Database()) {   // Fordi den implementerer AutoCloseable, vil den automatisk close.
 			db.connect();
@@ -112,6 +114,42 @@ public class Database implements AutoCloseable {
 			e.printStackTrace();
 		}
 		return questions;
+	}
+	
+	
+	// looks at most recent lecture object in the database with the given lecture code
+	public int getLiveLectureID(String classID){
+		int lectureID = 0;
+		
+		try (Statement stmt = conn.createStatement();){
+			String query = "SELECT id FROM lecture WHERE subject_code='" + classID.toUpperCase() + "' ORDER BY id DESC LIMIT 1";
+			
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				rs.next();
+				lectureID = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lectureID;
+	}
+	
+	// creates a new lecture, and returns the lectureID in the database.
+	public int createNewLecture(String classID){
+		// only doable if classID excists in database.
+		
+		try (Statement stmt = conn.createStatement()) {
+			String query = "insert into lecture(subject_code) values ('" + classID.toUpperCase() + "');";
+			if (stmt.execute(query)) {
+				return getLiveLectureID(classID);
+			}					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return 0;
 	}
 
 

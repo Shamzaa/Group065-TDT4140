@@ -119,14 +119,15 @@ public class StudentWindowController implements AppBinder {
 			System.out.println("Submitting question:" + question);
 			String classID = main.getClassID();
 			JSONObject obj = new JSONObject();
-			
-		try {
-			obj.put("Function", "NewQuestion");
-			obj.put("ClassID", classID);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		main.getServerManager().sendJSON(obj);
+				
+			try {
+				obj.put("Function", "NewQuestion");
+				obj.put("ClassID", classID);
+				obj.put("Question", question);
+				main.getServerManager().sendJSON(obj);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

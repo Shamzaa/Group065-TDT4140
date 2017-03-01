@@ -30,10 +30,11 @@ public class CommandsManager {
 		stringToFunction.put("LostMe",
 				(JSONObject obj, ClientConnection client) -> studentLost(obj, client));
 		stringToFunction.put("JoinLecture", 
-				(JSONObject obj, ClientConnection client) -> studentJoin(obj, client));		
+				(JSONObject obj, ClientConnection client) -> studentJoin(obj, client));
 		stringToFunction.put("GetLatestQuestions",
 				(JSONObject obj, ClientConnection client) -> getLatestQuestions(obj, client));
-		
+		stringToFunction.put("NewQuestion", 
+				(JSONObject obj, ClientConnection client) -> newQuestion(obj, client));
 	}
 	
 	
@@ -106,6 +107,7 @@ public class CommandsManager {
 	private void createLecture(JSONObject obj, ClientConnection client){
 		try{
 			System.out.println("create new lecture with class code: " + obj.getString("ClassID"));
+			clientsManager.main.getDatabase().createNewLecture(obj.getString("ClassID"));
 			clientsManager.addLecturerToLecture(client, obj.getString("ClassID"));
 		} catch (JSONException e){
 			
@@ -133,6 +135,7 @@ public class CommandsManager {
 		try {
 			System.out.println("Student joined lecture in " + obj.getString("ClassID"));
 			ClientConnection lecturer = clientsManager.getLecturer(obj.getString("ClassID"));
+			client.setLectureID(clientsManager.main.getDatabase().getLiveLectureID(obj.getString("ClassID")));
 			
 			notification.put("Function", "JoinedLecture");
 			
@@ -142,6 +145,24 @@ public class CommandsManager {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void newQuestion(JSONObject obj, ClientConnection client){
+		// student submitted new question.
+		JSONObject notifyNewConnection = new JSONObject();
+		try{
+			System.out.println("Student has submitted new question: " + obj.getString("Question") + ". To class :" + obj.getString("ClassID"));
+			clientsManager.main.getDatabase().postNewQuestion(obj.getString("Question"), client.getLectureID());
+			/* EXAMPLE QUERY:
+			  		SELECT * FROM lecture 
+					WHERE subject_code='TDT4100'
+					ORDER BY id DESC LIMIT 1
+			 */
+			
+			
+		}catch(JSONException e){
+			e.printStackTrace();
+		}
 	}
 
 }
