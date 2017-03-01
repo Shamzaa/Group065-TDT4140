@@ -28,6 +28,8 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> studentLost(obj, client));
 		stringToFunction.put("JoinLecture", 
 				(JSONObject obj, ClientConnection client) -> studentJoin(obj, client));
+		stringToFunction.put("NewQuestion", 
+				(JSONObject obj, ClientConnection client) -> newQuestion(obj, client));
 	}
 	
 	
@@ -111,6 +113,23 @@ public class CommandsManager {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void newQuestion(JSONObject obj, ClientConnection client){
+		// student submitted new question.
+		JSONObject notifyNewConnection = new JSONObject();
+		try{
+			System.out.println("Student has submitted new question: " + obj.getString("Question") + ". To class :" + obj.getString("ClassID"));
+			
+			/* EXAMPLE QUERY:
+			  		SELECT * FROM lecture 
+					WHERE subject_code='TDT4100'
+					ORDER BY id DESC LIMIT 1
+			 */
+			// TODO: get lecture ID from latest Lecture object in the database, since the live lecture will be the newest lecture added in the database.
+		}catch(JSONException e){
+			e.printStackTrace();
+		}
 	}
 
 }

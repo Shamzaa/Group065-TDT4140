@@ -24,6 +24,8 @@ public class Database implements AutoCloseable {
 	private Connection conn = null;
 	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
+	
+	// delete this
 	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
 		try (Database db = new Database()) {   // Fordi den implementerer AutoCloseable, vil den automatisk close.
 			db.connect();
