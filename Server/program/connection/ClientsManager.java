@@ -12,15 +12,19 @@ import java.util.concurrent.Executors;
 
 import org.json.JSONObject;
 
+import program.ServerMain;
+
 public class ClientsManager {
 	private Collection<ClientConnection> clientsConnected;
 	private Map<String, ClientConnection> classIDToConnection;
 	private CommandsManager comManager;
+	public ServerMain main;
 	
 	
 	
-	public ClientsManager(int portNumber){
+	public ClientsManager(int portNumber, ServerMain main){
 		comManager = new CommandsManager(this);
+		this.main = main;
 		classIDToConnection = new HashMap<String, ClientConnection>();
 		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 		

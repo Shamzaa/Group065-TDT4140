@@ -8,7 +8,8 @@ public class ServerMain {
 	
 	private void init(int portNumber){
 		database = new Database();
-		clientsManager = new ClientsManager(portNumber);
+		database.connect();
+		clientsManager = new ClientsManager(portNumber, this);
 	}
 	
 	public static void main(String[] args){
