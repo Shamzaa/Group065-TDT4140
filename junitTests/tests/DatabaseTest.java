@@ -28,6 +28,8 @@ public class DatabaseTest extends junit.framework.TestCase {
 	}
 	
 	public void tearDown() {
+		db.connect();
+		db.executeStatement("delete from questions where question = '#test'");
 		db.close();
 	}
 }
