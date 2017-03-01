@@ -80,6 +80,18 @@ public class Database implements AutoCloseable {
 		}
 		return false;
 	}
+	
+	public boolean executeStatement(String statement_as_String){
+		try (Statement stmt = conn.createStatement()) {
+			if (stmt.execute(statement_as_String)) {
+				return true;
+			}					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 
 	/**
 	 * Takes in lecture_id as in, and the number of desired questions.
