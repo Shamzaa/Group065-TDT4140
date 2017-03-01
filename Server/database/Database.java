@@ -4,6 +4,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -18,7 +21,7 @@ import java.sql.Statement;
 
 
 public class Database implements AutoCloseable {
-	Connection conn = null;
+	private Connection conn = null;
 	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
 	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
@@ -29,14 +32,16 @@ public class Database implements AutoCloseable {
 		}
 	}
 	
-	public void connect() throws Exception {
+	public boolean connect() {
 		// Class.forName("com.mysql.jdbc.Driver");  Not needed if Eclipse?
 		try {
 			conn = DriverManager.getConnection(KEY_URL);
 		}
 		catch (SQLException ex) {
 			System.out.println("SQLEcxeption: " + ex.getMessage());
+			return false;
 		}
+		return true;
 	}
 	
 	public void testSporring() {
@@ -62,7 +67,7 @@ public class Database implements AutoCloseable {
  * the question to the database. Returns true if successful, false otherwise.
  */
 	
-	protected boolean postNewQuestion(String question, int lecture_id) {
+	public boolean postNewQuestion(String question, int lecture_id) {
 		try (Statement stmt = conn.createStatement()) {
 			String query = "insert into questions(question, lecture_id, time) values ('" + question + "'," + lecture_id + ", NOW());";
 			System.out.println(query);
@@ -74,6 +79,39 @@ public class Database implements AutoCloseable {
 			return false;
 		}
 		return false;
+	}
+
+	/**
+	 * Takes in lecture_id as in, and the number of desired questions.
+	 * Returns an ArrayList of dictionaries with keys: question, time, rating
+	 */
+	
+	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
+		ArrayList<Map<String, String>> questions = new ArrayList<>();
+		try (Statement stmt = conn.createStatement()) {
+			String query = "SELECT question, time, rating FROM questions where lecture_id = '" + lecture_id + 
+					"' order by time desc";
+			if (stmt.execute(query)) {
+				try (ResultSet rs = stmt.getResultSet();) {
+					while (rs.next() && (numberOfQuestions > 0)) {
+						Map<String, String> result = new HashMap<String, String>();
+						String question = rs.getString(1);
+						String time = rs.getString(2);
+						String rating = rs.getString(3);
+						result.put("question", question);
+						result.put("time", time);
+						result.put("rating", rating);
+						questions.add(result);
+						numberOfQuestions --;
+					}					
+				}
+				return questions;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questions;
 	}
 
 
