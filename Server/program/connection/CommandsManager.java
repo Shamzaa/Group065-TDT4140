@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,7 +67,7 @@ public class CommandsManager {
 			JSONObject retObj = new JSONObject();
 			retObj.put("Function", "addQuestions");
 			retObj.put("QuestionAmount", obj.getInt("QuestionAmount"));
-			retObj.put("List", retArr);
+			retObj.put("List", new JSONArray(retArr));
 			
 			client.sendJSON(retObj);
 			

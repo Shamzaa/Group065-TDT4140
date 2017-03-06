@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,9 +23,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import program.ClientMain;
-import program.connection.StudentListener;
+import program.connection.ClientListener;
+import program.connection.QuestionReciever;
 
-public class StudentWindowController implements AppBinder {
+public class StudentWindowController implements AppBinder, QuestionReciever {
 	ArrayList<String> questionList = new ArrayList<>();
 	
 	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
@@ -56,35 +59,24 @@ public class StudentWindowController implements AppBinder {
 	}
 	
 	//Fetches the 'numberOfQuestions' latest questions from the database
-	private void fetchQuestions(int numberOfQuestions){
-		JSONObject obj = new JSONObject();
-		
-		try{
-			obj.put("Function", "GetLatestQuestions");
-			obj.put("QuestionAmount", numberOfQuestions);
-			obj.put("ClassID", main.getClassID());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		main.getServerManager().sendJSON(obj);
-	}
 	
-	@SuppressWarnings("unchecked")
-	public void addQuestions(Object questions, int numberOfQuestions){
+	/*public void addQuestions(Object questions, int numberOfQuestions){
 		System.out.println("New Questions recieved");
 		System.out.println(questions);
 		
 		/*for (Object map : castQuestions) {
 			System.out.println(map);
-		}*/
-	}
+		}
+	}*/
 	
 	
 	private void addQuestion(String question){
+		System.out.println("Adding question: " + question);
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
-		try {
-			
+		System.out.println("Trying to add");
+		Platform.runLater(() -> {
+			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
 			for (Node node : qPane.getChildren()) {
 				if (node.getId().equals("QuestionText")){
@@ -96,15 +88,16 @@ public class StudentWindowController implements AppBinder {
 				    helper.setFont(font);
 				    helper.setWrappingWidth((int)wrappingWidth);
 				    helper.getLayoutBounds().getHeight();
-					*/
+					 */
 					break;
 				}
 			}
 			QuestionContainer.getChildren().add(qPane);
 			QuestionContainer.getChildren().add(new Separator());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		});
 	}
 	
 
@@ -157,12 +150,57 @@ public class StudentWindowController implements AppBinder {
 		askQuestionContainer.setVisible(true);
 	}
 
+	// INTERFACE functions: ------------------------------------------------------------------------------
+	// AppBinder
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
 		//fetches all lecture question to fill the list
-		//clientProcessingPool.submit(new QuestionsListener(main, this));
-		//fetchQuestions(Integer.MAX_VALUE);
+		clientProcessingPool.submit(new ClientListener(main, this));
+		fetchQuestions(Integer.MAX_VALUE);
+	}
+	
+	//QuestionReciever
+	@Override
+	public void fetchQuestions(int numberOfQuestions){
+		JSONObject obj = new JSONObject();
+		
+		try{
+			obj.put("Function", "GetLatestQuestions");
+			obj.put("QuestionAmount", numberOfQuestions);
+			obj.put("ClassID", main.getClassID());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		main.getServerManager().sendJSON(obj);
+	}
+	
+	@Override
+	public void recieveQuestions(JSONObject obj) {
+		// TODO Auto-generated method stub
+		System.out.println("Recieved Messages: " + obj.toString());
+		try {
+			JSONArray objList = obj.getJSONArray("List");
+			for (int i = 0; i < objList.length(); i++) {
+				JSONObject part = objList.getJSONObject(i);
+				String question = part.getString("question");
+				// int rating = ...
+				// Time time = ...
+				
+				System.out.println("Part:     " + part);
+				System.out.println("Question: " + question);
+				
+				addQuestion(question);
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//for (int i = 0; i < array.length; i++) {
+			
+		//}
 	}
 }
