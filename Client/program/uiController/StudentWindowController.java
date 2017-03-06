@@ -21,7 +21,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import program.ClientMain;
-import program.connection.QuestionsListener;
 import program.connection.StudentListener;
 
 public class StudentWindowController implements AppBinder {
@@ -163,7 +162,7 @@ public class StudentWindowController implements AppBinder {
 		this.main = main;
 		
 		//fetches all lecture question to fill the list
-		clientProcessingPool.submit(new QuestionsListener(main, this));
-		fetchQuestions(Integer.MAX_VALUE);
+		//clientProcessingPool.submit(new QuestionsListener(main, this));
+		//fetchQuestions(Integer.MAX_VALUE);
 	}
 }
