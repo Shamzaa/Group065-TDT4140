@@ -1,10 +1,14 @@
 package program.connection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import database.Database;
 
 public class CommandsManager {
 	
@@ -28,6 +32,8 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> studentLost(obj, client));
 		stringToFunction.put("JoinLecture", 
 				(JSONObject obj, ClientConnection client) -> studentJoin(obj, client));
+		stringToFunction.put("GetLatestQuestions",
+				(JSONObject obj, ClientConnection client) -> getLatestQuestions(obj, client));
 		stringToFunction.put("NewQuestion", 
 				(JSONObject obj, ClientConnection client) -> newQuestion(obj, client));
 	}
@@ -47,6 +53,31 @@ public class CommandsManager {
 	
 	
 	// functions that we can do
+	private void getLatestQuestions(JSONObject obj, ClientConnection client){
+		try {
+			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID"));
+			Database db =  new Database();
+			db.connect();
+			ArrayList<Map<String, String>> retArr = db.getLastestQuestions(1, obj.getInt("QuestionAmount"));
+			System.out.println(retArr);
+			
+			db.close();
+			
+			//TODO get retArr back to requester
+			JSONObject retObj = new JSONObject();
+			retObj.put("Function", "addQuestions");
+			retObj.put("QuestionAmount", obj.getInt("QuestionAmount"));
+			retObj.put("List", new JSONArray(retArr));
+			
+			client.sendJSON(retObj);
+			
+						
+		} catch (JSONException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
 	private void assignRoleToClient(JSONObject obj, ClientConnection client){
 		try {
 			client.setRole(obj.getString("Role"));
