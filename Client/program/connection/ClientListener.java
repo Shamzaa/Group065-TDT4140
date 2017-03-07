@@ -46,13 +46,16 @@ public class ClientListener implements Runnable{
 					 * what the lecturer will listen to, compared to the server
 					 */
 					switch(obj.getString("Function")){
-						//Both client-types
-						
 						//Student Only
+						
+						//Both client-types
 						case "addQuestions":
-							System.out.println("case: AddQuestions");
 							controller.recieveQuestions(obj);
-							
+							break;
+						case "SetLiveLectureID":
+							System.out.println(">>>> CASE:  SET LIVE LECTURE");
+							controller.setLiveLectureID(obj.getInt("LiveLectureID"));
+							break;
 						//Lecturer Only
 						case "StudentLost":
 							((LecturerWindowController) controller).studentLost();

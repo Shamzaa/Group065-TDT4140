@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxWidth="-Infinity" prefHeight="51.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxWidth="-Infinity" prefHeight="51.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.QuestionBoxController">
 	<children>
 	   <TextArea id="QuestionText" editable="false" maxWidth="375.0" prefHeight="50" prefWidth="374.0" wrapText="true" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="1.0" />
 	   <RadioButton id="badRadio" layoutX="406.0" layoutY="26.0" mnemonicParsing="false" text="Bad" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="26.0">
