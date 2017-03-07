@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
@@ -30,10 +31,12 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	ArrayList<String> questionList = new ArrayList<>();
 	
 	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+	private int liveLectureID;
+	
 	
 	ClientMain main;
 	
-	
+	@FXML ProgressIndicator questionLoadIndicator;
 	@FXML Button questionButton;
 	@FXML Button lostMeButton;
 	@FXML Button submitQuestionButton;
@@ -57,18 +60,6 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
 		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
 	}
-	
-	//Fetches the 'numberOfQuestions' latest questions from the database
-	
-	/*public void addQuestions(Object questions, int numberOfQuestions){
-		System.out.println("New Questions recieved");
-		System.out.println(questions);
-		
-		/*for (Object map : castQuestions) {
-			System.out.println(map);
-		}
-	}*/
-	
 	
 	private void addQuestion(String question){
 		System.out.println("Adding question: " + question);
@@ -150,26 +141,28 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		askQuestionContainer.setVisible(true);
 	}
 
-	// INTERFACE functions: ------------------------------------------------------------------------------
-	// AppBinder
+	//- Functions from interfaces ----------------------------------------------------------------------
+	//-> From AppBinder
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
 		//fetches all lecture question to fill the list
 		clientProcessingPool.submit(new ClientListener(main, this));
-		fetchQuestions(Integer.MAX_VALUE);
+		fetchLiveLectureID();
 	}
 	
-	//QuestionReciever
+	//-> From QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){
+		System.out.println("Fetching questions.....");
+		questionLoadIndicator.setVisible(true);
 		JSONObject obj = new JSONObject();
-		
 		try{
 			obj.put("Function", "GetLatestQuestions");
 			obj.put("QuestionAmount", numberOfQuestions);
 			obj.put("ClassID", main.getClassID());
+			obj.put("LiveID", liveLectureID);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -179,7 +172,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		// TODO Auto-generated method stub
-		System.out.println("Recieved Messages: " + obj.toString());
+		//System.out.println("Recieved Messages: " + obj.toString());
 		try {
 			JSONArray objList = obj.getJSONArray("List");
 			for (int i = 0; i < objList.length(); i++) {
@@ -188,19 +181,39 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 				// int rating = ...
 				// Time time = ...
 				
-				System.out.println("Part:     " + part);
-				System.out.println("Question: " + question);
+				//System.out.println("Part:     " + part);
+				//System.out.println("Question: " + question);
 				
 				addQuestion(question);
 			}
+			questionLoadIndicator.setVisible(false);
 			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//for (int i = 0; i < array.length; i++) {
-			
-		//}
+	}
+	
+	@Override
+	public void fetchLiveLectureID() {
+		System.out.println("Fetching LiveLecture.....");
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "GetLiveLectureID");
+			obj.put("ClassID", main.getClassID());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		main.getServerManager().sendJSON(obj);
+	}
+	
+	@Override
+	public void setLiveLectureID(int ID) {
+		System.out.println("Setting liveLectureID to: " + ID);
+		this.liveLectureID = ID;
+		//Now that the live ID is recieved, we can fetch all the questions the lecture got before this client joined
+		fetchQuestions(Integer.MAX_VALUE);
 	}
 }
