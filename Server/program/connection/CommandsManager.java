@@ -182,12 +182,23 @@ public class CommandsManager {
 	
 	public void voteQuestion(JSONObject obj, ClientConnection client) {
 		try {
-			boolean goodVote = obj.getBoolean("GoodVote");
+			int val = obj.getInt("ScoreChange");
 			int questionID = obj.getInt("QuestionID");
-			//TODO send to database
-			System.out.println(questionID + " voted " + (goodVote?"good":"bad"));
-			clientsManager.main.getDatabase().voteQuestion(questionID, goodVote);
-			//TODO tell all connected clients that vote happened?			
+			// updates score in database
+			clientsManager.main.getDatabase().voteQuestion(questionID, val);
+			
+			// notifies all clients connected to this lecture with update score of a question
+			int score = clientsManager.main.getDatabase().getScoreQuestion(questionID);
+			JSONObject questionScore = new JSONObject();
+			questionScore.put("Function", "updateScore");
+			questionScore.put("QuestionID", questionID);
+			questionScore.put("Score", score);
+			
+			for(ClientConnection c : clientsManager.getClientsConnected()){
+				if(c.getLectureID() == client.getLectureID()){
+					c.sendJSON(questionScore);
+				}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

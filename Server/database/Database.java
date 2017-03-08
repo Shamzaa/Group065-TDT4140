@@ -157,15 +157,29 @@ public class Database implements AutoCloseable {
 	
 	// can vote for a question and change the score. Takes in the question ID, and a boolean to upvote(true) or downvote(false)
 	
-	public void voteQuestion(int questionID, boolean vote){
+	public void voteQuestion(int questionID, int val){
 		try(Statement stmt = conn.createStatement()){
-			int point = vote ? 1 : -1;
-			String query = "UPDATE `questions` SET `rating`=`rating` + "+point+" WHERE id="+questionID+ ";";
+			String query = "UPDATE `questions` SET `rating`=`rating` + "+ Integer.toString(val) + " WHERE id="+questionID+ ";";
 			stmt.execute(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int getScoreQuestion(int questionID){
+		try(Statement stmt = conn.createStatement()){
+			String query = "SELECT `rating` FROM `questions` WHERE `id`="+questionID+";";
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				rs.next();
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 
