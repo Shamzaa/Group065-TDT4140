@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -103,32 +104,34 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	}
 	
 	
-	public void addQuestion(String question){		
+	public void addQuestion(String question, int questionID){		
+		System.out.println("Adding question: " + question);
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
-		try {
-			
+		System.out.println("Trying to add");
+		Platform.runLater(() -> {
+			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			for (Node node : qPane.getChildren()) {
+			/*for (Node node : qPane.getChildren()) {
 				if (node.getId().equals("QuestionText")){
 					((TextArea) node).setText(question);
 					
-					/* TODO add later. Automatisk justere høyden til boksen for å passe tekstlengden
-					Text helper = new Text();
-					helper.setText(text);
-				    helper.setFont(font);
-				    helper.setWrappingWidth((int)wrappingWidth);
-				    helper.getLayoutBounds().getHeight();
-					*/
 					break;
 				}
-			}
-			//Kan bruke add(index, node) for rekkefølge
+			}*/
+			// Runs Controller functions
+			QuestionBoxController controller = loader.getController();
+			controller.setScoreVisible(true);
+			controller.setQuestionText(question);
+			controller.setQuestionId(questionID);
+			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
 			QuestionContainer.getChildren().add(new Separator());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		});
 	}
 	
 	
@@ -165,13 +168,14 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			for (int i = 0; i < objList.length(); i++) {
 				JSONObject part = objList.getJSONObject(i);
 				String question = part.getString("question");
+				int id = part.getInt("id");
 				// int rating = ...
 				// Time time = ...
 				
 				//System.out.println("Part:     " + part);
 				//System.out.println("Question: " + question);
 				
-				addQuestion(question);
+				addQuestion(question, id);
 			}
 			
 			
