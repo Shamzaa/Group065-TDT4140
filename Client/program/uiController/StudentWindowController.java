@@ -78,7 +78,6 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		} else {
 			main.getServerManager().sendJSON(obj);
 		}
-		
 	}
 	
 	private void addQuestion(String question, int questionID){
