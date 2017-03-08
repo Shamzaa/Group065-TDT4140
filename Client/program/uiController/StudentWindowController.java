@@ -88,6 +88,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			//If the user selects a new vote after already choosing one, its neccessary to move the rating in the database by two increments
 			int swap = (wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))? 2 : 1;
 			obj.put("ScoreChange", (isNowOn.equals("good")? 1*swap : -1*swap ));
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
