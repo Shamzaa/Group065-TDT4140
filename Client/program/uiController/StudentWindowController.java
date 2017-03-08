@@ -60,21 +60,30 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
 		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
 	}
+	private void sortQuestionsByScore(){
+		//TODO 
+	}
+	
 	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
 		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "VoteQuestion");
-			obj.put("GoodVote", isNowOn.equals("good"));
 			obj.put("QuestionID", controller.getQuestionId());
+			
+			
+			
+			
+			obj.put("ScoreChange", (isNowOn.equals("good")? 1 : -1 ));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if((wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))){
 			//TODO rework a more decent solution: Jumps two scores, sends twice for now
-			main.getServerManager().sendJSON(obj);
-			main.getServerManager().sendJSON(obj);
+			/*main.getServerManager().sendJSON(obj);
+			main.getServerManager().sendJSON(obj);*/
+			
 		} else {
 			main.getServerManager().sendJSON(obj);
 		}
