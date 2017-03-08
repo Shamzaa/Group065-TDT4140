@@ -4,6 +4,7 @@ package program.connection;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class ClientsManager {
 	
 	
 	public ClientsManager(int portNumber, ServerMain main){
+		clientsConnected = new ArrayList<ClientConnection>();
 		comManager = new CommandsManager(this);
 		this.main = main;
 		classIDToConnection = new HashMap<String, ClientConnection>();
@@ -37,7 +39,9 @@ public class ClientsManager {
 					System.out.println("Waiting for clients...");
 					while(true){
 						Socket clientSocket = serverSocket.accept();
-						clientProcessingPool.submit(new ClientConnection(clientSocket, comManager));
+						ClientConnection client = new ClientConnection(clientSocket, comManager);
+						clientProcessingPool.submit(client);
+						clientsConnected.add(client);
 					}
 				}catch(IOException e){
 					System.out.println("couldn't process client request");
@@ -59,6 +63,10 @@ public class ClientsManager {
 		}else{
 			// TODO: return error message to client requesting classID
 		}
+	}
+	
+	public void addClientToCollection(ClientConnection client){
+		clientsConnected.add(client);
 	}
 	
 	public void sendInfoToLecturer(JSONObject obj, String classID){

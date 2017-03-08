@@ -209,7 +209,7 @@ public class CommandsManager {
 			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(client.getLectureID(), 1);
 			JSONObject retObj = new JSONObject();
 			retObj.put("Function", "addQuestions");
-			retObj.put("QuestionAmount", obj.getInt("QuestionAmount"));
+			retObj.put("QuestionAmount", 1);
 			retObj.put("List", new JSONArray(retArr));
 			
 			// Iterates through connected clients, and sends the new question to people who are connected to the same lecture as the student who sent in the question

@@ -192,6 +192,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	public void recieveQuestions(JSONObject obj) {
 		// TODO Auto-generated method stub
 		//System.out.println("Recieved Messages: " + obj.toString());
+		System.out.println("Recieving questions...");
 		try {
 			JSONArray objList = obj.getJSONArray("List");
 			for (int i = 0; i < objList.length(); i++) {
