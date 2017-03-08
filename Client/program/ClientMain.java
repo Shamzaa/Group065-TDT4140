@@ -10,6 +10,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import program.connection.*;
 import program.uiController.AppBinder;
+import InterfacesForClient.*;
+
 public class ClientMain extends Application{
 	
 	// UI elements
@@ -65,9 +67,14 @@ public class ClientMain extends Application{
 
 		// Show the scene containing the root layout.
 		Scene scene = new Scene(root);
+		String css = ClientMain.class.getResource("styleSheet.css").toExternalForm();
+		scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.show();
 		loadUI("ui/RoleSelector.fxml");
+		
+		
+		
 	}
 	
 	public ServerManager getServerManager(){
