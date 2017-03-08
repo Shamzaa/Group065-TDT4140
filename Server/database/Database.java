@@ -91,7 +91,7 @@ public class Database implements AutoCloseable {
 	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
 		ArrayList<Map<String, String>> questions = new ArrayList<>();
 		try (Statement stmt = conn.createStatement()) {
-			String query = "SELECT question, time, rating FROM questions where lecture_id = '" + lecture_id + 
+			String query = "SELECT question, time, rating, id FROM questions where lecture_id = '" + lecture_id + 
 					"' order by time desc";
 			if (stmt.execute(query)) {
 				try (ResultSet rs = stmt.getResultSet();) {
@@ -100,9 +100,11 @@ public class Database implements AutoCloseable {
 						String question = rs.getString(1);
 						String time = rs.getString(2);
 						String rating = rs.getString(3);
+						String id = rs.getString(4);
 						result.put("question", question);
 						result.put("time", time);
 						result.put("rating", rating);
+						result.put("id", id);
 						questions.add(result);
 						numberOfQuestions --;
 					}					
@@ -158,7 +160,7 @@ public class Database implements AutoCloseable {
 	public void voteQuestion(int questionID, boolean vote){
 		try(Statement stmt = conn.createStatement()){
 			int point = vote ? 1 : -1;
-			String query = "UPDATE `questions` SET `rating`=`rating` + 1 WHERE id="+point+ ";";
+			String query = "UPDATE `questions` SET `rating`=`rating` + "+point+" WHERE id="+questionID+ ";";
 			stmt.execute(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
