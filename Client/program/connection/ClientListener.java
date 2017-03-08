@@ -49,11 +49,14 @@ public class ClientListener implements Runnable{
 						//Student Only
 						
 						//Both client-types
+						case "updateScore":
+							System.out.println(">>>> CASE:  Update Question Score");
+							controller.updateQuestionScore(obj.getInt("QuestionID"), obj.getInt("Score"));
+							break;
 						case "addQuestions":
 							controller.recieveQuestions(obj);
 							break;
 						case "SetLiveLectureID":
-							System.out.println(">>>> CASE:  SET LIVE LECTURE");
 							controller.setLiveLectureID(obj.getInt("LiveLectureID"));
 							break;
 						//Lecturer Only

@@ -1,5 +1,6 @@
 package program.uiController;
 
+import classes.Question;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,7 +14,8 @@ import javafx.scene.text.Text;
 public class QuestionBoxController {
 	//Class values
 	private final StringProperty vote = new SimpleStringProperty("----");
-	private int questionId;
+	//private int questionId;
+	private Question question;
 	
 	//UI element
 	@FXML RadioButton 	goodRadio;
@@ -41,26 +43,27 @@ public class QuestionBoxController {
 				e -> voteQuestion("good"));
 		badRadio.setOnAction(
 				e -> voteQuestion("bad"));
+		pointScoreText.setText(String.valueOf(0));
 	}
+	
 	public String getQuestionText(){
 		return questionTextArea.getText();
 	}
 	
-	public void setQuestionText(String question){
-		questionTextArea.setText(question);
-		//fitToText(); TODO: Implement later
-	}
-	public void setScore(int score){
+	/*public void setScore(int score){
 		pointScoreText.setText(String.valueOf(score));
-	}
+	}*/
 	public void setScoreVisible(boolean value){
 		pointPane.setVisible(value);
 	}
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
+	public void setQuestion(Question question) {
+		this.question = question;
+		questionTextArea.setText(question.getQuestionText());
+		this.question.ratingProperty().addListener((obs, wasOn, isNowOn) -> pointScoreText.setText(String.valueOf(isNowOn)));
+		//fitToText(); TODO: Implement later
 	}
 	public int getQuestionId() {
-		return questionId;
+		return question.getId();
 	}	
 	//- Methods for BooleanProperty ----------------------------------
 	public void voteQuestion(String vote){

@@ -9,7 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import classes.Question;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,7 +29,7 @@ import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;
-	ArrayList<String> questionList = new ArrayList<>();
+	ArrayList<Question> questionList = new ArrayList<>();
 	private int connectedStudents = 0;
 	private int lostStudents = 0;
 	private int liveLectureID;
@@ -43,25 +46,25 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	
 	@FXML
 	public void initialize(){
-		
-		//TODO remove later, used to test 
-		/*addQuestion("TEST: monotonectally administrate leveraged initiatives");
-		//addQuestion("TEST: interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
-		//addQuestion("TEST: continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
-		addQuestion("TEST: 1");
-		addQuestion("TEST: 2");
-		addQuestion("TEST: 3");
-		addQuestion("TEST: 4");
-		addQuestion("TEST: 5");
-		addQuestion("TEST: 6");
-		addQuestion("TEST: 7");
-		addQuestion("TEST: 8");*/
-		
+				
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
 	}
 	public void updateStudentsConnectedAmount(){
 		studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
+	}
+	
+	private void sortQuestionsByScore(){
+		Platform.runLater(() -> {
+			//The -1 reverses the sorting order
+			questionList.sort((q1, q2)-> -1*Integer.compare(q1.getRating(), q2.getRating()));
+			ObservableList<AnchorPane> workingCollection = FXCollections.observableArrayList();
+			for (Question question : questionList) {
+				System.out.println("changing orders");
+				workingCollection.add(question.getRelatedQuestionPane());
+			}
+			QuestionContainer.getChildren().setAll(workingCollection);
+		});	
 	}
 	
 	public void updatePieChartValues(){
@@ -104,11 +107,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	}
 	
 	
-	public void addQuestion(String question, int questionID){		
-		System.out.println("Adding question: " + question);
+	private void addQuestion(Question question){		
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
-		System.out.println("Trying to add");
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
@@ -119,14 +120,16 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 					break;
 				}
 			}*/
+			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
+			
 			controller.setScoreVisible(true);
-			controller.setQuestionText(question);
-			controller.setQuestionId(questionID);
+			controller.setQuestion(question);
+			//controller.setScore(question.getRating());
+			//controller.setQuestionId(question.getId());
 			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
-			QuestionContainer.getChildren().add(new Separator());
 			
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -167,15 +170,15 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			JSONArray objList = obj.getJSONArray("List");
 			for (int i = 0; i < objList.length(); i++) {
 				JSONObject part = objList.getJSONObject(i);
-				String question = part.getString("question");
+				String questionText = part.getString("question");
 				int id = part.getInt("id");
-				// int rating = ...
-				// Time time = ...
+				int rating = part.getInt("rating");
+				String time = part.getString("time");
 				
 				//System.out.println("Part:     " + part);
 				//System.out.println("Question: " + question);
 				
-				addQuestion(question, id);
+				addQuestion(new Question(id, questionText, time, rating));
 			}
 			
 			
@@ -202,5 +205,15 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void setLiveLectureID(int ID) {
 		System.out.println("Setting liveLectureID to: " + ID);
 		this.liveLectureID = ID;
+	}
+	@Override
+	public void updateQuestionScore(int questionID, int newScore) {
+		for (Question question : questionList) {
+			if(question.getId() == questionID){
+				question.setRating(newScore);
+				break;
+			}
+		}
+		sortQuestionsByScore();
 	}
 }
