@@ -19,6 +19,7 @@ public class ClientConnection implements Runnable{
 	// connection atributes
 	private Socket clientSocket;
 	private String role;
+	private int lectureID;
 	// in and out data channels
 	private BufferedReader in;
 	private PrintWriter out;
@@ -33,11 +34,20 @@ public class ClientConnection implements Runnable{
 		this.role = role;
 	}
 	
+	public void setLectureID(int lectureID){
+		System.out.println("lecture ID: " + lectureID + " set to socket");
+		this.lectureID = lectureID;
+	}
+	
 	public void sendJSON(JSONObject obj){
 		String json_data = obj.toString();
 		out.println(json_data);
 	}
 	
+	
+	public int getLectureID(){
+		return lectureID;
+	}
 	@Override
 	public void run() {
 		System.out.println("New connection!");

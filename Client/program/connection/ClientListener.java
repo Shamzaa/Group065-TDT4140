@@ -11,12 +11,12 @@ import org.json.JSONObject;
 
 import program.ClientMain;
 import program.uiController.LecturerWindowController;
+import program.uiController.StudentWindowController;
 
-public class StudentListener implements Runnable{
+public class ClientListener implements Runnable{
 	// references
 	ClientMain main;
-	LecturerWindowController controller;
-	
+	QuestionReciever controller;
 	
 	// connection atributes
 	private Socket client;
@@ -24,12 +24,12 @@ public class StudentListener implements Runnable{
 	// in and out data channels
 	private BufferedReader in;
 	
-	public StudentListener(ClientMain main, LecturerWindowController controller){
+	public ClientListener(ClientMain main, QuestionReciever controller){
 		this.main = main;
 		this.client = main.getServerManager().getSocket();
 		this.controller = controller;
 	}
-	
+		
 	
 	@Override
 	public void run() {
@@ -46,12 +46,20 @@ public class StudentListener implements Runnable{
 					 * what the lecturer will listen to, compared to the server
 					 */
 					switch(obj.getString("Function")){
+						//Both client-types
+						
+						//Student Only
+						case "addQuestions":
+							System.out.println("case: AddQuestions");
+							controller.recieveQuestions(obj);
+							
+						//Lecturer Only
 						case "StudentLost":
-							controller.studentLost();
+							((LecturerWindowController) controller).studentLost();
 							break;
 						case "JoinedLecture":
-							controller.studentJoined();
-							break;
+							((LecturerWindowController) controller).studentJoined();
+							break;						
 					}
 				}catch(JSONException e){
 					// data recieved wasn't a json object
@@ -63,10 +71,4 @@ public class StudentListener implements Runnable{
 			return;
 		}
 	}
-	
-	
-	private void studentLost(){
-		
-	}
-
 }

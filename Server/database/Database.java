@@ -4,6 +4,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -18,9 +21,11 @@ import java.sql.Statement;
 
 
 public class Database implements AutoCloseable {
-	Connection conn = null;
+	private Connection conn = null;
 	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
+	
+	// delete this
 	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
 		try (Database db = new Database()) {   // Fordi den implementerer AutoCloseable, vil den automatisk close.
 			db.connect();
@@ -29,14 +34,16 @@ public class Database implements AutoCloseable {
 		}
 	}
 	
-	public void connect() throws Exception {
+	public boolean connect() {
 		// Class.forName("com.mysql.jdbc.Driver");  Not needed if Eclipse?
 		try {
 			conn = DriverManager.getConnection(KEY_URL);
 		}
 		catch (SQLException ex) {
 			System.out.println("SQLEcxeption: " + ex.getMessage());
+			return false;
 		}
+		return true;
 	}
 	
 	public void testSporring() {
@@ -62,7 +69,7 @@ public class Database implements AutoCloseable {
  * the question to the database. Returns true if successful, false otherwise.
  */
 	
-	protected boolean postNewQuestion(String question, int lecture_id) {
+	public boolean postNewQuestion(String question, int lecture_id) {
 		try (Statement stmt = conn.createStatement()) {
 			String query = "insert into questions(question, lecture_id, time) values ('" + question + "'," + lecture_id + ", NOW());";
 			System.out.println(query);
@@ -74,6 +81,89 @@ public class Database implements AutoCloseable {
 			return false;
 		}
 		return false;
+	}
+
+	/**
+	 * Takes in lecture_id as in, and the number of desired questions.
+	 * Returns an ArrayList of dictionaries with keys: question, time, rating
+	 */
+	
+	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
+		ArrayList<Map<String, String>> questions = new ArrayList<>();
+		try (Statement stmt = conn.createStatement()) {
+			String query = "SELECT question, time, rating FROM questions where lecture_id = '" + lecture_id + 
+					"' order by time desc";
+			if (stmt.execute(query)) {
+				try (ResultSet rs = stmt.getResultSet();) {
+					while (rs.next() && (numberOfQuestions > 0)) {
+						Map<String, String> result = new HashMap<String, String>();
+						String question = rs.getString(1);
+						String time = rs.getString(2);
+						String rating = rs.getString(3);
+						result.put("question", question);
+						result.put("time", time);
+						result.put("rating", rating);
+						questions.add(result);
+						numberOfQuestions --;
+					}					
+				}
+				return questions;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questions;
+	}
+	
+	
+	// looks at most recent lecture object in the database with the given lecture code
+	public int getLiveLectureID(String classID){
+		int lectureID = 0;
+		
+		try (Statement stmt = conn.createStatement();){
+			String query = "SELECT id FROM lecture WHERE subject_code='" + classID.toUpperCase() + "' ORDER BY id DESC LIMIT 1";
+			
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				rs.next();
+				lectureID = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lectureID;
+	}
+	
+	// creates a new lecture, and returns the lectureID in the database.
+	public int createNewLecture(String classID){
+		// only doable if classID excists in database.
+		
+		try (Statement stmt = conn.createStatement()) {
+			String query = "insert into lecture(subject_code) values ('" + classID.toUpperCase() + "');";
+			if (stmt.execute(query)) {
+				return getLiveLectureID(classID);
+			}					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return 0;
+	}
+	
+	
+	// can vote for a question and change the score. Takes in the question ID, and a boolean to upvote(true) or downvote(false)
+	
+	public void voteQuestion(int questionID, boolean vote){
+		try(Statement stmt = conn.createStatement()){
+			int point = vote ? 1 : -1;
+			String query = "UPDATE `questions` SET `rating`=`rating` + 1 WHERE id="+point+ ";";
+			stmt.execute(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
