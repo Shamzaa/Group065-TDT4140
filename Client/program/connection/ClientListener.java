@@ -62,7 +62,8 @@ public class ClientListener implements Runnable{
 							break;
 						case "JoinedLecture":
 							((LecturerWindowController) controller).studentJoined();
-							break;						
+							break;
+							
 					}
 				}catch(JSONException e){
 					// data recieved wasn't a json object

@@ -195,7 +195,6 @@ public class CommandsManager {
 	
 	private void newQuestion(JSONObject obj, ClientConnection client){
 		// student submitted new question.
-		JSONObject notifyNewConnection = new JSONObject();
 		try{
 			System.out.println("Student has submitted new question: " + obj.getString("Question") + ". To class :" + obj.getString("ClassID"));
 			clientsManager.main.getDatabase().postNewQuestion(obj.getString("Question"), client.getLectureID());
@@ -204,6 +203,21 @@ public class CommandsManager {
 					WHERE subject_code='TDT4100'
 					ORDER BY id DESC LIMIT 1
 			 */
+			
+			// send the new question to all clients
+			// Using excisting functions to just get the latest question we just posted in the database
+			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(client.getLectureID(), 1);
+			JSONObject retObj = new JSONObject();
+			retObj.put("Function", "addQuestions");
+			retObj.put("QuestionAmount", obj.getInt("QuestionAmount"));
+			retObj.put("List", new JSONArray(retArr));
+			
+			// Iterates through connected clients, and sends the new question to people who are connected to the same lecture as the student who sent in the question
+			for(ClientConnection c : clientsManager.getClientsConnected()){
+				if(c.getLectureID() == client.getLectureID()){
+					c.sendJSON(retObj);
+				}
+			}
 			
 			
 		}catch(JSONException e){
