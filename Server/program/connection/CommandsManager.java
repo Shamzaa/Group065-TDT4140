@@ -183,9 +183,10 @@ public class CommandsManager {
 	public void voteQuestion(JSONObject obj, ClientConnection client) {
 		try {
 			boolean goodVote = obj.getBoolean("GoodVote");
-			String questionID = obj.getString("QuestionID");
+			int questionID = obj.getInt("QuestionID");
 			//TODO send to database
-			System.out.println(questionID + "voted " + (goodVote?"good":"bad"));			
+			System.out.println(questionID + " voted " + (goodVote?"good":"bad"));
+			clientsManager.main.getDatabase().voteQuestion(questionID, goodVote);
 			//TODO tell all connected clients that vote happened?			
 		} catch (JSONException e) {
 			e.printStackTrace();

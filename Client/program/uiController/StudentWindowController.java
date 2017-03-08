@@ -61,10 +61,27 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
 	}
 	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
-		System.out.println("Question: "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
+		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "VoteQuestion");
+			obj.put("GoodVote", isNowOn.equals("good"));
+			obj.put("QuestionID", controller.getQuestionId());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if((wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))){
+			//TODO rework a more decent solution: Jumps two scores, sends twice for now
+			main.getServerManager().sendJSON(obj);
+			main.getServerManager().sendJSON(obj);
+		} else {
+			main.getServerManager().sendJSON(obj);
+		}
+		
 	}
 	
-	private void addQuestion(String question){
+	private void addQuestion(String question, int questionID){
 		System.out.println("Adding question: " + question);
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
@@ -83,6 +100,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			QuestionBoxController controller = loader.getController();
 			controller.goodProperty().addListener((obs, wasOn, isNowOn) -> handleQuestionVote(controller, wasOn, isNowOn));
 			controller.setQuestionText(question);
+			controller.setQuestionId(questionID);
 			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
 			QuestionContainer.getChildren().add(new Separator());
@@ -180,13 +198,14 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			for (int i = 0; i < objList.length(); i++) {
 				JSONObject part = objList.getJSONObject(i);
 				String question = part.getString("question");
+				int id = part.getInt("id");
 				// int rating = ...
 				// Time time = ...
 				
 				//System.out.println("Part:     " + part);
 				//System.out.println("Question: " + question);
 				
-				addQuestion(question);
+				addQuestion(question, id);
 			}
 			questionLoadIndicator.setVisible(false);
 			

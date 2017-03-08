@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 public class QuestionBoxController {
 	//Class values
 	private final StringProperty vote = new SimpleStringProperty("----");
+	private int questionId;
 	
 	//UI element
 	@FXML RadioButton 	goodRadio;
@@ -55,6 +56,12 @@ public class QuestionBoxController {
 	public void setScoreVisible(boolean value){
 		pointPane.setVisible(value);
 	}
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+	public int getQuestionId() {
+		return questionId;
+	}	
 	//- Methods for BooleanProperty ----------------------------------
 	public void voteQuestion(String vote){
 		System.out.println("voting");
