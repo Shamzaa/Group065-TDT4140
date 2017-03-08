@@ -151,6 +151,20 @@ public class Database implements AutoCloseable {
 		}
 		return 0;
 	}
+	
+	
+	// can vote for a question and change the score. Takes in the question ID, and a boolean to upvote(true) or downvote(false)
+	
+	public void voteQuestion(int questionID, boolean vote){
+		try(Statement stmt = conn.createStatement()){
+			int point = vote ? 1 : -1;
+			String query = "UPDATE `questions` SET `rating`=`rating` + 1 WHERE id="+point+ ";";
+			stmt.execute(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 	@Override
