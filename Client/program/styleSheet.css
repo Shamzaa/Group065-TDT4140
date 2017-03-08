@@ -1,2 +1,18 @@
-Button{-fx-fill:pink; -fx-background-color : pink;}
-radioButton{-fx-fill:pink; -fx-background-color : pink;}
+Button{-fx-background-color : #FF9900; -fx-border-top-left-radius: 100px; -fx-border-top-right-radius: 100px;}
+AnchorPane{-fx-background-color : #ffcc00;}
+TextField{-fx-background-color : #ffff66;}
+#goodRadio{-fx-background-color : green;}
+#badRadio{-fx-background-color : red;}
+#QuestionText{-fx-background-color : pink;}
+#TextArea{-fx-background-color : #ffff66; fx-fill:green;}
+#radioGroup{-fx-background-color : #f1f264;}
+#Rectangle{-fx-background-color:#ff9900; fx-fill:green;fx-color: red;}
+.button:hover {
+    -fx-background-color: #ffaa22;
+}
+ .text-area .content{
+      -fx-background-color: #ff9900;
+      -fx-padding-color: green;;
+  }
+    .text-area .margin{
+  -fx-background-color:#ff9900;}
