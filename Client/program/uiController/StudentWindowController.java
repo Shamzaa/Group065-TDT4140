@@ -60,6 +60,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
 		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
 	}
+	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
+		System.out.println("Question: "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
+	}
 	
 	private void addQuestion(String question){
 		System.out.println("Adding question: " + question);
@@ -69,22 +72,21 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			for (Node node : qPane.getChildren()) {
+			/*for (Node node : qPane.getChildren()) {
 				if (node.getId().equals("QuestionText")){
 					((TextArea) node).setText(question);
 					
-					/* TODO add later. Automatisk justere høyden til boksen for å passe tekstlengden
-					Text helper = new Text();
-					helper.setText(text);
-				    helper.setFont(font);
-				    helper.setWrappingWidth((int)wrappingWidth);
-				    helper.getLayoutBounds().getHeight();
-					 */
 					break;
 				}
-			}
+			}*/
+			// Runs Controller functions
+			QuestionBoxController controller = loader.getController();
+			controller.goodProperty().addListener((obs, wasOn, isNowOn) -> handleQuestionVote(controller, wasOn, isNowOn));
+			controller.setQuestionText(question);
+			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
 			QuestionContainer.getChildren().add(new Separator());
+			
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			

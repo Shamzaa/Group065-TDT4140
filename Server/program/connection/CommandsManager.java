@@ -38,9 +38,9 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> newQuestion(obj, client));
 		stringToFunction.put("GetLiveLectureID",
 				(JSONObject obj, ClientConnection client) -> getLiveLectureID(obj, client));
+		stringToFunction.put("VoteQuestion",
+				(JSONObject obj, ClientConnection client) -> voteQuestion(obj, client));
 	}
-	
-
 
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
 		try {
@@ -88,11 +88,11 @@ public class CommandsManager {
 	
 	// functions that we can do
 	private void getLatestQuestions(JSONObject obj, ClientConnection client){
-		Database db =  new Database();
-		db.connect();
+		//Database db =  new Database();
+		//db.connect();
 		try {
 			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID") +"["+obj.getInt("LiveID")+"]");
-			ArrayList<Map<String, String>> retArr = db.getLastestQuestions(obj.getInt("LiveID"), obj.getInt("QuestionAmount"));
+			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(obj.getInt("LiveID"), obj.getInt("QuestionAmount"));
 			
 			
 			JSONObject retObj = new JSONObject();
@@ -106,7 +106,7 @@ public class CommandsManager {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		db.close();
+		//db.close();
 	}
 	
 	private void assignRoleToClient(JSONObject obj, ClientConnection client){
@@ -178,6 +178,18 @@ public class CommandsManager {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void voteQuestion(JSONObject obj, ClientConnection client) {
+		try {
+			boolean goodVote = obj.getBoolean("GoodVote");
+			String questionID = obj.getString("QuestionID");
+			//TODO send to database
+			System.out.println(questionID + "voted " + (goodVote?"good":"bad"));			
+			//TODO tell all connected clients that vote happened?			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void newQuestion(JSONObject obj, ClientConnection client){
