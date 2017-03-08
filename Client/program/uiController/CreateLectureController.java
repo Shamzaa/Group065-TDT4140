@@ -24,6 +24,7 @@ public class CreateLectureController implements AppBinder{
 	
 	@FXML
 	private void initialize(){
+		errorLabel.setText("");
 		newLectureButton.setOnAction(
 				e -> createNewLecture(classField.getText()));
 	}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.json.JSONObject;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,9 +18,10 @@ import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import program.ClientMain;
 import program.connection.ClientConnection;
-import program.connection.StudentListener;
+import program.connection.ClientListener;
+import program.connection.QuestionReciever;
 
-public class LecturerWindowController implements AppBinder {
+public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;
 	ArrayList<String> questionList = new ArrayList<>();
 	private int connectedStudents = 0;
@@ -132,6 +135,18 @@ public class LecturerWindowController implements AppBinder {
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-		clientProcessingPool.submit(new StudentListener(main, this));
+		clientProcessingPool.submit(new ClientListener(main, this));
+	}
+	//- Functions for QuestionReciever
+	@Override
+	public void fetchQuestions(int numberOfQuestions) {
+		// TODO Auto-generated method stub
+		System.out.println("Fetching questiosn");
+	}
+	@Override
+	public void recieveQuestions(JSONObject obj) {
+		// TODO Auto-generated method stub
+		System.out.println("recieving questions");
+		
 	}		
 }
