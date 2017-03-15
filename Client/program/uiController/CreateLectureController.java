@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
@@ -14,19 +15,23 @@ public class CreateLectureController implements AppBinder{
 	
 	private ClientMain main;
 	
-	@FXML
-	private TextField classField;
-	@FXML
-	private Label errorLabel;
-	@FXML
-	private Button newLectureButton;
+	@FXML private TextField lectureNameField; 		//User writes the name for a lecture here
+	@FXML private ChoiceBox<String> classChoiceBox;	//User chooses a subject code here
+	@FXML private Label errorLabel;					//Shows up when input is wrong
+	@FXML private Button newLectureButton;			//Initializes lecture creation
 	
 	
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
+		//TODO Later this should fetch all available lecture codes from the database table 'subjects'
+		classChoiceBox.getItems().add("TDT4100");
+		classChoiceBox.getSelectionModel().selectFirst();
+		
 		newLectureButton.setOnAction(    //TODO: make lecture name an input to this
-				e -> createNewLecture(classField.getText(), classField.getText()));
+				e -> createNewLecture(
+						classChoiceBox.getSelectionModel().getSelectedItem(),
+						lectureNameField.getText()));
 	}
 	
 	
@@ -58,7 +63,8 @@ public class CreateLectureController implements AppBinder{
 		
 		
 		
-		main.setLectureID(lectureID);
+		main.setClassID(lectureID);
+		System.out.println("Set classID to "+ String.valueOf(lectureID));
 		main.loadUI("ui/LecturerWindow.fxml");
 		// load ui and pass on what lecture ID the lecturer will associate with, client side
 		
