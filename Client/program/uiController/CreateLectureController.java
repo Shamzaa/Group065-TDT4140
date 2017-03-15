@@ -13,7 +13,7 @@ import program.connection.ServerRequests;
 
 public class CreateLectureController implements AppBinder{
 	
-	private ClientMain main;
+	private ClientMain main;						//References the ClientMain that runs the program 
 	
 	@FXML private TextField lectureNameField; 		//User writes the name for a lecture here
 	@FXML private ChoiceBox<String> classChoiceBox;	//User chooses a subject code here
@@ -33,7 +33,6 @@ public class CreateLectureController implements AppBinder{
 						classChoiceBox.getSelectionModel().getSelectedItem(),
 						lectureNameField.getText()));
 	}
-	
 	
 
 	private void createNewLecture(String lectureID, String lectureName){

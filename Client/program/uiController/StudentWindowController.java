@@ -55,10 +55,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 				e -> handleLostMeButtonAction());
 		submitQuestionButton.setOnAction(
 				e -> handleSubmitButtonAction());
-		
-		//addQuestion("monotonectally administrate leveraged initiatives");
-		//addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
-		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
+			
 	}
 	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
 		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");

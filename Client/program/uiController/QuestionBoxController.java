@@ -12,15 +12,15 @@ import javafx.scene.text.Text;
 
 public class QuestionBoxController {
 	//Class values
-	private final StringProperty vote = new SimpleStringProperty("----");
-	private int questionId;
+	private final StringProperty vote = new SimpleStringProperty("----"); //Used to know what the current chosen radioButton
+	private int questionId;												  //Used to refer to the question in the dataBase	
 	
 	//UI element
-	@FXML RadioButton 	goodRadio;
-	@FXML RadioButton 	badRadio;
-	@FXML TextArea 		questionTextArea;
-	@FXML Pane			pointPane;
-	@FXML Text			pointScoreText;
+	@FXML RadioButton 	goodRadio;			//Used to vote that a question is good
+	@FXML RadioButton 	badRadio;			//Used to vote that a question is bad
+	@FXML TextArea 		questionTextArea;	//Textarea to show the question text
+	@FXML Pane			pointPane;			//Pane that overlays votebuttons to show score
+	@FXML Text			pointScoreText;		//Text that shows how many points a question has
 	
 	private void fitToText(){
 		//TODO add code
@@ -62,7 +62,7 @@ public class QuestionBoxController {
 	public int getQuestionId() {
 		return questionId;
 	}	
-	//- Methods for BooleanProperty ----------------------------------
+	//- Methods for StringProperty ----------------------------------
 	public void voteQuestion(String vote){
 		System.out.println("voting");
 		this.vote.set(vote);
