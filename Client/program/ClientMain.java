@@ -15,7 +15,7 @@ public class ClientMain extends Application{
 	
 	// UI elements
 	private Stage stage;
-	private BorderPane root;
+	private BorderPane root; //all windows are loaded into centerpane via loadUI()
 	
 	// reference elements
 	private ServerManager serverManager;

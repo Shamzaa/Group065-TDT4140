@@ -28,28 +28,29 @@ import program.connection.ClientListener;
 import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
-	ClientMain main;
-	ArrayList<Question> questionList = new ArrayList<>();
-	private int connectedStudents = 0;
-	private int lostStudents = 0;
-	private int liveLectureID;
+	ClientMain main;									//Refernce to the clientMain class that runs the program
+	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions [Unused? TODO remove]
+	private int connectedStudents = 0;					//The number of students currently connected
+	private int lostStudents = 0;						//The number of students who are currently lost
+	private int liveLectureID;							//The ID used to reference the lecture data table
 	
 	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 	
-	@FXML VBox QuestionContainer;
-	@FXML Arc lostMeRedArc;
-	@FXML Arc lostMeGreenArc;
-	@FXML Text lostMeRedText;
-	@FXML Text lostMeGreenText;
-	
-	@FXML Text studentsConnectedText;
+	@FXML VBox QuestionContainer;		//QuestionBoxes are added to this container, so they appear in the view as a list
+	@FXML Arc lostMeRedArc;				//The red part of the "You Lost Me" pie-chart
+	@FXML Arc lostMeGreenArc;			//The green part of the "You Lost Me" pie-chart
+	@FXML Text lostMeRedText;			//The text that shows the precentage of lost students
+	@FXML Text lostMeGreenText;			//The text that shows the percentage of students that are NOT lost
+	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
 	
 	@FXML
 	public void initialize(){
-				
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
 	}
+	/** @author Anders
+	 * This method checks connectedStudents and updates the text
+	 */
 	public void updateStudentsConnectedAmount(){
 		studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
 	}
@@ -66,7 +67,10 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			QuestionContainer.getChildren().setAll(workingCollection);
 		});	
 	}
-	
+
+	/** @author Anders
+	 * This method checks how many students are lost, and updates the pie chart accordingly
+	 */
 	public void updatePieChartValues(){
 		double percentRed = 0;		
 		if(connectedStudents == 0){
@@ -74,40 +78,38 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		} else {
 			percentRed =100*lostStudents/connectedStudents;	
 		}
-		
-
-		//System.out.println("Setting angles, ["+String.valueOf(percentRed));
-		
 		lostMeRedText.setText(String.valueOf(percentRed)+"%");
 		lostMeGreenText.setText(String.valueOf(100 - percentRed)+"%");
-		//System.out.println("text done");
 		
 		double newAngle = 360*(percentRed/100);
-		//System.out.println("angles got");
 		
 		lostMeRedArc.setStartAngle(90-newAngle);
 		lostMeRedArc.setLength(newAngle);
 		lostMeGreenArc.setStartAngle(90);
 		lostMeGreenArc.setLength(360-newAngle);
-		
-		//System.out.print(oldAngle);
-		//System.out.print(" -> ");
-		//System.out.println(newAngle);
 	}
-	
+	/** @author Anders
+	 *  Increments the number of students, and update ui elements
+	 */
 	public void studentJoined(){
 		connectedStudents++;
 		updateStudentsConnectedAmount();
 		updatePieChartValues();
 	}
-	
+	/** @author Anders
+	 *  Increments the number of LOST students, and updates the pieChart
+	 */
 	public void studentLost(){
 		lostStudents ++;
 		updatePieChartValues();
 	}
-	
-	
+
+	/** @author Anders
+	 *  Adds a new question to the VBox container
+	 *  @param question A Question object of the question that will be displayed
+	 */
 	private void addQuestion(Question question){		
+		System.out.println("Adding question: " + question);
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
 		Platform.runLater(() -> {
