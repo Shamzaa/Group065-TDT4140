@@ -133,7 +133,6 @@ public class CommandsManager {
 		System.out.println("Fetching subject codes");
 		ArrayList<String> retArr = new ArrayList<>();
 		retArr.add("TDT4100");
-		retArr.add("UNUSABLE");
 		System.out.println("fetched" + retArr);
 		//----------------------
 		try {

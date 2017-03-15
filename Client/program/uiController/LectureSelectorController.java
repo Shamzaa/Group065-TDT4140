@@ -76,6 +76,9 @@ public class LectureSelectorController implements AppBinder{
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
+		courseCodeChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
+		courseCodeChoiceBox.getSelectionModel().selectFirst();
+		System.out.println("Choicebox initialized");
 	}
 
 }
