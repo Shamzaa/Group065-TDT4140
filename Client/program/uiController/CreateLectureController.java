@@ -25,8 +25,6 @@ public class CreateLectureController implements AppBinder{
 	private void initialize(){
 		errorLabel.setText("");
 		//TODO Later this should fetch all available lecture codes from the database table 'subjects'
-		classChoiceBox.getItems().add("TDT4100");
-		classChoiceBox.getSelectionModel().selectFirst();
 		
 		newLectureButton.setOnAction(    //TODO: make lecture name an input to this
 				e -> createNewLecture(
@@ -76,6 +74,9 @@ public class CreateLectureController implements AppBinder{
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
+		classChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
+		classChoiceBox.getSelectionModel().selectFirst();
+		System.out.println("Choicebox initialized");
 	}
 
 }

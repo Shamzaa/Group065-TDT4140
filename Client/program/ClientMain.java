@@ -50,7 +50,7 @@ public class ClientMain extends Application{
 		}
 
 	}
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// starts server connection

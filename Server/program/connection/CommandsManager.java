@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import database.Database;
+import jdk.nashorn.internal.scripts.JS;
 
 public class CommandsManager {
 	
@@ -40,6 +41,8 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> getLiveLectureID(obj, client));
 		stringToFunction.put("VoteQuestion",
 				(JSONObject obj, ClientConnection client) -> voteQuestion(obj, client));
+		stringToFunction.put("GetAllSubjectCodes", 
+				(JSONObject obj, ClientConnection client) -> getAllSubjectCodes(obj, client));
 	}
 
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
@@ -117,6 +120,25 @@ public class CommandsManager {
 			if(obj.getString("Role").equals("Lecturer")){
 				clientsManager.addLecturerToLecture(client, "test");
 			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void getAllSubjectCodes(JSONObject obj, ClientConnection client) {
+		JSONObject reply = new JSONObject();
+		System.out.println("Fetching all subject codes");
+		//TODO this should fetch from the database and get fill the array
+		System.out.println("Fetching subject codes");
+		ArrayList<String> retArr = new ArrayList<>();
+		retArr.add("TDT4100");
+		retArr.add("UNUSABLE");
+		System.out.println("fetched" + retArr);
+		//----------------------
+		try {
+			reply.put("SubjectList", new JSONArray(retArr));
+			client.sendJSON(reply);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
