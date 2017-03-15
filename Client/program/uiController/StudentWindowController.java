@@ -42,14 +42,14 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	
 	ClientMain main;
 	
-	@FXML ProgressIndicator questionLoadIndicator;
-	@FXML Button questionButton;
-	@FXML Button lostMeButton;
-	@FXML Button submitQuestionButton;
+	@FXML ProgressIndicator questionLoadIndicator;	//Indicator that the program is working on loading the questions
+	@FXML Button questionButton;					//Used to open the overlay where a students writes his question
+	@FXML Button lostMeButton;						//Used to signal that a student is lost
+	@FXML Button submitQuestionButton;				//Used to send a question the student wrote
 	
-	@FXML VBox QuestionContainer;
-	@FXML GridPane askQuestionContainer;
-	@FXML Rectangle transparentOverlay;
+	@FXML VBox QuestionContainer;					//Container for all the questionBoxes
+	@FXML GridPane askQuestionContainer;			//Contains the text areas to ask and submit questions
+	@FXML Rectangle transparentOverlay;				//
 	@FXML TextArea askQuestionTextField;
 	
 	@FXML
