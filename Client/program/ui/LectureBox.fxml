@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxWidth="-Infinity" prefHeight="51.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.QuestionBoxController">
+   <children>
+      <Pane prefHeight="51.0" prefWidth="277.0">
+         <children>
+            <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lecture name:" />
+            <Text layoutX="14.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Students joined:" />
+            <Label fx:id="lectureNameLabel" layoutX="111.0" layoutY="6.0" text="Label" />
+            <Label fx:id="studentsJoinedLabel" layoutX="111.0" layoutY="29.0" text="Label" />
+         </children>
+      </Pane>
+      <Button fx:id="viewLecture" layoutX="391.0" layoutY="13.0" mnemonicParsing="false" text="View" />
+   </children>
+</AnchorPane>
