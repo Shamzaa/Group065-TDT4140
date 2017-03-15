@@ -19,7 +19,7 @@
 	      	</toggleGroup>
 	   	</RadioButton>
 	   	<RadioButton fx:id="goodRadio" layoutX="406.0" layoutY="5.0" mnemonicParsing="false" text="Good" toggleGroup="$radioGroup" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="5.0" />
-		<Pane fx:id="pointPane" prefHeight="51.0" prefWidth="57.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+		<Pane fx:id="pointPane" prefHeight="51.0" prefWidth="57.0" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="2.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="51.0" />
             <Text fx:id="pointScoreText" layoutX="3.0" layoutY="40.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="2.0" text="19" textAlignment="CENTER" wrappingWidth="43.125">

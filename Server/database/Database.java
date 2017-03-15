@@ -97,6 +97,8 @@ public class Database implements AutoCloseable {
 				try (ResultSet rs = stmt.getResultSet();) {
 					while (rs.next() && (numberOfQuestions > 0)) {
 						Map<String, String> result = new HashMap<String, String>();
+						//
+						
 						String question = rs.getString(1);
 						String time = rs.getString(2);
 						String rating = rs.getString(3);
