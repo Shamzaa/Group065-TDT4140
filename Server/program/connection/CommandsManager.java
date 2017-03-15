@@ -127,8 +127,8 @@ public class CommandsManager {
 		JSONObject reply = new JSONObject();
 
 		try {
-			System.out.println("requests to see if lecture excists: " + obj.getString("Class") + ": " + clientsManager.doesLectureExcist(obj.getString("Class")));
-			reply.put("ClassExcist", clientsManager.doesLectureExcist(obj.getString("Class")));
+			System.out.println("requests to see if lecture excists: " + obj.getString("Class") + ": " + clientsManager.doesLectureExist(obj.getString("Class")));
+			reply.put("ClassExcist", clientsManager.doesLectureExist(obj.getString("Class")));
 			client.sendJSON(reply);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -139,7 +139,7 @@ public class CommandsManager {
 	private void createLecture(JSONObject obj, ClientConnection client){
 		try{
 			System.out.println("create new lecture with class code: " + obj.getString("ClassID"));
-			clientsManager.main.getDatabase().createNewLecture(obj.getString("ClassID"));
+			clientsManager.main.getDatabase().createNewLecture(obj.getString("LectureName"), obj.getString("ClassID"));
 			clientsManager.addLecturerToLecture(client, obj.getString("ClassID"));
 			client.setLectureID(clientsManager.main.getDatabase().getLiveLectureID(obj.getString("ClassID")));
 		} catch (JSONException e){

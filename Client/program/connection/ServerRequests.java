@@ -11,7 +11,7 @@ public class ServerRequests {
 	
 	
 	// static method to request from the server to see if a lecture is being held in requested classID.
-	public static boolean serverHasClass(ServerManager sm, String classID){
+	public static boolean serverHasLecture(ServerManager sm, String classID){
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "ClassRunning");

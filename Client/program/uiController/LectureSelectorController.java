@@ -53,7 +53,7 @@ public class LectureSelectorController implements AppBinder{
 	
 	private boolean lectureIsHappening(String classID){
 		// sends request to server to see if a lecture is happening
-		return ServerRequests.serverHasClass(main.getServerManager(), classID);
+		return ServerRequests.serverHasLecture(main.getServerManager(), classID);
 		
 	}
 	
