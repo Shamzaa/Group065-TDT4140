@@ -2,6 +2,7 @@ package program.uiController;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -10,7 +11,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+
+import classes.Question;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,7 +34,7 @@ import program.connection.ClientListener;
 import program.connection.QuestionReciever;
 
 public class StudentWindowController implements AppBinder, QuestionReciever {
-	ArrayList<String> questionList = new ArrayList<>();
+	ArrayList<Question> questionList = new ArrayList<>();
 	
 	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 	private int liveLectureID;
@@ -60,31 +66,39 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//addQuestion("interactively envisioneer reliable e-markets conveniently plagiarize reliable synergy");
 		//addQuestion("continually reconceptualize one-to-one niches conveniently reinvent maintainable testing procedures uniquely repurpose&#10;customer directed virtualization");
 	}
+	private void sortQuestionsByScore(){
+		Platform.runLater(() -> {
+			//The -1 reverses the sorting order
+			questionList.sort((q1, q2)-> -1*Integer.compare(q1.getRating(), q2.getRating()));
+			ObservableList<AnchorPane> workingCollection = FXCollections.observableArrayList();
+			for (Question question : questionList) {
+				System.out.println("changing orders");
+				workingCollection.add(question.getRelatedQuestionPane());
+			}
+			QuestionContainer.getChildren().setAll(workingCollection);
+		});	
+	}
+	
 	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
 		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "VoteQuestion");
-			obj.put("GoodVote", isNowOn.equals("good"));
 			obj.put("QuestionID", controller.getQuestionId());
+			//If the user selects a new vote after already choosing one, its neccessary to move the rating in the database by two increments
+			int swap = (wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))? 2 : 1;
+			obj.put("ScoreChange", (isNowOn.equals("good")? 1*swap : -1*swap ));
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if((wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))){
-			//TODO rework a more decent solution: Jumps two scores, sends twice for now
-			main.getServerManager().sendJSON(obj);
-			main.getServerManager().sendJSON(obj);
-		} else {
-			main.getServerManager().sendJSON(obj);
-		}
+		main.getServerManager().sendJSON(obj);
 	}
 	
-	private void addQuestion(String question, int questionID){
-		System.out.println("Adding question: " + question);
+	private void addQuestion(Question question){
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
-		System.out.println("Trying to add");
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
@@ -95,14 +109,14 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 					break;
 				}
 			}*/
+			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
 			controller.goodProperty().addListener((obs, wasOn, isNowOn) -> handleQuestionVote(controller, wasOn, isNowOn));
-			controller.setQuestionText(question);
-			controller.setQuestionId(questionID);
+			controller.setQuestion(question);
+			//controller.setQuestionText(question.getQuestionText());
 			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
-			QuestionContainer.getChildren().add(new Separator());
 			
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -197,16 +211,17 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			JSONArray objList = obj.getJSONArray("List");
 			for (int i = 0; i < objList.length(); i++) {
 				JSONObject part = objList.getJSONObject(i);
-				String question = part.getString("question");
+				String questionText = part.getString("question");
 				int id = part.getInt("id");
-				// int rating = ...
-				// Time time = ...
+				int rating = part.getInt("rating");
+				String time = part.getString("time");
 				
 				//System.out.println("Part:     " + part);
 				//System.out.println("Question: " + question);
 				
-				addQuestion(question, id);
+				addQuestion(new Question(id, questionText, time, rating));
 			}
+			sortQuestionsByScore();
 			questionLoadIndicator.setVisible(false);
 			
 			
@@ -236,5 +251,15 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		this.liveLectureID = ID;
 		//Now that the live ID is recieved, we can fetch all the questions the lecture got before this client joined
 		fetchQuestions(Integer.MAX_VALUE);
+	}
+	@Override
+	public void updateQuestionScore(int questionID, int newScore) {
+		for (Question question : questionList) {
+			if(question.getId() == questionID){
+				question.setRating(newScore);
+				break;
+			}
+		}
+		sortQuestionsByScore();
 	}
 }
