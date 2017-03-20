@@ -29,6 +29,7 @@ import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;									//Refernce to the clientMain class that runs the program
+
 	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions [Unused? TODO remove]
 	private int connectedStudents = 0;					//The number of students currently connected
 	private int lostStudents = 0;						//The number of students who are currently lost
@@ -113,7 +114,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lostStudents ++;
 		updatePieChartValues();
 	}
-
+	
 	/** @author Anders
 	 *  Adds a new question to the VBox container
 	 *  @param question A Question object of the question that will be displayed
