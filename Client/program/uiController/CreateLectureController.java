@@ -65,7 +65,7 @@ public class CreateLectureController implements AppBinder{
 		main.setClassID(lectureID);
 		main.setLectureName(lectureName);
 		main.loadUI("ui/LecturerWindow.fxml");
-	}
+}
 	
 	
 	@Override
