@@ -44,8 +44,11 @@ public class CreateLectureController implements AppBinder{
 			return;
 		}
 		
+		main.setClassID(classID);
+		main.loadUI("ui/LecturesOverview.fxml");
+		
 		// no errors, proceed to create the lecture on the server side
-		JSONObject obj = new JSONObject();
+		/*JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "CreateNewLecture");
 			obj.put("ClassID", classID);
@@ -53,12 +56,11 @@ public class CreateLectureController implements AppBinder{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		main.getServerManager().sendJSON(obj);
+		main.getServerManager().sendJSON(obj);*/
 		
 		
 		
-		main.setClassID(classID);
-		main.loadUI("ui/LecturerWindow.fxml");
+
 		// load ui and pass on what class ID the lecturer will associate with, client side
 		
 		

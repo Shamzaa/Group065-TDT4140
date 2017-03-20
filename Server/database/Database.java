@@ -118,6 +118,35 @@ public class Database implements AutoCloseable {
 		return questions;
 	}
 	
+	// gets stats over latest lectures
+	public ArrayList<Map<String, String>> getLatestLectures(String classID){
+		ArrayList<Map<String, String>> lectures = new ArrayList<>();
+		try (Statement stmt = conn.createStatement()) {
+			String query = "SELECT name, studentsJoined, id FROM lecture where subject_code = '" + classID + 
+					"'";
+			if (stmt.execute(query)) {
+				try (ResultSet rs = stmt.getResultSet();) {
+					while (rs.next()) {
+						Map<String, String> result = new HashMap<String, String>();
+						String lectureName = rs.getString(1);
+						String studentsJoined = Integer.toString(rs.getInt(2));
+						String id = Integer.toString(rs.getInt(3));
+						result.put("lectureName", "oy");
+						result.put("id", id);
+						result.put("studentsJoined", Integer.toString(123));
+						lectures.add(result);
+					}					
+				}
+				return lectures;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lectures;
+		
+	}
 	
 	// looks at most recent lecture object in the database with the given lecture code
 	public int getLiveLectureID(String classID){
