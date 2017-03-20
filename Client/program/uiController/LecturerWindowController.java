@@ -39,11 +39,21 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@FXML Text lostMeRedText;			//The text that shows the precentage of lost students
 	@FXML Text lostMeGreenText;			//The text that shows the percentage of students that are NOT lost
 	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
+	@FXML Text lectureTitleText; 		//The text that shows the classID from the main class for the lecture, so students know what to connect to
+	@FXML Text lectureNameText;			//The text that shows the name the lecturer decided for the live lecture
+	
 	
 	@FXML
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
+	}
+	/**@author Anders
+	 * This method changes the title text and name text
+	 */
+	public void setTitleAndNameText(String newTitle, String newName){
+		lectureTitleText.setText(newTitle);
+		lectureNameText.setText(newName);
 	}
 	/** @author Anders
 	 * This method checks connectedStudents and updates the text
@@ -129,6 +139,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		this.main = main;
 		clientProcessingPool.submit(new ClientListener(main, this));
 		fetchLiveLectureID();
+		setTitleAndNameText(main.getClassID(), main.getLectureName());
 		
 	}
 	//-> Functions for QuestionReciever

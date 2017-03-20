@@ -60,13 +60,11 @@ public class CreateLectureController implements AppBinder{
 		
 		
 		
-		main.setClassID(lectureID);
 		System.out.println("Set classID to "+ String.valueOf(lectureID));
-		main.loadUI("ui/LecturerWindow.fxml");
 		// load ui and pass on what lecture ID the lecturer will associate with, client side
-		
-		
-
+		main.setClassID(lectureID);
+		main.setLectureName(lectureName);
+		main.loadUI("ui/LecturerWindow.fxml");
 	}
 	
 	

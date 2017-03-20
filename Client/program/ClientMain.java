@@ -22,6 +22,7 @@ public class ClientMain extends Application{
 	
 	// attributes
 	private String classID;
+	private String lectureName;
 	
 	public void startConnection(String serverAdress){
 		serverManager = new ServerManager(serverAdress, 2222);
@@ -81,5 +82,11 @@ public class ClientMain extends Application{
 	
 	public String getClassID(){
 		return classID;
+	}
+	public void setLectureName(String lectureName) {
+		this.lectureName = lectureName;
+	}
+	public String getLectureName() {
+		return lectureName;
 	}
 }
