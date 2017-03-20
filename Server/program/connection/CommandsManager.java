@@ -43,12 +43,12 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> voteQuestion(obj, client));
 		stringToFunction.put("GetAllSubjectCodes", 
 				(JSONObject obj, ClientConnection client) -> getAllSubjectCodes(obj, client));
+		stringToFunction.put("FetchLectures", 
+				(JSONObject obj, ClientConnection client) -> getLatestLectures(obj, client));
 	}
 
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
 		try {
-			//System.out.println(stringToFunction.containsKey(obj.get("Function")));
-			//System.out.println(obj.get("Function"));
 			stringToFunction.get(obj.get("Function")).doFunction(obj, client);;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -255,6 +255,21 @@ public class CommandsManager {
 		}catch(JSONException e){
 			e.printStackTrace();
 		}
+	}
+	
+	private void getLatestLectures(JSONObject obj, ClientConnection client){
+		try {
+			System.out.println("Lecturer has requested to get an overview of all lectures in class " + obj.getString("ClassID"));
+			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLatestLectures(obj.getString("ClassID"));
+			JSONObject retObj = new JSONObject();
+			retObj.put("Function", "addLectures");
+			retObj.put("List", new JSONArray(retArr));
+			client.sendJSON(retObj);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
