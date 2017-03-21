@@ -34,7 +34,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	private int lostStudents = 0;
 	private int liveLectureID;
 	
-	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
 	@FXML VBox QuestionContainer;
 	@FXML Arc lostMeRedArc;
@@ -155,7 +155,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			obj.put("Function", "GetLatestQuestions");
 			obj.put("QuestionAmount", numberOfQuestions);
 			obj.put("ClassID", main.getClassID());
-			obj.put("LiveID", liveLectureID);
+			obj.put("LectureID", liveLectureID);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

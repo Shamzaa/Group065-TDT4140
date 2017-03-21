@@ -195,7 +195,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			obj.put("Function", "GetLatestQuestions");
 			obj.put("QuestionAmount", numberOfQuestions);
 			obj.put("ClassID", main.getClassID());
-			obj.put("LiveID", liveLectureID);
+			obj.put("LectureID", liveLectureID);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

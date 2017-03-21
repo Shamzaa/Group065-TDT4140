@@ -10,28 +10,23 @@ import javafx.scene.control.TextField;
 import program.ClientMain;
 import program.connection.ServerRequests;
 
-public class CreateLectureController implements AppBinder{
+public class LectureLoginController implements AppBinder{
 	
-	private ClientMain main;
+	ClientMain main;
 	
-	@FXML
-	private TextField classField;
-	@FXML
-	private Label errorLabel;
-	@FXML
-	private Button newLectureButton;
-	
+	@FXML TextField classField;
+	@FXML Button loginButton;
+	@FXML Label errorLabel;
 	
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
-		newLectureButton.setOnAction(
-				e -> createNewLecture(classField.getText()));
+		loginButton.setOnAction(e -> login(classField.getText()));
 	}
 	
 	
-
-	private void createNewLecture(String classID){
+	
+	private void login(String classID){
 		// future build: check if proposed class ID is in the database.
 
 		if(classID.equals("")){
@@ -43,32 +38,20 @@ public class CreateLectureController implements AppBinder{
 			errorLabel.setText("There is already a lecture going on using that class code!");
 			return;
 		}
-		System.out.println("ayy");
+		
 		main.setClassID(classID);
 		
 		
 		// no errors, proceed to create the lecture on the server side
-		JSONObject obj = new JSONObject();
-		try {
-			obj.put("Function", "CreateNewLecture");
-			obj.put("ClassID", classID);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		main.getServerManager().sendJSON(obj);
-		main.loadUI("ui/LecturerWindow.fxml");
-		
-		
+		main.loadUI("ui/LecturesOverview.fxml");
 		
 
 	}
 	
-	
+
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-		
 	}
 
 }

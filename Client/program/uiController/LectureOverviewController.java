@@ -1,8 +1,11 @@
 package program.uiController;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +14,9 @@ import org.json.JSONObject;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -24,13 +30,21 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	
 	private ClientMain main;
 	
-	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
+	
+	private Collection<LectureBoxController> lectures = new ArrayList<LectureBoxController>();
 	
 	@FXML VBox lectureContainer;
 	@FXML Text lecturesStat;
+	@FXML ProgressIndicator progress;
+	@FXML Label classCodeLabel;
+	@FXML Label lecturesCount;
+	@FXML Button createLectureButton;
 	
 	@FXML
 	private void initialize(){
+		createLectureButton.setOnAction(
+				e->createNewLecture());
 		
 	}
 	
@@ -57,23 +71,35 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 			lectureContainer.getChildren().add(lPane);
 			lectureContainer.getChildren().add(new Separator());
 			
-			
+			lectures.add(controller);
+			lecturesCount.setText(String.valueOf(Integer.valueOf(lecturesCount.getText()) + 1));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			
 		});
 	}
 	
+	private void createNewLecture(){
+		main.loadUI("ui/CreateLecture.fxml");
+	}
+	
 	private void viewLecture(int lectureID){
 		
+		main.setLectureID(lectureID);
+
+		clientProcessingPool.shutdown();
+		main.loadUI("ui/LectureReview.fxml");
+
 	}
 
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-
-		clientProcessingPool.submit(new LectureStatListener(main, this));
+		LectureStatListener l = new LectureStatListener(main, this);
 		fetchLectures();
+		classCodeLabel.setText(main.getClassID());
+		clientProcessingPool.submit(l);
+		
 		
 	}
 
@@ -90,6 +116,8 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 				addLecture(lectureName,studentsJoined,id);
 			}
 			
+
+			progress.setVisible(false);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -110,6 +138,20 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	// unusued in this view.
+	@Override
+	public void recieveQuestions(JSONObject obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	// unusued in this view.
+	@Override
+	public void recieveSingleLecture(JSONObject obj) {
+		// TODO Auto-generated method stub
 		
 	}
 
