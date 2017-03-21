@@ -18,7 +18,7 @@ public class Question {
 		this.id=id;
 		this.questionText=text;
 		this.time=time;
-		this.rating.set(0);
+		this.rating.set(rating);
 	}
 	//- Getters --------------------------
 	public int getId() {
