@@ -59,6 +59,7 @@ public class QuestionBoxController {
 	public void setQuestion(Question question) {
 		this.question = question;
 		questionTextArea.setText(question.getQuestionText());
+		pointScoreText.setText(String.valueOf(question.ratingProperty().get()));
 		this.question.ratingProperty().addListener((obs, wasOn, isNowOn) -> pointScoreText.setText(String.valueOf(isNowOn)));
 		//fitToText(); TODO: Implement later
 	}
@@ -75,5 +76,8 @@ public class QuestionBoxController {
 	}
 	public StringProperty goodProperty(){
 		return vote;
+	}
+	private void viewQuestionScore(int score){
+		
 	}
 }
