@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -10,13 +7,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureOverviewController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureReviewController">
    <children>
-      <GridPane prefHeight="400.0" prefWidth="600.0">
+      <GridPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="314.0" minWidth="10.0" prefWidth="250.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="538.0" minWidth="10.0" prefWidth="350.0" />
@@ -29,28 +27,29 @@
          <children>
             <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="461.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowSpan="3">
                <content>
-                  <VBox fx:id="lectureContainer" maxWidth="-Infinity" prefWidth="336.0" />
+                  <VBox fx:id="QuestionContainer" maxWidth="-Infinity" prefWidth="336.0" />
                </content>
             </ScrollPane>
             <Pane prefHeight="278.0" prefWidth="242.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
                <children>
-                  <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total lectures:" />
-                  <Label fx:id="lecturesCount" layoutX="97.0" layoutY="14.0" text="0" />
-                  <Button fx:id="createLectureButton" layoutX="68.0" layoutY="280.0" mnemonicParsing="false" text="Create new lecture" />
+                  <Arc fx:id="lostMeGreenArc" fill="#0db946" layoutX="125.0" layoutY="200.0" length="180.0" radiusX="110.0" radiusY="110.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                  <Arc fx:id="lostMeRedArc" fill="#ff3c1f" layoutX="125.0" layoutY="200.0" length="180.0" radiusX="110.0" radiusY="110.0" startAngle="-90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff4242" height="15.0" layoutX="7.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2fc936" height="15.0" layoutX="7.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
+                  <Text fx:id="lostMeRedText" layoutX="26.0" layoutY="19.0" text="N/A%" />
+                  <Text fx:id="lostMeGreenText" layoutX="26.0" layoutY="45.0" text="N/A%" />
                </children>
             </Pane>
             <Pane>
                <children>
-                  <Text fx:id="lecturesStat" layoutX="-61.0" layoutY="49.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="Lectures:" textAlignment="CENTER" wrappingWidth="237.41796875">
+                  <Text fx:id="studentsConnectedText" layoutX="7.0" layoutY="46.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="0 Students connected" textAlignment="CENTER" wrappingWidth="237.41796875">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Text>
-                  <Label fx:id="classCodeLabel" layoutX="111.0" layoutY="36.0" text="Label" />
                </children>
             </Pane>
          </children>
       </GridPane>
-      <ProgressIndicator fx:id="progress" layoutX="390.0" layoutY="158.0" prefHeight="73.0" prefWidth="71.0" />
    </children>
 </AnchorPane>

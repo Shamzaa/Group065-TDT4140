@@ -35,7 +35,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	private int lostStudents = 0;						//The number of students who are currently lost
 	private int liveLectureID;							//The ID used to reference the lecture data table
 	
-	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
 	@FXML VBox QuestionContainer;		//QuestionBoxes are added to this container, so they appear in the view as a list
 	@FXML Arc lostMeRedArc;				//The red part of the "You Lost Me" pie-chart
@@ -169,7 +169,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			obj.put("Function", "GetLatestQuestions");
 			obj.put("QuestionAmount", numberOfQuestions);
 			obj.put("ClassID", main.getClassID());
-			obj.put("LiveID", liveLectureID);
+			obj.put("LectureID", liveLectureID);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
