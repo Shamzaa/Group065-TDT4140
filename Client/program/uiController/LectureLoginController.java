@@ -33,7 +33,6 @@ public class LectureLoginController implements AppBinder{
 			errorLabel.setText("Class code is empty, please create a lecture with a valid class code!");
 			return;
 		}
-		
 		main.setClassID(classID);
 		
 		
