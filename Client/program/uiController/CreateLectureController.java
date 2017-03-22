@@ -16,7 +16,6 @@ public class CreateLectureController implements AppBinder{
 	private ClientMain main;						//References the ClientMain that runs the program 
 	
 	@FXML private TextField lectureNameField; 		//User writes the name for a lecture here
-	@FXML private ChoiceBox<String> classChoiceBox;	//User chooses a subject code here
 	@FXML private Label errorLabel;					//Shows up when input is wrong
 	@FXML private Button newLectureButton;			//Initializes lecture creation
 	
@@ -28,7 +27,7 @@ public class CreateLectureController implements AppBinder{
 		
 		newLectureButton.setOnAction(    //TODO: make lecture name an input to this
 				e -> createNewLecture(
-						classChoiceBox.getSelectionModel().getSelectedItem(),
+						main.getClassID(),
 						lectureNameField.getText()));
 	}
 	
@@ -67,13 +66,10 @@ public class CreateLectureController implements AppBinder{
 		main.loadUI("ui/LecturerWindow.fxml");
 	}
 	
-	
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
-		classChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
-		classChoiceBox.getSelectionModel().selectFirst();
 		System.out.println("Choicebox initialized");
 	}
 

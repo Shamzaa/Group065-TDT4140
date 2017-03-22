@@ -43,12 +43,14 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> voteQuestion(obj, client));
 		stringToFunction.put("GetAllSubjectCodes", 
 				(JSONObject obj, ClientConnection client) -> getAllSubjectCodes(obj, client));
+		stringToFunction.put("FetchLectures", 
+				(JSONObject obj, ClientConnection client) -> getLatestLectures(obj, client));
+		stringToFunction.put("reviewLecture", 
+				(JSONObject obj, ClientConnection client) -> reviewLecture(obj, client));
 	}
 
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
 		try {
-			//System.out.println(stringToFunction.containsKey(obj.get("Function")));
-			//System.out.println(obj.get("Function"));
 			stringToFunction.get(obj.get("Function")).doFunction(obj, client);;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -94,8 +96,8 @@ public class CommandsManager {
 		//Database db =  new Database();
 		//db.connect();
 		try {
-			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID") +"["+obj.getInt("LiveID")+"]");
-			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(obj.getInt("LiveID"), obj.getInt("QuestionAmount"));
+			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID") +"["+obj.getInt("LectureID")+"]");
+			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(obj.getInt("LectureID"), obj.getInt("QuestionAmount"));
 			
 			
 			JSONObject retObj = new JSONObject();
@@ -253,6 +255,33 @@ public class CommandsManager {
 			
 			
 		}catch(JSONException e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void getLatestLectures(JSONObject obj, ClientConnection client){
+		try {
+			System.out.println("Lecturer has requested to get an overview of all lectures in class " + obj.getString("ClassID"));
+			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLatestLectures(obj.getString("ClassID"));
+			JSONObject retObj = new JSONObject();
+			retObj.put("Function", "addLectures");
+			retObj.put("List", new JSONArray(retArr));
+			client.sendJSON(retObj);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void reviewLecture(JSONObject obj, ClientConnection client){
+		try {
+			System.out.println("Lecturer has requested to get a review of lecture " + obj.getString("ClassID"));
+			getLatestQuestions(obj, client);
+			
+			// attributes of lecture (name, students lost, students connected)
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
