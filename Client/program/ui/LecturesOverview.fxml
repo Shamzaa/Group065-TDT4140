@@ -7,13 +7,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureOverviewController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureOverviewController">
    <children>
       <GridPane prefHeight="400.0" prefWidth="600.0">
          <columnConstraints>
@@ -33,8 +34,12 @@
             </ScrollPane>
             <Pane prefHeight="278.0" prefWidth="242.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
                <children>
-                  <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total lectures:" />
-                  <Label fx:id="lecturesCount" layoutX="160.0" layoutY="14.0" prefHeight="17.0" prefWidth="71.0" text="0" />
+                  <HBox layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="129.0" spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total lectures:" />
+                        <Label fx:id="lecturesCount" text="0" />
+                     </children>
+                  </HBox>
                   <Button fx:id="createLectureButton" layoutX="68.0" layoutY="280.0" mnemonicParsing="false" text="Create new lecture" />
                   <Text layoutX="14.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total lecture participation:" />
                   <Label fx:id="studentsCount" layoutX="160.0" layoutY="40.0" prefHeight="17.0" prefWidth="71.0" text="0" />
