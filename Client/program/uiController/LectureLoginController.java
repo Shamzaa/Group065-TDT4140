@@ -34,11 +34,6 @@ public class LectureLoginController implements AppBinder{
 			return;
 		}
 		
-		if(ServerRequests.serverHasClass(main.getServerManager(), classID)){
-			errorLabel.setText("There is already a lecture going on using that class code!");
-			return;
-		}
-		
 		main.setClassID(classID);
 		
 		
