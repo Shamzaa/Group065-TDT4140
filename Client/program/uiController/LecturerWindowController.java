@@ -55,7 +55,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
-		
+		addQuestion(new Question(5, "TestspÃ¸rsmÃ¥l", "12-02-2016", 20));
 	}
 	public void updateStudentsConnectedAmount(){
 		studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
@@ -112,7 +112,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 				if (node.getId().equals("QuestionText")){
 					((TextArea) node).setText(question);
 					
-					/* TODO add later. Automatisk justere høyden til boksen for å passe tekstlengden
+					/* TODO add later. Automatisk justere hï¿½yden til boksen for ï¿½ passe tekstlengden
 					Text helper = new Text();
 					helper.setText(text);
 				    helper.setFont(font);
@@ -122,7 +122,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 					break;
 				}
 			}
-			//Kan bruke add(index, node) for rekkefølge
+			//Kan bruke add(index, node) for rekkefï¿½lge
 			QuestionContainer.getChildren().add(qPane);
 			QuestionContainer.getChildren().add(new Separator());
 		} catch (IOException e) {
