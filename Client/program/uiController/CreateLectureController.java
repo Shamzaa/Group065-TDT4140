@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
@@ -12,35 +13,36 @@ import program.connection.ServerRequests;
 
 public class CreateLectureController implements AppBinder{
 	
-	private ClientMain main;
+	private ClientMain main;						//References the ClientMain that runs the program 
 	
-	@FXML
-	private TextField classField;
-	@FXML
-	private Label errorLabel;
-	@FXML
-	private Button newLectureButton;
+	@FXML private TextField lectureNameField; 		//User writes the name for a lecture here
+	@FXML private ChoiceBox<String> classChoiceBox;	//User chooses a subject code here
+	@FXML private Label errorLabel;					//Shows up when input is wrong
+	@FXML private Button newLectureButton;			//Initializes lecture creation
 	
 	
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
-		newLectureButton.setOnAction(
-				e -> createNewLecture(classField.getText()));
+		//TODO Later this should fetch all available lecture codes from the database table 'subjects'
+		
+		newLectureButton.setOnAction(    //TODO: make lecture name an input to this
+				e -> createNewLecture(
+						classChoiceBox.getSelectionModel().getSelectedItem(),
+						lectureNameField.getText()));
 	}
 	
-	
 
-	private void createNewLecture(String classID){
-		// future build: check if proposed class ID is in the database.
+	private void createNewLecture(String lectureID, String lectureName){
+		// future build: check if proposed lecture ID is in the database.
 
-		if(classID.equals("")){
-			errorLabel.setText("Class code is empty, please create a lecture with a valid class code!");
+		if(lectureID.equals("")){
+			errorLabel.setText("Lecture code is empty, please create a lecture with a valid lecture code!");
 			return;
 		}
 		
-		if(ServerRequests.serverHasClass(main.getServerManager(), classID)){
-			errorLabel.setText("There is already a lecture going on using that class code!");
+		if(ServerRequests.serverHasLecture(main.getServerManager(), lectureID)){
+			errorLabel.setText("There is already a lecture going on using that lecture code!");
 			return;
 		}
 		
@@ -48,7 +50,8 @@ public class CreateLectureController implements AppBinder{
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "CreateNewLecture");
-			obj.put("ClassID", classID);
+			obj.put("LectureName", lectureName);
+			obj.put("ClassID", lectureID);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,12 +60,11 @@ public class CreateLectureController implements AppBinder{
 		
 		
 		
-		main.setClassID(classID);
+		System.out.println("Set classID to "+ String.valueOf(lectureID));
+		// load ui and pass on what lecture ID the lecturer will associate with, client side
+		main.setClassID(lectureID);
+		main.setLectureName(lectureName);
 		main.loadUI("ui/LecturerWindow.fxml");
-		// load ui and pass on what class ID the lecturer will associate with, client side
-		
-		
-
 	}
 	
 	
@@ -70,6 +72,9 @@ public class CreateLectureController implements AppBinder{
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
+		classChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
+		classChoiceBox.getSelectionModel().selectFirst();
+		System.out.println("Choicebox initialized");
 	}
 
 }

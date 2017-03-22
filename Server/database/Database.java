@@ -83,10 +83,10 @@ public class Database implements AutoCloseable {
 		return false;
 	}
 
-	/**
-	 * Takes in lecture_id as in, and the number of desired questions.
-	 * Returns an ArrayList of dictionaries with keys: question, time, rating
-	 */
+/**
+ * Takes in lecture_id as in, and the number of desired questions.
+ * Returns an ArrayList of dictionaries with keys: question, time, rating
+ */
 	
 	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
 		ArrayList<Map<String, String>> questions = new ArrayList<>();
@@ -141,11 +141,11 @@ public class Database implements AutoCloseable {
 	}
 	
 	// creates a new lecture, and returns the lectureID in the database.
-	public int createNewLecture(String classID){
+	public int createNewLecture(String lectureName, String classID){
 		// only doable if classID excists in database.
 		
 		try (Statement stmt = conn.createStatement()) {
-			String query = "insert into lecture(subject_code) values ('" + classID.toUpperCase() + "');";
+			String query = "insert into lecture(name, subject_code) values ('"+ lectureName +"', '" + classID.toUpperCase() + "');";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
 			}					

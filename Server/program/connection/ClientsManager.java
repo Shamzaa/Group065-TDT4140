@@ -58,7 +58,7 @@ public class ClientsManager {
 	}
 	
 	public void addLecturerToLecture(ClientConnection client, String classID){
-		if(!doesLectureExcist(classID)){
+		if(!doesLectureExist(classID)){
 			classIDToConnection.put(classID, client);
 		}else{
 			// TODO: return error message to client requesting classID
@@ -70,16 +70,16 @@ public class ClientsManager {
 	}
 	
 	public void sendInfoToLecturer(JSONObject obj, String classID){
-		if(doesLectureExcist(classID)){
-			// is case sensetive
+		if(doesLectureExist(classID)){
+			// is case sensitive
 			classIDToConnection.get(classID).sendJSON(obj);
 		}else{
 			throw new IllegalArgumentException("No lecturer holding a lecture in " + classID);
 		}
 	}
 	
-	public boolean doesLectureExcist(String classID){
-		// is case sensetive
+	public boolean doesLectureExist(String classID){
+		// is case sensitive
 		return classIDToConnection.containsKey(classID);
 	}
 	
