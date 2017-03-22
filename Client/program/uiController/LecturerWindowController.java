@@ -1,7 +1,11 @@
 package program.uiController;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,19 +32,27 @@ import program.connection.ClientListener;
 import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
-	ClientMain main;									//Refernce to the clientMain class that runs the program
+	ClientMain main;										//Reference to the clientMain class that runs the program
 
-	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions [Unused? TODO remove]
-	private int connectedStudents = 0;					//The number of students currently connected
-	private int lostStudents = 0;						//The number of students who are currently lost
-	private int liveLectureID;							//The ID used to reference the lecture data table
+	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions
+	private int connectedStudents = 0;						//The number of students currently connected
+	private int lostStudents = 0;							//The number of students who are currently lost
+	private int liveLectureID;								//The ID used to reference the lecture data table
+	
+	//Variables for processing how many students are lost in a window
+	private double lostThreshold = 	0.9;	//Decides how many students must be lost for the program to give the lecturer a notification
+	//private boolean emptyFrame = true; //Lets the program decide if the received lostMe signal is the start of a new time frame
+	//private Timer lostFrameTimer = new Timer("frameTimerThread");
+	private ArrayList<Timestamp> lostTimes = new ArrayList<>();
+	private Timestamp lectureStartTime;
+	
 	
 	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 	
 	@FXML VBox QuestionContainer;		//QuestionBoxes are added to this container, so they appear in the view as a list
 	@FXML Arc lostMeRedArc;				//The red part of the "You Lost Me" pie-chart
 	@FXML Arc lostMeGreenArc;			//The green part of the "You Lost Me" pie-chart
-	@FXML Text lostMeRedText;			//The text that shows the precentage of lost students
+	@FXML Text lostMeRedText;			//The text that shows the percentage of lost students
 	@FXML Text lostMeGreenText;			//The text that shows the percentage of students that are NOT lost
 	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
 	@FXML Text lectureTitleText; 		//The text that shows the classID from the main class for the lecture, so students know what to connect to
@@ -51,6 +63,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
+		lectureStartTime = new Timestamp(System.currentTimeMillis());
 	}
 	/**@author Anders
 	 * This method changes the title text and name text
@@ -113,6 +126,33 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void studentLost(){
 		lostStudents ++;
 		updatePieChartValues();
+		
+		Timestamp recvTime = new Timestamp(System.currentTimeMillis());
+		lostTimes.add(recvTime);
+		System.out.println("Recieved lostMe message at: " + recvTime);
+		System.out.println(lostTimes);
+		
+		if(((double) lostStudents/(double) connectedStudents) > lostThreshold){
+			showThresholdWarning();
+		}
+		
+		Timer cooldownTimer = new Timer();
+		cooldownTimer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("Discarding studentLost");
+				lostStudents --;
+				updatePieChartValues();
+			}
+		}, main.getLostMeTimerLenght()*1000);
+	}
+	
+	/** @author Anders
+	 * Displays a warning that the threshold for lost students have been reached
+	 */
+	private void showThresholdWarning(){
+		System.err.println("WARNING: lost Student treshold reached!!!");
+		
 	}
 	
 	/** @author Anders
@@ -126,21 +166,13 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			/*for (Node node : qPane.getChildren()) {
-				if (node.getId().equals("QuestionText")){
-					((TextArea) node).setText(question);
-					
-					break;
-				}
-			}*/
+			
 			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
 			
 			controller.setScoreVisible(true);
 			controller.setQuestion(question);
-			//controller.setScore(question.getRating());
-			//controller.setQuestionId(question.getId());
 			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
 			
