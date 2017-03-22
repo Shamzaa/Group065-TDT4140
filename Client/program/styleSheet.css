@@ -12,7 +12,7 @@ TextField{-fx-background-color : #ffff66;}
 }
  .text-area .content{
       -fx-background-color: #ff9900;
-      -fx-padding-color: green;;
+      -fx-padding-color: green;
   }
     .text-area .margin{
   -fx-background-color:#ff9900;}
