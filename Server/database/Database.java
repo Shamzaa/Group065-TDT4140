@@ -72,8 +72,7 @@ public class Database implements AutoCloseable {
 	public boolean postNewQuestion(String question, int lecture_id) {
 		try (Statement stmt = conn.createStatement()) {
 			String query = "insert into questions(question, lecture_id, time) values ('" + question + "'," + lecture_id + ", NOW());";
-			System.out.println(query);
-			if (stmt.execute(query)) {
+			if (!stmt.execute(query)) {
 				return true;
 			}					
 		} catch (SQLException e) {
@@ -95,39 +94,7 @@ public class Database implements AutoCloseable {
 		return false;
 	}
 
-	/**
-	 * Takes in lecture_id as in, and the number of desired questions.
-	 * Returns an ArrayList of dictionaries with keys: question, time, rating
-	 */
 	
-	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
-		ArrayList<Map<String, String>> questions = new ArrayList<>();
-		try (Statement stmt = conn.createStatement()) {
-			String query = "SELECT question, time, rating FROM questions where lecture_id = '" + lecture_id + 
-					"' order by time desc";
-			if (stmt.execute(query)) {
-				try (ResultSet rs = stmt.getResultSet();) {
-					while (rs.next() && (numberOfQuestions > 0)) {
-						Map<String, String> result = new HashMap<String, String>();
-						String question = rs.getString(1);
-						String time = rs.getString(2);
-						String rating = rs.getString(3);
-						result.put("question", question);
-						result.put("time", time);
-						result.put("rating", rating);
-						questions.add(result);
-						numberOfQuestions --;
-					}					
-				}
-				return questions;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return questions;
-	}
-
 	/**
 	 * Takes in lecture_id as in, and the number of desired questions.
 	 * Returns an ArrayList of dictionaries with keys: question, time, rating
@@ -189,12 +156,24 @@ public class Database implements AutoCloseable {
 			String query = "insert into lecture(subject_code) values ('" + classID.toUpperCase() + "');";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
-			}					
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
 		}
 		return 0;
+	}
+	
+	// creates a new subject/class
+	public boolean createNewSubject(String classID, String name){		
+		try (Statement stmt = conn.createStatement()) {
+			String query = "insert into subjects(code, name) values ('" + classID.toUpperCase() + "', '" + name + "');";
+			stmt.execute(query);
+			return true;				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	
