@@ -5,8 +5,14 @@ import java.util.Map;
 
 import database.Database;
 
+/**
+ * For this integration testcase to succeed, the file DatabaseKey.java (not checked in to git)
+ * has to be present. Access to database is also dependent on a VPN connection to
+ * the NTNU network.
+ */
 public class DatabaseTest extends junit.framework.TestCase {
 	Database db = null;
+	
 	
 	@Override
 	public void setUp() {
@@ -35,7 +41,7 @@ public class DatabaseTest extends junit.framework.TestCase {
 	public void testPostNewQuestion() {
 		db.postNewQuestion("#test", 1);
 		ArrayList<Map<String, String>> question = db.getLastestQuestions(1, 1);
-		assertEquals(question.size(), 1);
+		assertEquals(question.size(), 1); // The retrieval should have a result present
 		assertEquals("#test", question.get(0).get("question"));
 		assertTrue(question.get(0).get("time") instanceof String);
 		assertEquals("0", question.get(0).get("rating"));				
