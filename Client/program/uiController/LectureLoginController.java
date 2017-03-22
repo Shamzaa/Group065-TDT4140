@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
@@ -16,12 +17,13 @@ public class LectureLoginController implements AppBinder{
 	
 	@FXML TextField classField;
 	@FXML Button loginButton;
+	@FXML ChoiceBox<String> classChoiceBox;	//User chooses a subject code here
 	@FXML Label errorLabel;
 	
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
-		loginButton.setOnAction(e -> login(classField.getText()));
+		loginButton.setOnAction(e -> login(classChoiceBox.getValue()));
 	}
 	
 	
@@ -46,6 +48,8 @@ public class LectureLoginController implements AppBinder{
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
+		classChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
+		classChoiceBox.getSelectionModel().selectFirst();
 	}
 
 }
