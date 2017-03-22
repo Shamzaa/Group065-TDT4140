@@ -9,13 +9,12 @@
 	-fx-background-color: #fff700;
 }
 
-
-
 .root{
     -fx-font-size: 12pt;
     -fx-font-family: "Courier New Lucida Console";
     -fx-base: #003b46;
     -fx-background: #c4dfe6;
-    -fx-border-color: white, white;
-    
+    -fx-border-color: white, white;   
 }
+
+
