@@ -129,7 +129,6 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			/*for (Node node : qPane.getChildren()) {
 				if (node.getId().equals("QuestionText")){
 					((TextArea) node).setText(question);
-					
 					break;
 				}
 			}*/
@@ -142,6 +141,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			//controller.setScore(question.getRating());
 			//controller.setQuestionId(question.getId());
 			// Adds the questionBox ui element to QuestionContainer
+
 			QuestionContainer.getChildren().add(qPane);
 			
 			} catch (IOException e) {
