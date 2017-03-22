@@ -83,26 +83,30 @@ public class Database implements AutoCloseable {
 		return false;
 	}
 
-	/**
-	 * Takes in lecture_id as in, and the number of desired questions.
-	 * Returns an ArrayList of dictionaries with keys: question, time, rating
-	 */
+/**
+ * Takes in lecture_id as in, and the number of desired questions.
+ * Returns an ArrayList of dictionaries with keys: question, time, rating
+ */
 	
 	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
 		ArrayList<Map<String, String>> questions = new ArrayList<>();
 		try (Statement stmt = conn.createStatement()) {
-			String query = "SELECT question, time, rating FROM questions where lecture_id = '" + lecture_id + 
+			String query = "SELECT question, time, rating, id FROM questions where lecture_id = '" + lecture_id + 
 					"' order by time desc";
 			if (stmt.execute(query)) {
 				try (ResultSet rs = stmt.getResultSet();) {
 					while (rs.next() && (numberOfQuestions > 0)) {
 						Map<String, String> result = new HashMap<String, String>();
+						//
+						
 						String question = rs.getString(1);
 						String time = rs.getString(2);
 						String rating = rs.getString(3);
+						String id = rs.getString(4);
 						result.put("question", question);
 						result.put("time", time);
 						result.put("rating", rating);
+						result.put("id", id);
 						questions.add(result);
 						numberOfQuestions --;
 					}					
@@ -116,6 +120,35 @@ public class Database implements AutoCloseable {
 		return questions;
 	}
 	
+	// gets stats over latest lectures
+	public ArrayList<Map<String, String>> getLatestLectures(String classID){
+		ArrayList<Map<String, String>> lectures = new ArrayList<>();
+		try (Statement stmt = conn.createStatement()) {
+			String query = "SELECT name, studentsJoined, id FROM lecture where subject_code = '" + classID + 
+					"'";
+			if (stmt.execute(query)) {
+				try (ResultSet rs = stmt.getResultSet();) {
+					while (rs.next()) {
+						Map<String, String> result = new HashMap<String, String>();
+						String lectureName = rs.getString(1);
+						String studentsJoined = Integer.toString(rs.getInt(2));
+						String id = Integer.toString(rs.getInt(3));
+						result.put("lectureName", "oy");
+						result.put("id", id);
+						result.put("studentsJoined", Integer.toString(123));
+						lectures.add(result);
+					}					
+				}
+				return lectures;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lectures;
+		
+	}
 	
 	// looks at most recent lecture object in the database with the given lecture code
 	public int getLiveLectureID(String classID){
@@ -137,11 +170,11 @@ public class Database implements AutoCloseable {
 	}
 	
 	// creates a new lecture, and returns the lectureID in the database.
-	public int createNewLecture(String classID){
+	public int createNewLecture(String lectureName, String classID){
 		// only doable if classID excists in database.
 		
 		try (Statement stmt = conn.createStatement()) {
-			String query = "insert into lecture(subject_code) values ('" + classID.toUpperCase() + "');";
+			String query = "insert into lecture(name, subject_code) values ('"+ lectureName +"', '" + classID.toUpperCase() + "');";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
 			}					
@@ -155,15 +188,29 @@ public class Database implements AutoCloseable {
 	
 	// can vote for a question and change the score. Takes in the question ID, and a boolean to upvote(true) or downvote(false)
 	
-	public void voteQuestion(int questionID, boolean vote){
+	public void voteQuestion(int questionID, int val){
 		try(Statement stmt = conn.createStatement()){
-			int point = vote ? 1 : -1;
-			String query = "UPDATE `questions` SET `rating`=`rating` + 1 WHERE id="+point+ ";";
+			String query = "UPDATE `questions` SET `rating`=`rating` + "+ Integer.toString(val) + " WHERE id="+questionID+ ";";
 			stmt.execute(query);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public int getScoreQuestion(int questionID){
+		try(Statement stmt = conn.createStatement()){
+			String query = "SELECT `rating` FROM `questions` WHERE `id`="+questionID+";";
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				rs.next();
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 

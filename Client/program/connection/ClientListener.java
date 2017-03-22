@@ -46,20 +46,27 @@ public class ClientListener implements Runnable{
 					 * what the lecturer will listen to, compared to the server
 					 */
 					switch(obj.getString("Function")){
-						//Both client-types
-						
 						//Student Only
+						
+						//Both client-types
+						case "updateScore":
+							System.out.println(">>>> CASE:  Update Question Score");
+							controller.updateQuestionScore(obj.getInt("QuestionID"), obj.getInt("Score"));
+							break;
 						case "addQuestions":
-							System.out.println("case: AddQuestions");
 							controller.recieveQuestions(obj);
-							
+							break;
+						case "SetLiveLectureID":
+							controller.setLiveLectureID(obj.getInt("LiveLectureID"));
+							break;
 						//Lecturer Only
 						case "StudentLost":
 							((LecturerWindowController) controller).studentLost();
 							break;
 						case "JoinedLecture":
 							((LecturerWindowController) controller).studentJoined();
-							break;						
+							break;
+							
 					}
 				}catch(JSONException e){
 					// data recieved wasn't a json object

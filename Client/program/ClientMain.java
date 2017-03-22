@@ -17,13 +17,15 @@ public class ClientMain extends Application{
 	
 	// UI elements
 	private Stage stage;
-	private BorderPane root;
+	private BorderPane root; //all windows are loaded into centerpane via loadUI()
 	
 	// reference elements
 	private ServerManager serverManager;
 	
 	// attributes
 	private String classID;
+	private String lectureName;
+	private int lectureID;
 	
 	public void startConnection(String serverAdress){
 		serverManager = new ServerManager(serverAdress, 2222);
@@ -52,7 +54,7 @@ public class ClientMain extends Application{
 		}
 
 	}
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// starts server connection
@@ -88,5 +90,18 @@ public class ClientMain extends Application{
 	
 	public String getClassID(){
 		return classID;
+	}
+	public void setLectureName(String lectureName) {
+		this.lectureName = lectureName;
+	}
+	public String getLectureName() {
+		return lectureName;
+	}
+	public void setLectureID(int lectureID){
+		this.lectureID = lectureID;
+	}
+	
+	public int getLectureID(){
+		return lectureID;
 	}
 }

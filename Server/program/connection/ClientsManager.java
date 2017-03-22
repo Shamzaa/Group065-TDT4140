@@ -4,6 +4,7 @@ package program.connection;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class ClientsManager {
 	
 	
 	public ClientsManager(int portNumber, ServerMain main){
+		clientsConnected = new ArrayList<ClientConnection>();
 		comManager = new CommandsManager(this);
 		this.main = main;
 		classIDToConnection = new HashMap<String, ClientConnection>();
@@ -37,7 +39,9 @@ public class ClientsManager {
 					System.out.println("Waiting for clients...");
 					while(true){
 						Socket clientSocket = serverSocket.accept();
-						clientProcessingPool.submit(new ClientConnection(clientSocket, comManager));
+						ClientConnection client = new ClientConnection(clientSocket, comManager);
+						clientProcessingPool.submit(client);
+						clientsConnected.add(client);
 					}
 				}catch(IOException e){
 					System.out.println("couldn't process client request");
@@ -54,24 +58,28 @@ public class ClientsManager {
 	}
 	
 	public void addLecturerToLecture(ClientConnection client, String classID){
-		if(!doesLectureExcist(classID)){
+		if(!doesLectureExist(classID)){
 			classIDToConnection.put(classID, client);
 		}else{
 			// TODO: return error message to client requesting classID
 		}
 	}
 	
+	public void addClientToCollection(ClientConnection client){
+		clientsConnected.add(client);
+	}
+	
 	public void sendInfoToLecturer(JSONObject obj, String classID){
-		if(doesLectureExcist(classID)){
-			// is case sensetive
+		if(doesLectureExist(classID)){
+			// is case sensitive
 			classIDToConnection.get(classID).sendJSON(obj);
 		}else{
 			throw new IllegalArgumentException("No lecturer holding a lecture in " + classID);
 		}
 	}
 	
-	public boolean doesLectureExcist(String classID){
-		// is case sensetive
+	public boolean doesLectureExist(String classID){
+		// is case sensitive
 		return classIDToConnection.containsKey(classID);
 	}
 	
