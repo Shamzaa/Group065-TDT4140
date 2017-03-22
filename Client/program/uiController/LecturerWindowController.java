@@ -51,6 +51,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
+		
+		addQuestion(new Question(5, "Dummy Question!", "12-02-2016", 20));
+		
 	}
 	/**@author Anders
 	 * This method changes the title text and name text
@@ -126,12 +129,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			/*for (Node node : qPane.getChildren()) {
-				if (node.getId().equals("QuestionText")){
-					((TextArea) node).setText(question);
-					break;
-				}
-			}*/
+			
 			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
