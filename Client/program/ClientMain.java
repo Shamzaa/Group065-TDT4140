@@ -75,9 +75,6 @@ public class ClientMain extends Application{
 		stage.setScene(scene);
 		stage.show();
 		loadUI("ui/RoleSelector.fxml");
-		
-		
-		
 	}
 	
 	public ServerManager getServerManager(){
