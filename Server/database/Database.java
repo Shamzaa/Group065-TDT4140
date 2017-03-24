@@ -133,9 +133,9 @@ public class Database implements AutoCloseable {
 						String lectureName = rs.getString(1);
 						String studentsJoined = Integer.toString(rs.getInt(2));
 						String id = Integer.toString(rs.getInt(3));
-						result.put("lectureName", "oy");
+						result.put("lectureName", lectureName);
 						result.put("id", id);
-						result.put("studentsJoined", Integer.toString(123));
+						result.put("studentsJoined", studentsJoined);
 						lectures.add(result);
 					}					
 				}
@@ -174,7 +174,7 @@ public class Database implements AutoCloseable {
 		// only doable if classID excists in database.
 		
 		try (Statement stmt = conn.createStatement()) {
-			String query = "insert into lecture(name, subject_code) values ('"+ lectureName +"', '" + classID.toUpperCase() + "');";
+			String query = "insert into lecture(name, subject_code, studentsJoined) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0);";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
 			}					
@@ -211,6 +211,31 @@ public class Database implements AutoCloseable {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public ArrayList<String> getAllSubjectCodes(){
+		ArrayList<String> sCodes = new ArrayList<>();
+		try(Statement stmt = conn.createStatement()){
+			String query = "SELECT `code` FROM `subjects`";
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				while(rs.next()){
+					sCodes.add(rs.getString(1));
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return sCodes;
+	}
+	
+	public void addStudentCountToLecture(int lectureID){
+		try(Statement stmt = conn.createStatement()){
+			String query = "UPDATE `lecture` SET `studentsJoined`=`studentsJoined`+1 WHERE `id`=" + lectureID + ";";
+			stmt.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 

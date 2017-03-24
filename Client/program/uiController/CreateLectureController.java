@@ -71,6 +71,7 @@ public class CreateLectureController implements AppBinder{
 		this.main = main;
 		
 		System.out.println("Choicebox initialized");
+		main.getRootController().setTitle("Create Lecture");
 	}
 
 }

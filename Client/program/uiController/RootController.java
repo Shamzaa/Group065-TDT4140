@@ -15,4 +15,8 @@ public class RootController {
 		System.out.println("Root controller initialized");
 	}
 	
+	public void setTitle(String title){
+		titleText.setText(title);
+	}
+	
 }

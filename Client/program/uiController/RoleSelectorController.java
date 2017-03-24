@@ -38,6 +38,8 @@ public class RoleSelectorController implements AppBinder{
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
+
+		main.getRootController().setTitle("Select role and server");
 	}
 	
 	// different functions to load next part of UI after connection to the server and load UI
