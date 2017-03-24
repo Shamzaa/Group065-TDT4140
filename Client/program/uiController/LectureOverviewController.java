@@ -39,6 +39,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	@FXML ProgressIndicator progress;
 	@FXML Label classCodeLabel;
 	@FXML Label lecturesCount;
+	@FXML Label studentsCount;
 	@FXML Button createLectureButton;
 	
 	@FXML
@@ -73,6 +74,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 			
 			lectures.add(controller);
 			lecturesCount.setText(String.valueOf(Integer.valueOf(lecturesCount.getText()) + 1));
+			studentsCount.setText((String.valueOf(Integer.valueOf(studentsCount.getText()) + studentsJoined)));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			

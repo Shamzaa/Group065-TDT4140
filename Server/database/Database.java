@@ -135,7 +135,7 @@ public class Database implements AutoCloseable {
 						String id = Integer.toString(rs.getInt(3));
 						result.put("lectureName", lectureName);
 						result.put("id", id);
-						result.put("studentsJoined", Integer.toString(123));
+						result.put("studentsJoined", studentsJoined);
 						lectures.add(result);
 					}					
 				}
@@ -174,7 +174,7 @@ public class Database implements AutoCloseable {
 		// only doable if classID excists in database.
 		
 		try (Statement stmt = conn.createStatement()) {
-			String query = "insert into lecture(name, subject_code) values ('"+ lectureName +"', '" + classID.toUpperCase() + "');";
+			String query = "insert into lecture(name, subject_code, studentsJoined) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0);";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
 			}					
@@ -227,6 +227,15 @@ public class Database implements AutoCloseable {
 			e.printStackTrace();
 		}
 		return sCodes;
+	}
+	
+	public void addStudentCountToLecture(int lectureID){
+		try(Statement stmt = conn.createStatement()){
+			String query = "UPDATE `lecture` SET `studentsJoined`=`studentsJoined`+1 WHERE `id`=" + lectureID + ";";
+			stmt.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 

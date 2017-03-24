@@ -125,9 +125,8 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	private void handleSubmitButtonAction() {
 		// TODO Auto-generated method stub
 		String question = askQuestionTextField.getText();
-		askQuestionTextField.setText("");
-		askQuestionContainer.setVisible(false);		
-		
+
+		System.out.println(askQuestionTextField.getText());
 		if (!question.equals("")) {
 			System.out.println("Submitting question:" + question);
 			String classID = main.getClassID();
@@ -142,6 +141,8 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 				e.printStackTrace();
 			}
 		}
+		askQuestionTextField.setText("");
+		askQuestionContainer.setVisible(false);
 	}
 
 	private void handleLostMeButtonAction() {

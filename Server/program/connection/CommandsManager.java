@@ -194,6 +194,8 @@ public class CommandsManager {
 			client.setLectureID(clientsManager.main.getDatabase().getLiveLectureID(obj.getString("ClassID")));
 			notification.put("Function", "JoinedLecture");
 			
+			clientsManager.main.getDatabase().addStudentCountToLecture(client.getLectureID());
+			
 			
 			lecturer.sendJSON(notification);
 		} catch (JSONException e) {
