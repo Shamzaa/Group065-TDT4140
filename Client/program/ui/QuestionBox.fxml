@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxWidth="-Infinity" prefHeight="51.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.QuestionBoxController">
+<AnchorPane maxWidth="-Infinity" prefHeight="58.0" prefWidth="411.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.QuestionBoxController">
 	<children>
-	   <TextArea id="questionTextArea" fx:id="questionTextArea" editable="false" maxWidth="375.0" prefHeight="50" prefWidth="374.0" wrapText="true" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="1.0" />
-	   <RadioButton fx:id="badRadio" layoutX="406.0" layoutY="26.0" mnemonicParsing="false" text="Bad" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="26.0">
-	      <toggleGroup>
-	         	<ToggleGroup fx:id="radioGroup" />
-	      	</toggleGroup>
-	   	</RadioButton>
-	   	<RadioButton fx:id="goodRadio" layoutX="406.0" layoutY="5.0" mnemonicParsing="false" text="Good" toggleGroup="$radioGroup" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="5.0" />
-		<Pane fx:id="pointPane" prefHeight="51.0" prefWidth="57.0" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
+      <VBox alignment="CENTER_LEFT" layoutX="339.0" layoutY="6.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0" layoutX="2.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="51.0" />
-            <Text fx:id="pointScoreText" layoutX="3.0" layoutY="40.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="2.0" text="19" textAlignment="CENTER" wrappingWidth="43.125">
+      	   	<RadioButton fx:id="goodRadio" mnemonicParsing="false" text="Good">
+               <toggleGroup>
+      	         	<ToggleGroup fx:id="radioGroup" />
+               </toggleGroup>
+            </RadioButton>
+      	   <RadioButton fx:id="badRadio" mnemonicParsing="false" text="Bad" toggleGroup="$radioGroup" />
+         </children>
+      </VBox>
+		<Pane fx:id="pointPane" layoutY="2.0" prefHeight="56.0" prefWidth="76.0" visible="false" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="53.0" layoutX="2.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="76.0" />
+            <Text fx:id="pointScoreText" layoutX="3.0" layoutY="68.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="2.0" text="19" textAlignment="CENTER" wrappingWidth="69.0000057220459">
                <font>
                   <Font size="40.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <Separator layoutY="50.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Separator layoutX="68.0" layoutY="12.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <AnchorPane fx:id="questionPane" layoutX="3.0" layoutY="8.0" prefHeight="66.0" prefWidth="317.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="87.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="questionLabel" layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" prefHeight="104.0" prefWidth="317.0" text="Question" wrapText="true" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
 	</children>
+   <padding>
+      <Insets top="3.0" />
+   </padding>
 </AnchorPane>

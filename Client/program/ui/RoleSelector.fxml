@@ -11,13 +11,13 @@
    <children>
       <HBox alignment="CENTER" prefHeight="320.0" prefWidth="211.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="168.0" prefWidth="201.0" HBox.hgrow="SOMETIMES">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="168.0" prefWidth="201.0" HBox.hgrow="NEVER">
                <children>
                   <Button fx:id="selectStudent" layoutX="2.0" layoutY="80.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" text="Student" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="107.0" />
                   <Button fx:id="selectLecturer" layoutX="107.0" layoutY="80.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" text="Lecturer" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="2.0" />
-                  <Label layoutX="59.0" layoutY="46.0" text="Select your role" AnchorPane.leftAnchor="59.0" />
-                  <TextField fx:id="serverField" layoutX="2.0" layoutY="5.0" promptText="Server IP" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0" />
-                  <Label fx:id="errorLabel" layoutX="74.0" layoutY="126.0" text="ErrorLabel" textAlignment="CENTER" textFill="RED" />
+                  <Label alignment="CENTER" contentDisplay="RIGHT" layoutX="4.0" layoutY="46.0" prefHeight="17.0" prefWidth="197.0" text="Select your role:" AnchorPane.leftAnchor="4.0" />
+                  <TextField fx:id="serverField" layoutX="2.0" layoutY="5.0" prefHeight="25.0" prefWidth="198.0" promptText="Server IP" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0" />
+                  <Label fx:id="errorLabel" layoutX="5.0" layoutY="118.0" maxWidth="197.0" prefHeight="46.0" prefWidth="197.0" text="0000000000000000000000000000000000000000000000" textAlignment="CENTER" textFill="RED" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="118.0" />
                </children>
             </AnchorPane>
          </children>

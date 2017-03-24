@@ -6,9 +6,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class QuestionBoxController {
@@ -19,20 +21,29 @@ public class QuestionBoxController {
 	//UI element
 	@FXML RadioButton 	goodRadio;			//Used to vote that a question is good
 	@FXML RadioButton 	badRadio;			//Used to vote that a question is bad
-	@FXML TextArea 		questionTextArea;	//Textarea to show the question text
+	//@FXML TextArea 		questionTextArea;	//Textarea to show the question text
 	@FXML Pane			pointPane;			//Pane that overlays votebuttons to show score
 	@FXML Text			pointScoreText;		//Text that shows how many points a question has
+	@FXML Label			questionLabel;
+	//@FXML Rectangle		questionTextBG;
 	
-	private void fitToText(){
-		//TODO add code
+	private void fitToText(){		
+		
+		/*//TODO add later. Automatisk justere høyden til boksen for å passe tekstlengden
+		Label label = questionLabel;
+		String text = question.getQuestionText();
+		Double fontSize = label.getFont().getSize();
+        String clippedText = Utils.computeClippedText( label.getFont(), label.getText(), label.getWidth(), label.getTextOverrun(), label.getEllipsisString() );
+        Font newFont = label.getFont();
 
-		/* TODO add later. Automatisk justere høyden til boksen for å passe tekstlengden
-		Text helper = new Text();
-		helper.setText(text);
-	    helper.setFont(font);
-	    helper.setWrappingWidth((int)wrappingWidth);
-	    helper.getLayoutBounds().getHeight();
-		*/
+        while ( !label.getText().equals( clippedText ) && fontSize > 0.5 )
+        {
+        	System.out.println( "fontSize = " + fontSize + ", clippedText = " + clippedText );
+            fontSize = fontSize - 0.05;
+            newFont = Font.font( label.getFont().getFamily(), fontSize );
+            clippedText = Utils.computeClippedText( newFont, label.getText(), label.getWidth(), label.getTextOverrun(), label.getEllipsisString() );
+        }
+		label.setFont( newFont );*/
 	}
 	
 	@FXML
@@ -46,21 +57,18 @@ public class QuestionBoxController {
 	}
 	
 	public String getQuestionText(){
-		return questionTextArea.getText();
+		return questionLabel.getText();
 	}
 	
-	/*public void setScore(int score){
-		pointScoreText.setText(String.valueOf(score));
-	}*/
 	public void setScoreVisible(boolean value){
 		pointPane.setVisible(value);
 	}
 	public void setQuestion(Question question) {
 		this.question = question;
-		questionTextArea.setText(question.getQuestionText());
+		questionLabel.setText(question.getQuestionText());
 		pointScoreText.setText(String.valueOf(question.ratingProperty().get()));
 		this.question.ratingProperty().addListener((obs, wasOn, isNowOn) -> pointScoreText.setText(String.valueOf(isNowOn)));
-		//fitToText(); TODO: Implement later
+		fitToText();
 	}
 	public int getQuestionId() {
 		return question.getId();

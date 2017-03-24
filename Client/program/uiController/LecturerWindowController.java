@@ -45,16 +45,13 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
 	@FXML Text lectureTitleText; 		//The text that shows the classID from the main class for the lecture, so students know what to connect to
 	@FXML Text lectureNameText;			//The text that shows the name the lecturer decided for the live lecture
-	
-	
+		
 	@FXML
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
-		
-		addQuestion(new Question(5, "Dummy Question!", "12-02-2016", 20));
-		
 	}
+	
 	/**@author Anders
 	 * This method changes the title text and name text
 	 */
@@ -62,6 +59,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lectureTitleText.setText(newTitle);
 		lectureNameText.setText(newName);
 	}
+	
 	/** @author Anders
 	 * This method checks connectedStudents and updates the text
 	 */
@@ -102,6 +100,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lostMeGreenArc.setStartAngle(90);
 		lostMeGreenArc.setLength(360-newAngle);
 	}
+	
 	/** @author Anders
 	 *  Increments the number of students, and update ui elements
 	 */
@@ -139,16 +138,13 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			//controller.setScore(question.getRating());
 			//controller.setQuestionId(question.getId());
 			// Adds the questionBox ui element to QuestionContainer
-
 			QuestionContainer.getChildren().add(qPane);
 			
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			
 		});
-	}
-	
-	
+	}	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
 	@Override
@@ -157,10 +153,10 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		clientProcessingPool.submit(new ClientListener(main, this));
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
-
 		main.getRootController().setTitle("Lecture");
 		
 	}
+	
 	//-> Functions for QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){
@@ -220,6 +216,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		System.out.println("Setting liveLectureID to: " + ID);
 		this.liveLectureID = ID;
 	}
+	
 	@Override
 	public void updateQuestionScore(int questionID, int newScore) {
 		for (Question question : questionList) {
