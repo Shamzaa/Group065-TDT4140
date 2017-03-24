@@ -134,7 +134,7 @@ public class CommandsManager {
 		//TODO this should fetch from the database and get fill the array
 		System.out.println("Fetching subject codes");
 		ArrayList<String> retArr = new ArrayList<>();
-		retArr.add("TDT4100");
+		retArr.addAll(clientsManager.main.getDatabase().getAllSubjectCodes());
 		System.out.println("fetched" + retArr);
 		//----------------------
 		try {

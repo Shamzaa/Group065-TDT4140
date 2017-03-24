@@ -159,6 +159,8 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		clientProcessingPool.submit(new ClientListener(main, this));
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
+
+		main.getRootController().setTitle("Lecture");
 		
 	}
 	//-> Functions for QuestionReciever

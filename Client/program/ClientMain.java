@@ -11,11 +11,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import program.connection.*;
 import program.uiController.AppBinder;
+import program.uiController.RootController;
 public class ClientMain extends Application{
 	
 	// UI elements
 	private Stage stage;
 	private BorderPane root; //all windows are loaded into centerpane via loadUI()
+	private RootController rootCont;
 	
 	// reference elements
 	private ServerManager serverManager;
@@ -65,6 +67,7 @@ public class ClientMain extends Application{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
 		root = (BorderPane) loader.load();
+		rootCont = loader.getController();
 
 		// Show the scene containing the root layout.
 		Scene scene = new Scene(root);
@@ -96,5 +99,9 @@ public class ClientMain extends Application{
 	
 	public int getLectureID(){
 		return lectureID;
+	}
+	
+	public RootController getRootController(){
+		return rootCont;
 	}
 }

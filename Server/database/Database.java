@@ -133,7 +133,7 @@ public class Database implements AutoCloseable {
 						String lectureName = rs.getString(1);
 						String studentsJoined = Integer.toString(rs.getInt(2));
 						String id = Integer.toString(rs.getInt(3));
-						result.put("lectureName", "oy");
+						result.put("lectureName", lectureName);
 						result.put("id", id);
 						result.put("studentsJoined", Integer.toString(123));
 						lectures.add(result);
@@ -211,6 +211,22 @@ public class Database implements AutoCloseable {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public ArrayList<String> getAllSubjectCodes(){
+		ArrayList<String> sCodes = new ArrayList<>();
+		try(Statement stmt = conn.createStatement()){
+			String query = "SELECT `code` FROM `subjects`";
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				while(rs.next()){
+					sCodes.add(rs.getString(1));
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return sCodes;
 	}
 
 

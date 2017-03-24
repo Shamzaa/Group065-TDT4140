@@ -50,6 +50,8 @@ public class LectureLoginController implements AppBinder{
 		this.main = main;
 		classChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
 		classChoiceBox.getSelectionModel().selectFirst();
+
+		main.getRootController().setTitle("Login");
 	}
 
 }

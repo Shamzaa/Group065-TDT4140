@@ -121,6 +121,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		this.main = main;
 		clientProcessingPool.submit(new LectureStatListener(main, this));
 		reviewLecture();
+
+		main.getRootController().setTitle("Lecture Review");
 	}
 
 

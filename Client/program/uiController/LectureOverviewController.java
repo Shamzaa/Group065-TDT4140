@@ -99,6 +99,8 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		fetchLectures();
 		classCodeLabel.setText(main.getClassID());
 		clientProcessingPool.submit(l);
+
+		main.getRootController().setTitle("Lectures Overview");
 		
 		
 	}

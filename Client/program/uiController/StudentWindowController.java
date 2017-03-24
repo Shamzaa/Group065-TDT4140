@@ -180,6 +180,8 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//fetches all lecture question to fill the list
 		clientProcessingPool.submit(new ClientListener(main, this));
 		fetchLiveLectureID();
+
+		main.getRootController().setTitle("Lecture");
 	}
 	
 	//-> From QuestionReciever
