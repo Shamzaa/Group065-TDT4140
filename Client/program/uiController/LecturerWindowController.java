@@ -51,10 +51,6 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
-<<<<<<< Temporary merge branch 1
-		addQuestion(new Question(5, "Testspørsmål", "12-02-2016", 20));
-=======
->>>>>>> Temporary merge branch 2
 	}
 	/**@author Anders
 	 * This method changes the title text and name text
@@ -130,26 +126,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			/*for (Node node : qPane.getChildren()) {
-				if (node.getId().equals("QuestionText")){
-					((TextArea) node).setText(question);
-					
-<<<<<<< Temporary merge branch 1
-					/* TODO add later. Automatisk justere h�yden til boksen for � passe tekstlengden
-					Text helper = new Text();
-					helper.setText(text);
-				    helper.setFont(font);
-				    helper.setWrappingWidth((int)wrappingWidth);
-				    helper.getLayoutBounds().getHeight();
-					*/
-					break;
-				}
-			}
-			//Kan bruke add(index, node) for rekkef�lge
-=======
-					break;
-				}
-			}*/
+			
 			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
@@ -248,7 +225,3 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		sortQuestionsByScore();
 	}
 }
-
-		
-		addQuestion(new Question(5, "Dummy Question!", "12-02-2016", 20));
-		
