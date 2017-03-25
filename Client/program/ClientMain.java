@@ -12,8 +12,9 @@ import javafx.stage.Stage;
 import program.connection.*;
 import program.uiController.AppBinder;
 import program.uiController.RootController;
-public class ClientMain extends Application{
-	
+
+
+public class ClientMain extends Application{	
 	// UI elements
 	private Stage stage;
 	private BorderPane root; //all windows are loaded into centerpane via loadUI()
@@ -71,9 +72,14 @@ public class ClientMain extends Application{
 
 		// Show the scene containing the root layout.
 		Scene scene = new Scene(root);
+		//String css = ClientMain.class.getResource("styleSheet.css").toExternalForm();
+		//scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.show();
 		loadUI("ui/RoleSelector.fxml");
+		
+		
+		
 	}
 	
 	public ServerManager getServerManager(){
