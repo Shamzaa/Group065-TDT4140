@@ -25,8 +25,8 @@
                         <ChoiceBox fx:id="classChoiceBox" prefWidth="150.0" />
                      </children>
                   </HBox>
-                  <Label alignment="CENTER" layoutY="68.0" prefHeight="17.0" prefWidth="195.0" text="TODO: password/identification field" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button fx:id="loginButton" layoutX="100.0" layoutY="104.0" mnemonicParsing="false" text="Login" />
+                  <Label alignment="CENTER" layoutY="68.0" prefHeight="51.0" prefWidth="248.0" text="TODO: password/identification field" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="loginButton" layoutX="100.0" layoutY="117.0" mnemonicParsing="false" text="Login" />
                   <Label fx:id="errorLabel" layoutX="96.0" layoutY="152.0" text="Error label" textFill="RED" />
                </children>
             </AnchorPane>

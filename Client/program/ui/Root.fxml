@@ -14,7 +14,7 @@
          <children>
             <Button fx:id="backButton" disable="true" layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Back " />
             <Separator layoutY="33.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <Text fx:id="titleText" layoutX="130.0" layoutY="28.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" wrappingWidth="340.486328125">
+            <Text fx:id="titleText" layoutX="130.0" layoutY="28.0" stroke="BLACK" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" text="Title" textAlignment="CENTER" wrappingWidth="340.486328125">
                <font>
                   <Font size="25.0" />
                </font>

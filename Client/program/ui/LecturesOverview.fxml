@@ -34,15 +34,18 @@
             </ScrollPane>
             <Pane prefHeight="278.0" prefWidth="242.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
                <children>
-                  <HBox layoutX="14.0" layoutY="2.0" prefHeight="17.0" prefWidth="129.0" spacing="10.0">
+                  <HBox layoutX="5.0" layoutY="2.0" prefHeight="17.0" prefWidth="129.0" spacing="10.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total lectures:" />
                         <Label fx:id="lecturesCount" text="0" />
                      </children>
                   </HBox>
-                  <Button fx:id="createLectureButton" layoutX="68.0" layoutY="280.0" mnemonicParsing="false" text="Create new lecture" />
-                  <Text layoutX="14.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total lecture participation:" />
-                  <Label fx:id="studentsCount" layoutX="160.0" layoutY="40.0" prefHeight="17.0" prefWidth="71.0" text="0" />
+                  <HBox layoutX="5.0" layoutY="34.734375" spacing="8.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total lecture participation:" />
+                        <Label fx:id="studentsCount" prefHeight="25.0" prefWidth="31.0" text="0" />
+                     </children>
+                  </HBox>
                   <Button fx:id="createLectureButton" layoutX="39.0" layoutY="268.0" mnemonicParsing="false" text="Create new lecture" />
                </children>
             </Pane>
