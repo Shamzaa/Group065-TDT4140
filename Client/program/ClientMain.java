@@ -73,8 +73,8 @@ public class ClientMain extends Application{
 		// Show the scene containing the root layout.
 		Scene scene = new Scene(root);
 		//String css = ClientMain.class.getResource("Buttons.css").toExternalForm();
-		//String css = ClientMain.class.getResource("ui/Buttons.css").toExternalForm();
-		String css = ClientMain.class.getResource("styleSheet.css").toExternalForm();
+		//String css = ClientMain.class.getResource("styleSheet.css").toExternalForm();
+		String css = ClientMain.class.getResource("ui/Buttons.css").toExternalForm();
 		scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.show();

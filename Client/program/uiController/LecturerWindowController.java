@@ -45,7 +45,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
 	@FXML Text lectureTitleText; 		//The text that shows the classID from the main class for the lecture, so students know what to connect to
 	@FXML Text lectureNameText;			//The text that shows the name the lecturer decided for the live lecture
-		
+
 	@FXML
 	public void initialize(){
 		updatePieChartValues();
@@ -145,6 +145,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			}			
 		});
 	}	
+	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
 	@Override
