@@ -3,8 +3,11 @@ import java.io.IOException;
 
 import database.Database;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -35,6 +38,21 @@ public class ClientMain extends Application{
 	public static void main(String[] args){
 		launch(ClientMain.class, args);
 
+	}
+	public void displayAlert(String title, String header, String content){
+		Platform.runLater(()-> {
+			System.out.println("Displaying alert!");
+			Alert alert = new Alert(AlertType.WARNING);
+			System.out.println(1);
+			alert.setTitle(title);
+			System.out.println(2);
+			alert.setHeaderText(header);
+			System.out.println(3);
+			alert.setContentText(content);
+			System.out.println("show:");
+			alert.show();
+			System.out.println("Alert displayed");
+		});
 	}
 	
 	public void loadUI(String path){

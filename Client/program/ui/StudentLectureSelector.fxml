@@ -7,19 +7,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureSelectorController">
+<AnchorPane prefHeight="242.0" prefWidth="279.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureSelectorController">
    <children>
-      <Pane prefHeight="200.0" prefWidth="356.0">
+      <HBox alignment="CENTER" layoutX="1.0" layoutY="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" layoutY="23.0" spacing="9.0">
+            <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="171.0" prefWidth="257.0">
                <children>
-                  <Label text="Course code:" />
-                  <ChoiceBox fx:id="courseCodeChoiceBox" prefWidth="150.0" />
+                  <HBox alignment="CENTER" layoutY="12.0" spacing="9.0">
+                     <children>
+                        <Label text="Course code:" />
+                        <ChoiceBox fx:id="courseCodeChoiceBox" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="ErrorLabel" layoutX="101.0" layoutY="134.0" text="ErrorText" textFill="RED" />
+                  <Button fx:id="ConnectButton" layoutX="93.0" layoutY="85.0" mnemonicParsing="false" text="Connect" />
                </children>
-            </HBox>
-            <Label fx:id="ErrorLabel" layoutX="146.0" layoutY="144.0" text="ErrorText" textFill="RED" />
-            <Button fx:id="ConnectButton" layoutX="138.0" layoutY="96.0" mnemonicParsing="false" text="Connect" />
+            </Pane>
          </children>
-      </Pane>
+      </HBox>
    </children>
 </AnchorPane>

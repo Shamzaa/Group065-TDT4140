@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
@@ -13,32 +15,43 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LecturerWindowController">
+<AnchorPane prefHeight="411.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LecturerWindowController">
    <children>
-      <GridPane prefHeight="400.0" prefWidth="600.0">
+      <GridPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="314.0" minWidth="10.0" prefWidth="250.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="538.0" minWidth="10.0" prefWidth="350.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="350.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="121.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="214.0" minHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="461.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowSpan="3">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="461.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowSpan="3">
                <content>
-                  <VBox fx:id="QuestionContainer" maxWidth="-Infinity" prefWidth="336.0" />
+                  <VBox fx:id="QuestionContainer" prefWidth="363.0" />
                </content>
+               <GridPane.margin>
+                  <Insets top="3.0" />
+               </GridPane.margin>
             </ScrollPane>
             <Pane prefHeight="278.0" prefWidth="242.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
                <children>
                   <Arc fx:id="lostMeGreenArc" fill="#0db946" layoutX="125.0" layoutY="166.0" length="180.0" radiusX="110.0" radiusY="110.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                   <Arc fx:id="lostMeRedArc" fill="#ff3c1f" layoutX="125.0" layoutY="166.0" length="180.0" radiusX="110.0" radiusY="110.0" startAngle="-90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff4242" height="15.0" layoutX="7.0" layoutY="8.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2fc936" height="15.0" layoutX="7.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
-                  <Text fx:id="lostMeRedText" layoutX="26.0" layoutY="19.0" text="N/A%" />
-                  <Text fx:id="lostMeGreenText" layoutX="26.0" layoutY="45.0" text="N/A%" />
+                  <HBox alignment="CENTER_LEFT" layoutX="7.0" layoutY="1.734375" spacing="10.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff4242" height="15.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
+                        <Text fx:id="lostMeRedText" text="N/A%" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="7.0" layoutY="27.734375" spacing="10.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2fc936" height="15.0" stroke="BLACK" strokeType="INSIDE" width="16.0" />
+                        <Text fx:id="lostMeGreenText" text="N/A%" />
+                     </children>
+                  </HBox>
                </children>
             </Pane>
             <Pane>
@@ -48,19 +61,19 @@
                         <Font size="27.0" />
                      </font>
                   </Text>
+                  <Text fx:id="lectureNameText" layoutX="1.0" layoutY="68.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="Lecuture name" textAlignment="CENTER" wrappingWidth="249.99999850988388">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Text>
+                  <Separator layoutY="85.0" prefHeight="16.0" prefWidth="250.0" />
                   <Text fx:id="studentsConnectedText" layoutX="7.0" layoutY="112.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="0 Students connected" textAlignment="CENTER" wrappingWidth="237.41796875">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Text>
-                  <Separator layoutX="1.0" layoutY="85.0" prefHeight="16.0" prefWidth="250.0" />
                </children>
             </Pane>
-            <Text fx:id="lectureNameText" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="Lecuture name" textAlignment="CENTER" wrappingWidth="249.99999850988388">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Text>
          </children>
       </GridPane>
    </children>

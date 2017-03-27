@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
@@ -38,7 +39,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	
 	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
 	private int liveLectureID;
-	
+	private int charLimit = 140;
 	
 	ClientMain main;
 	
@@ -51,6 +52,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	@FXML GridPane askQuestionContainer;			//Contains the text areas to ask and submit questions
 	@FXML Rectangle transparentOverlay;				//
 	@FXML TextArea askQuestionTextField;
+	@FXML Label remainingCharsLabel;
 	
 	@FXML
 	public void initialize() {
@@ -61,8 +63,24 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 				e -> handleLostMeButtonAction());
 		submitQuestionButton.setOnAction(
 				e -> handleSubmitButtonAction());
+		askQuestionTextField.textProperty().addListener(
+				(e, oldStr, newStr) -> handleAskQuestionTextChange(oldStr, newStr));
 			
 	}
+	private void handleAskQuestionTextChange(String oldText, String newText){
+		System.out.println("[" + String.valueOf(oldText.length()) + "]" + "old: " + oldText);
+		System.out.println("[" + String.valueOf(newText.length()) + "]" + "new: " + newText);
+		int newLenght = newText.length();
+		int remaining = charLimit - newLenght;
+		remainingCharsLabel.setText(String.valueOf(remaining));
+		if(remaining < 0 && !submitQuestionButton.isDisabled()){
+			submitQuestionButton.setDisable(true);
+		} 
+		else if(remaining >= 0 && submitQuestionButton.isDisabled()){
+			submitQuestionButton.setDisable(false);
+		}
+	}
+	
 	private void sortQuestionsByScore(){
 		Platform.runLater(() -> {
 			//The -1 reverses the sorting order

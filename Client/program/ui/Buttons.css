@@ -6,6 +6,9 @@
 	-fx-base: #fff700;
 	-fx-background-color: #fff700;
 }
+#errorText{
+	-fx-text-fill: red;
+}
 
 .root{
     -fx-font-size: 12pt;

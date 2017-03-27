@@ -29,7 +29,8 @@ import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;									//Refernce to the clientMain class that runs the program
-
+	
+	private double lostStudentsThreshold = 0.7;
 	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions [Unused? TODO remove]
 	private int connectedStudents = 0;					//The number of students currently connected
 	private int lostStudents = 0;						//The number of students who are currently lost
@@ -115,6 +116,10 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void studentLost(){
 		lostStudents ++;
 		updatePieChartValues();
+		System.out.println(((double) lostStudents)/connectedStudents);
+		if(((double) lostStudents)/connectedStudents > lostStudentsThreshold){
+			main.displayAlert("Students are lost!", null, "The set threshold for amount of students lost have been reached. Consider going back and repeat the subject you talked about!");
+		}
 	}
 	
 	/** @author Anders
