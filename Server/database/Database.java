@@ -4,6 +4,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -234,6 +236,18 @@ public class Database implements AutoCloseable {
 			String query = "UPDATE `lecture` SET `studentsJoined`=`studentsJoined`+1 WHERE `id`=" + lectureID + ";";
 			stmt.executeUpdate(query);
 		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void createYouLostMe(int lectureID){
+		Time timeStamp = Time.valueOf(LocalTime.now());
+		try(Statement stmt = conn.createStatement()){
+			String query = "INSERT INTO `youlostme`(`lectureID`, `timeStamp`) VALUES ("+ lectureID +",'"+ timeStamp +"');";
+			stmt.execute(query);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

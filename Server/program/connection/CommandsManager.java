@@ -180,6 +180,7 @@ public class CommandsManager {
 			notification.put("Function", "StudentLost");
 			
 			lecturer.sendJSON(notification);
+			clientsManager.main.getDatabase().createYouLostMe(lecturer.getLectureID());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
