@@ -3,8 +3,11 @@ import java.io.IOException;
 
 import database.Database;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -14,7 +17,8 @@ import program.uiController.AppBinder;
 import program.uiController.RootController;
 
 
-public class ClientMain extends Application{	
+public class ClientMain extends Application{
+	
 	// UI elements
 	private Stage stage;
 	private BorderPane root; //all windows are loaded into centerpane via loadUI()
@@ -35,6 +39,21 @@ public class ClientMain extends Application{
 	public static void main(String[] args){
 		launch(ClientMain.class, args);
 
+	}
+	public void displayAlert(String title, String header, String content){
+		Platform.runLater(()-> {
+			System.out.println("Displaying alert!");
+			Alert alert = new Alert(AlertType.WARNING);
+			System.out.println(1);
+			alert.setTitle(title);
+			System.out.println(2);
+			alert.setHeaderText(header);
+			System.out.println(3);
+			alert.setContentText(content);
+			System.out.println("show:");
+			alert.show();
+			System.out.println("Alert displayed");
+		});
 	}
 	
 	public void loadUI(String path){
@@ -72,8 +91,11 @@ public class ClientMain extends Application{
 
 		// Show the scene containing the root layout.
 		Scene scene = new Scene(root);
+
+		//String css = ClientMain.class.getResource("Buttons.css").toExternalForm();
 		//String css = ClientMain.class.getResource("styleSheet.css").toExternalForm();
-		//scene.getStylesheets().add(css);
+		String css = ClientMain.class.getResource("ui/Buttons.css").toExternalForm();
+		scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.show();
 		loadUI("ui/RoleSelector.fxml");

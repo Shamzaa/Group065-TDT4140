@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import classes.Question;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -44,6 +46,19 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
 		
+	}
+	
+	private void sortQuestionsByScore(){
+		Platform.runLater(() -> {
+			//The -1 reverses the sorting order
+			questionList.sort((q1, q2)-> -1*Integer.compare(q1.getRating(), q2.getRating()));
+			ObservableList<AnchorPane> workingCollection = FXCollections.observableArrayList();
+			for (Question question : questionList) {
+				System.out.println("changing orders");
+				workingCollection.add(question.getRelatedQuestionPane());
+			}
+			QuestionContainer.getChildren().setAll(workingCollection);
+		});	
 	}
 	
 	
@@ -141,7 +156,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				
 				addQuestion(new Question(id, questionText, time, rating));
 			}
-				
+			sortQuestionsByScore();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -29,7 +29,8 @@ import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;									//Refernce to the clientMain class that runs the program
-
+	
+	private double lostStudentsThreshold = 0.7;
 	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions [Unused? TODO remove]
 	private int connectedStudents = 0;					//The number of students currently connected
 	private int lostStudents = 0;						//The number of students who are currently lost
@@ -45,13 +46,13 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
 	@FXML Text lectureTitleText; 		//The text that shows the classID from the main class for the lecture, so students know what to connect to
 	@FXML Text lectureNameText;			//The text that shows the name the lecturer decided for the live lecture
-	
-	
+
 	@FXML
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
 	}
+	
 	/**@author Anders
 	 * This method changes the title text and name text
 	 */
@@ -59,6 +60,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lectureTitleText.setText(newTitle);
 		lectureNameText.setText(newName);
 	}
+	
 	/** @author Anders
 	 * This method checks connectedStudents and updates the text
 	 */
@@ -99,6 +101,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lostMeGreenArc.setStartAngle(90);
 		lostMeGreenArc.setLength(360-newAngle);
 	}
+	
 	/** @author Anders
 	 *  Increments the number of students, and update ui elements
 	 */
@@ -113,6 +116,10 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void studentLost(){
 		lostStudents ++;
 		updatePieChartValues();
+		System.out.println(((double) lostStudents)/connectedStudents);
+		if(((double) lostStudents)/connectedStudents > lostStudentsThreshold){
+			main.displayAlert("Students are lost!", null, "The set threshold for amount of students lost have been reached. Consider going back and repeat the subject you talked about!");
+		}
 	}
 	
 	/** @author Anders
@@ -126,13 +133,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			/*for (Node node : qPane.getChildren()) {
-				if (node.getId().equals("QuestionText")){
-					((TextArea) node).setText(question);
-					
-					break;
-				}
-			}*/
+			
 			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
@@ -148,8 +149,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 				e.printStackTrace();
 			}			
 		});
-	}
-	
+	}	
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
@@ -159,10 +159,10 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		clientProcessingPool.submit(new ClientListener(main, this));
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
-
 		main.getRootController().setTitle("Lecture");
 		
 	}
+	
 	//-> Functions for QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){
@@ -222,6 +222,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		System.out.println("Setting liveLectureID to: " + ID);
 		this.liveLectureID = ID;
 	}
+	
 	@Override
 	public void updateQuestionScore(int questionID, int newScore) {
 		for (Question question : questionList) {

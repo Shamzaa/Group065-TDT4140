@@ -7,51 +7,64 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureOverviewController">
+<AnchorPane prefHeight="369.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.LectureOverviewController">
    <children>
-      <GridPane prefHeight="400.0" prefWidth="600.0">
+      <GridPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="314.0" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="538.0" minWidth="10.0" prefWidth="350.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="314.0" minWidth="212.0" prefWidth="231.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="370.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="214.0" minHeight="10.0" prefHeight="175.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="192.0" minHeight="54.0" prefHeight="77.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="214.0" minHeight="10.0" prefHeight="175.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="461.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowSpan="3">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="560.0" prefWidth="585.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowSpan="3">
                <content>
-                  <VBox fx:id="lectureContainer" maxWidth="-Infinity" prefWidth="336.0" />
+                  <VBox fx:id="lectureContainer" />
                </content>
             </ScrollPane>
-            <Pane prefHeight="278.0" prefWidth="242.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
+            <Pane prefHeight="240.0" prefWidth="215.0" GridPane.rowIndex="1">
                <children>
-                  <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total lectures:" />
-                  <Label fx:id="lecturesCount" layoutX="160.0" layoutY="14.0" prefHeight="17.0" prefWidth="71.0" text="0" />
-                  <Button fx:id="createLectureButton" layoutX="68.0" layoutY="280.0" mnemonicParsing="false" text="Create new lecture" />
-                  <Text layoutX="14.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total lecture participation:" />
-                  <Label fx:id="studentsCount" layoutX="160.0" layoutY="40.0" prefHeight="17.0" prefWidth="71.0" text="0" />
+                  <HBox layoutX="5.0" layoutY="2.0" prefHeight="17.0" prefWidth="129.0" spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total lectures:" />
+                        <Label fx:id="lecturesCount" text="0" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="5.0" layoutY="34.734375" spacing="8.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total lecture participation:" />
+                        <Label fx:id="studentsCount" prefHeight="25.0" prefWidth="31.0" text="0" />
+                     </children>
+                  </HBox>
                </children>
             </Pane>
             <Pane>
                <children>
-                  <Text fx:id="lecturesStat" layoutX="-61.0" layoutY="49.0" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="Lectures:" textAlignment="CENTER" wrappingWidth="237.41796875">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Text>
-                  <Label fx:id="classCodeLabel" layoutX="111.0" layoutY="36.0" text="Label" />
+                  <HBox alignment="BOTTOM_LEFT" layoutX="14.0" layoutY="26.0" prefHeight="28.0" prefWidth="193.0" spacing="5.0">
+                     <children>
+                        <Text fx:id="lecturesStat" stroke="BLACK" strokeLineJoin="BEVEL" strokeWidth="1.5" text="Lectures:" textAlignment="CENTER" wrappingWidth="84.41796875">
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Text>
+                        <Label fx:id="classCodeLabel" text="0" />
+                     </children>
+                  </HBox>
                </children>
             </Pane>
+            <Button fx:id="createLectureButton" mnemonicParsing="false" text="Create new lecture" GridPane.rowIndex="2" />
+            <ProgressIndicator fx:id="progress" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="73.0" prefWidth="71.0" GridPane.columnIndex="1" GridPane.rowSpan="3" />
          </children>
       </GridPane>
-      <ProgressIndicator fx:id="progress" layoutX="390.0" layoutY="158.0" prefHeight="73.0" prefWidth="71.0" />
    </children>
 </AnchorPane>
