@@ -21,6 +21,7 @@ public class ClientMain extends Application{
 	
 	// reference elements
 	private ServerManager serverManager;
+	private final long lostMeTimerLenght = 5; 	//Decides how long it will wait until it discards a lostMeSignal (Seconds).
 	
 	// attributes
 	private String classID;
@@ -75,6 +76,12 @@ public class ClientMain extends Application{
 		stage.show();
 		loadUI("ui/RoleSelector.fxml");
 	}
+	//Runs when window is closed
+	@Override
+	public void stop() throws Exception{
+		System.out.println("Window closed....");
+		//TODO add code for proper disconnection
+	}
 	
 	public ServerManager getServerManager(){
 		return serverManager;
@@ -83,7 +90,6 @@ public class ClientMain extends Application{
 	public void setClassID(String classID){
 		this.classID = classID;
 	}
-	
 	public String getClassID(){
 		return classID;
 	}
@@ -103,5 +109,9 @@ public class ClientMain extends Application{
 	
 	public RootController getRootController(){
 		return rootCont;
+	}
+	
+	public long getLostMeTimerLenght() {
+		return lostMeTimerLenght;
 	}
 }
