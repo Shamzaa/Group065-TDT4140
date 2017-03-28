@@ -47,7 +47,10 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> getLatestLectures(obj, client));
 		stringToFunction.put("reviewLecture", 
 				(JSONObject obj, ClientConnection client) -> reviewLecture(obj, client));
+		stringToFunction.put("FetchLostMeTimeStamps",
+				(JSONObject obj, ClientConnection client) -> fetchLostMeTimeStamps(obj, client));
 	}
+
 
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
 		try {
@@ -59,24 +62,17 @@ public class CommandsManager {
 		
 	}
 	
-	
-	private void getLiveLectureID(JSONObject obj, ClientConnection client) {
-		/*
-		Database db = new Database();
-		db.connect();
+	private void fetchLostMeTimeStamps(JSONObject obj, ClientConnection client) {
 		try {
-			int liveID = db.getLiveLectureID(obj.getString("ClassID"));
-			
-			JSONObject retObj = new JSONObject();
-			retObj.put("Function", "SetLiveLectureID");
-			retObj.put("LiveLectureID", liveID);
-			client.sendJSON(retObj);
+			int lectureID = obj.getInt("lectureID");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		db.close();
-		*/
+	}
+	
+	private void getLiveLectureID(JSONObject obj, ClientConnection client) {
+		
 		try {
 			int liveID = client.getLectureID();
 			
@@ -93,8 +89,6 @@ public class CommandsManager {
 	
 	// functions that we can do
 	private void getLatestQuestions(JSONObject obj, ClientConnection client){
-		//Database db =  new Database();
-		//db.connect();
 		try {
 			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID") +"["+obj.getInt("LectureID")+"]");
 			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(obj.getInt("LectureID"), obj.getInt("QuestionAmount"));
