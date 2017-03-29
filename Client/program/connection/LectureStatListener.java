@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
+import program.uiController.LectureReviewController;
 
 
 public class LectureStatListener implements Runnable{
@@ -43,13 +44,19 @@ public class LectureStatListener implements Runnable{
 				 * what the lecturer will listen to, compared to the server
 				 */
 				switch(obj.getString("Function")){
-					// lecturer only
+				//Lecture Review Only
+					case "lectureReview":
+						((LectureReviewController) controller).recieveLectureReview(obj);
+						break;
+						
 					case "addLectures":
 						controller.recieveLectures(obj);
 						break;
+						
 					case("addQuestions"):
 						controller.recieveQuestions(obj);
 						break;
+						
 						
 				}
 			}catch(JSONException e){

@@ -1,5 +1,6 @@
 package program.connection;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -268,19 +269,24 @@ public class CommandsManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private void reviewLecture(JSONObject obj, ClientConnection client){
 		try {
-			System.out.println("Lecturer has requested to get a review of lecture " + obj.getString("ClassID"));
-			getLatestQuestions(obj, client);
-			
+			int id = obj.getInt("LectureID"); 
+			System.out.println("Lecturer has requested to get a review of lecture " + obj.getString("ClassID") + " | " + obj.getInt("LectureID"));
+			//getLatestQuestions(obj, client);
+			JSONObject retObj = new JSONObject();
+			retObj.put("Function", "lectureReview");
+			retObj.put("StampList", clientsManager.main.getDatabase().getLostMeTimestamps(id)); //JSONArray
+			retObj.put("JSONStats", clientsManager.main.getDatabase().getLectureStats(id));		//JSONObject		
+			System.out.println("Sending: " + retObj.toString());
+			client.sendJSON(retObj);
+			System.out.println("Sent!!");
 			// attributes of lecture (name, students lost, students connected)
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
 }
