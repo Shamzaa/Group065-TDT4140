@@ -1,7 +1,11 @@
 package program.uiController;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,29 +32,38 @@ import program.connection.ClientListener;
 import program.connection.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
-	ClientMain main;									//Refernce to the clientMain class that runs the program
+	ClientMain main;										//Reference to the clientMain class that runs the program
+
+	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions
+	private int connectedStudents = 0;						//The number of students currently connected
+	private int lostStudents = 0;							//The number of students who are currently lost
+	private int liveLectureID;								//The ID used to reference the lecture data table
 	
-	private double lostStudentsThreshold = 0.7;
-	ArrayList<Question> questionList = new ArrayList<>();	//Strings for all questions [Unused? TODO remove]
-	private int connectedStudents = 0;					//The number of students currently connected
-	private int lostStudents = 0;						//The number of students who are currently lost
-	private int liveLectureID;							//The ID used to reference the lecture data table
+	//Variables for processing how many students are lost in a window
+	private double lostThreshold = 	0.9;	//Decides how many students must be lost for the program to give the lecturer a notification
+	//private boolean emptyFrame = true; //Lets the program decide if the received lostMe signal is the start of a new time frame
+	//private Timer lostFrameTimer = new Timer("frameTimerThread");
+	private ArrayList<Timestamp> lostTimes = new ArrayList<>();
+	private Timestamp lectureStartTime;
+	
 	
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
 	@FXML VBox QuestionContainer;		//QuestionBoxes are added to this container, so they appear in the view as a list
 	@FXML Arc lostMeRedArc;				//The red part of the "You Lost Me" pie-chart
 	@FXML Arc lostMeGreenArc;			//The green part of the "You Lost Me" pie-chart
-	@FXML Text lostMeRedText;			//The text that shows the precentage of lost students
+	@FXML Text lostMeRedText;			//The text that shows the percentage of lost students
 	@FXML Text lostMeGreenText;			//The text that shows the percentage of students that are NOT lost
 	@FXML Text studentsConnectedText;	//The text that shows how many students are connected
 	@FXML Text lectureTitleText; 		//The text that shows the classID from the main class for the lecture, so students know what to connect to
 	@FXML Text lectureNameText;			//The text that shows the name the lecturer decided for the live lecture
-
+	
+	
 	@FXML
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
+		lectureStartTime = new Timestamp(System.currentTimeMillis());	
 	}
 	
 	/**@author Anders
@@ -101,7 +114,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lostMeGreenArc.setStartAngle(90);
 		lostMeGreenArc.setLength(360-newAngle);
 	}
-	
+
 	/** @author Anders
 	 *  Increments the number of students, and update ui elements
 	 */
@@ -111,17 +124,31 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		updatePieChartValues();
 	}
 	/** @author Anders
-	 *  Increments the number of LOST students, and updates the pieChart
+	 *  Increments the number of LOST students, and updates the pieChart. Also checks and warns the teacher if the threshold is reached
 	 */
 	public void studentLost(){
 		lostStudents ++;
 		updatePieChartValues();
-		System.out.println(((double) lostStudents)/connectedStudents);
-		if(((double) lostStudents)/connectedStudents > lostStudentsThreshold){
-			main.displayAlert("Students are lost!", null, "The set threshold for amount of students lost have been reached. Consider going back and repeat the subject you talked about!");
+		Timestamp recvTime = new Timestamp(System.currentTimeMillis());
+		lostTimes.add(recvTime);
+		System.out.println("Recieved lostMe message at: " + recvTime);
+		System.out.println(lostTimes);
+		
+		if(((double) lostStudents/(double) connectedStudents) > lostThreshold){
+			main.displayAlert("Students lost!", null, "A threshold has been reached, your students are lost! Consider redoing the most recent part of the lecture!");
 		}
+		
+		Timer cooldownTimer = new Timer();
+		cooldownTimer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("Discarding studentLost");
+				lostStudents --;
+				updatePieChartValues();
+			}
+		}, main.getLostMeTimerLenght()*1000);
 	}
-	
+
 	/** @author Anders
 	 *  Adds a new question to the VBox container
 	 *  @param question A Question object of the question that will be displayed
@@ -140,8 +167,6 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 			
 			controller.setScoreVisible(true);
 			controller.setQuestion(question);
-			//controller.setScore(question.getRating());
-			//controller.setQuestionId(question.getId());
 			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
 			
@@ -160,9 +185,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
 		main.getRootController().setTitle("Lecture");
-		
 	}
-	
 	//-> Functions for QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){

@@ -1,5 +1,6 @@
 package program.connection;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,10 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> getLatestLectures(obj, client));
 		stringToFunction.put("reviewLecture", 
 				(JSONObject obj, ClientConnection client) -> reviewLecture(obj, client));
+		stringToFunction.put("FetchLostMeTimeStamps",
+				(JSONObject obj, ClientConnection client) -> fetchLostMeTimeStamps(obj, client));
 	}
+
 
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
 		try {
@@ -59,24 +63,17 @@ public class CommandsManager {
 		
 	}
 	
-	
-	private void getLiveLectureID(JSONObject obj, ClientConnection client) {
-		/*
-		Database db = new Database();
-		db.connect();
+	private void fetchLostMeTimeStamps(JSONObject obj, ClientConnection client) {
 		try {
-			int liveID = db.getLiveLectureID(obj.getString("ClassID"));
-			
-			JSONObject retObj = new JSONObject();
-			retObj.put("Function", "SetLiveLectureID");
-			retObj.put("LiveLectureID", liveID);
-			client.sendJSON(retObj);
+			int lectureID = obj.getInt("lectureID");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		db.close();
-		*/
+	}
+	
+	private void getLiveLectureID(JSONObject obj, ClientConnection client) {
+		
 		try {
 			int liveID = client.getLectureID();
 			
@@ -93,8 +90,6 @@ public class CommandsManager {
 	
 	// functions that we can do
 	private void getLatestQuestions(JSONObject obj, ClientConnection client){
-		//Database db =  new Database();
-		//db.connect();
 		try {
 			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID") +"["+obj.getInt("LectureID")+"]");
 			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(obj.getInt("LectureID"), obj.getInt("QuestionAmount"));
@@ -180,6 +175,7 @@ public class CommandsManager {
 			notification.put("Function", "StudentLost");
 			
 			lecturer.sendJSON(notification);
+			clientsManager.main.getDatabase().createYouLostMe(lecturer.getLectureID());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -273,19 +269,24 @@ public class CommandsManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private void reviewLecture(JSONObject obj, ClientConnection client){
 		try {
-			System.out.println("Lecturer has requested to get a review of lecture " + obj.getString("ClassID"));
-			getLatestQuestions(obj, client);
-			
+			int id = obj.getInt("LectureID"); 
+			System.out.println("Lecturer has requested to get a review of lecture " + obj.getString("ClassID") + " | " + obj.getInt("LectureID"));
+			//getLatestQuestions(obj, client);
+			JSONObject retObj = new JSONObject();
+			retObj.put("Function", "lectureReview");
+			retObj.put("StampList", clientsManager.main.getDatabase().getLostMeTimestamps(id)); //JSONArray
+			retObj.put("JSONStats", clientsManager.main.getDatabase().getLectureStats(id));		//JSONObject		
+			System.out.println("Sending: " + retObj.toString());
+			client.sendJSON(retObj);
+			System.out.println("Sent!!");
 			// attributes of lecture (name, students lost, students connected)
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
 }

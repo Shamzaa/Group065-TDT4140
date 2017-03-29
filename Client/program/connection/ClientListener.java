@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
+import program.uiController.LectureReviewController;
 import program.uiController.LecturerWindowController;
 import program.uiController.StudentWindowController;
 
@@ -45,12 +46,11 @@ public class ClientListener implements Runnable{
 					/* just making a switch case because it's very limited 
 					 * what the lecturer will listen to, compared to the server
 					 */
-					switch(obj.getString("Function")){
+					switch(obj.getString("Function")){						
 						//Student Only
 						
-						//Both client-types
+						//Both client-types live
 						case "updateScore":
-							System.out.println(">>>> CASE:  Update Question Score");
 							controller.updateQuestionScore(obj.getInt("QuestionID"), obj.getInt("Score"));
 							break;
 						case "addQuestions":
@@ -71,6 +71,7 @@ public class ClientListener implements Runnable{
 				}catch(JSONException e){
 					// data recieved wasn't a json object
 					// close connection or ignore.
+					e.printStackTrace();
 				}
 			}
 		}catch (IOException e) {

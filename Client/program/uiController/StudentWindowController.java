@@ -3,7 +3,10 @@ package program.uiController;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -117,13 +120,6 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
-			/*for (Node node : qPane.getChildren()) {
-				if (node.getId().equals("QuestionText")){
-					((TextArea) node).setText(question);
-					
-					break;
-				}
-			}*/
 			question.setRelatedQuestionPane(qPane);
 			// Runs Controller functions
 			QuestionBoxController controller = loader.getController();
@@ -180,8 +176,16 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		main.getServerManager().sendJSON(obj);
 		
 		// TODO: some visual feedback for the student to let him know that he sendt the notification
-		
-		
+		//triggers the run() block after lostMeButtonCooldown*1000 milliseconds
+		Timer cooldownTimer = new Timer();
+		cooldownTimer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				lostMeButton.setDisable(false);
+				Platform.runLater(() -> lostMeButton.setText("YOU LOST ME!"));
+				System.out.println("lostButton enabled again!");
+			}
+		}, main.getLostMeTimerLenght()*1000);
 	}
 
 	private void handleQuestionButtonAction() {

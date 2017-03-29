@@ -27,25 +27,21 @@ import program.connection.QuestionReciever;
 public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	private ClientMain main;
-	ArrayList<Question> questionList = new ArrayList<>();
-	private int connectedStudents = 0;
-	private int lostStudents = 0;
+	ArrayList<Question> questionList = new ArrayList<>(); //Is never updated, can probably be removed! TODO
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
+	private int connectedStudents = 0; //Is never updated, can probably be removed
 	
 	@FXML VBox QuestionContainer;
-	@FXML Arc lostMeRedArc;
-	@FXML Arc lostMeGreenArc;
-	@FXML Text lostMeRedText;
-	@FXML Text lostMeGreenText;
+	//@FXML Arc lostMeRedArc;
+	//@FXML Arc lostMeGreenArc;
+	//@FXML Text lostMeRedText;
+	//@FXML Text lostMeGreenText;
 	
-	@FXML Text studentsConnectedText;
+	//@FXML Text studentsConnectedText;
 	
 	@FXML
 	private void initialize(){
-
-		updatePieChartValues();
 		updateStudentsConnectedAmount();
-		
 	}
 	
 	private void sortQuestionsByScore(){
@@ -62,7 +58,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	}
 	
 	
-	private void reviewLecture(){
+	private void fetchLectureReview(){
 		
 		try {
 			JSONObject obj = new JSONObject();
@@ -79,7 +75,9 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		}
 		
 	}
-	
+
+	//TODO Unused!
+	/*
 	public void updatePieChartValues(){
 		double percentRed = 0;		
 		if(connectedStudents == 0){
@@ -107,9 +105,10 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		//System.out.print(" -> ");
 		//System.out.println(newAngle);
 	}
+	*/
 	
 	public void updateStudentsConnectedAmount(){
-		studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
+		//studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
 	}
 	
 	private void addQuestion(Question question){		
@@ -135,7 +134,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	public void setMainApp(ClientMain main){
 		this.main = main;
 		clientProcessingPool.submit(new LectureStatListener(main, this));
-		reviewLecture();
+		fetchLectureReview();
 
 		main.getRootController().setTitle("Lecture Review");
 	}
@@ -166,8 +165,26 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 
 
 	@Override
-	public void recieveSingleLecture(JSONObject obj) {
-		// TODO update lecture stats in view
+	public void recieveLectureReview(JSONObject obj){
+		System.out.println(">> RECIEVED STATS");
+		System.out.println(obj);
+		try {
+			JSONArray stampArr = obj.getJSONArray("StampList");
+			JSONObject statObj = obj.getJSONObject("JSONStats");
+			System.out.println("STATS:");
+			System.out.println("StudentsJoined: "  + String.valueOf(statObj.getInt("studentsJoined")));
+			System.out.println("Name:           "  + String.valueOf(statObj.getString("name")));
+			System.out.println("Start:          "  + String.valueOf(statObj.getString("start")));
+			System.out.println("Stop:           "  + String.valueOf(statObj.getString("stop")));
+			System.out.println("TIMESTAMPS:");
+			for (int i = 0; i < stampArr.length(); i++) {
+				System.out.println(stampArr.get(i));
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

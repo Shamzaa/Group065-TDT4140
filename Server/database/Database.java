@@ -4,9 +4,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 
 
@@ -237,8 +242,69 @@ public class Database implements AutoCloseable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void createYouLostMe(int lectureID){
+		Time timeStamp = Time.valueOf(LocalTime.now());
+		try(Statement stmt = conn.createStatement()){
+			String query = "INSERT INTO `youlostme`(`lectureID`, `timeStamp`) VALUES ("+ lectureID +",'"+ timeStamp +"');";
+			stmt.execute(query);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-
+	public ArrayList<Timestamp> getLostMeTimestamps(int lectureID){
+		ArrayList<Timestamp> retArr = new ArrayList<>();
+		try(Statement stmt = conn.createStatement()){
+			String query = "SELECT timeStamp FROM youlostme WHERE lectureID="+String.valueOf(lectureID);
+			if(stmt.execute(query)){
+				ResultSet rs = stmt.getResultSet();
+				while(rs.next()){
+					retArr.add(rs.getTimestamp(1));
+				}
+			}
+		} catch(SQLException e){
+			e.printStackTrace();
+		}
+		return retArr;
+	}
+	
+	public HashMap<String, String> getLectureStats(int lectureID){
+		HashMap<String, String> retMap = new HashMap<>();
+		try (Statement stmt = conn.createStatement()){
+			String query = "SELECT name, studentsJoined, start, stop FROM lecture WHERE id = " + String.valueOf(lectureID);
+			//				SELECT name, studentsJoined, start, stop FROM lecture WHERE id = 170
+			System.out.println("QUERY >> "+ query);
+			if(stmt.execute(query)){
+				try(ResultSet rs = stmt.getResultSet()){
+					while(rs.next()){
+						retMap.put("name", rs.getString(1));
+						if(rs.wasNull()){
+							retMap.replace("name", "");
+						}
+						retMap.put("studentsJoined", rs.getString(2));
+						if(rs.wasNull()){
+							retMap.replace("studentsJoined", "");
+						}
+						retMap.put("start", rs.getString(3));
+						if(rs.wasNull()){
+							retMap.replace("start", "");
+						}
+						retMap.put("stop", rs.getString(4));
+						if(rs.wasNull()){
+							retMap.replace("stop", "");
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return retMap;
+	}
+	
 	@Override
 	public void close() {
 		try {

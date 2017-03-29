@@ -153,7 +153,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 
 	// unusued in this view.
 	@Override
-	public void recieveSingleLecture(JSONObject obj) {
+	public void recieveLectureReview(JSONObject obj) {
 		// TODO Auto-generated method stub
 		
 	}
