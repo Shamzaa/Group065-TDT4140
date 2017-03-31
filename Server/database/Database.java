@@ -77,8 +77,19 @@ public class Database implements AutoCloseable {
 	public boolean postNewQuestion(String question, int lecture_id) {
 		try (Statement stmt = conn.createStatement()) {
 			String query = "insert into questions(question, lecture_id, time) values ('" + question + "'," + lecture_id + ", NOW());";
-			System.out.println(query);
-			if (stmt.execute(query)) {
+			if (!stmt.execute(query)) {
+				return true;
+			}					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean executeStatement(String statement_as_String){
+		try (Statement stmt = conn.createStatement()) {
+			if (stmt.execute(statement_as_String)) {
 				return true;
 			}					
 		} catch (SQLException e) {
@@ -88,10 +99,12 @@ public class Database implements AutoCloseable {
 		return false;
 	}
 
-/**
- * Takes in lecture_id as in, and the number of desired questions.
- * Returns an ArrayList of dictionaries with keys: question, time, rating
- */
+
+	/**
+	 * Takes in lecture_id as in, and the number of desired questions.
+	 * Returns an ArrayList of dictionaries with keys: question, time, rating
+	 */
+
 	
 	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
 		ArrayList<Map<String, String>> questions = new ArrayList<>();
@@ -182,12 +195,24 @@ public class Database implements AutoCloseable {
 			String query = "insert into lecture(name, subject_code, studentsJoined) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0);";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
-			}					
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
 		}
 		return 0;
+	}
+	
+	// creates a new subject/class
+	public boolean createNewSubject(String classID, String name){		
+		try (Statement stmt = conn.createStatement()) {
+			String query = "insert into subjects(code, name) values ('" + classID.toUpperCase() + "', '" + name + "');";
+			stmt.execute(query);
+			return true;				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	
