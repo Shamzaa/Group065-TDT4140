@@ -1,0 +1,21 @@
+#questionTextArea{
+	-fx-text-fill: #ff0900;
+}
+
+#questionTextArea .content{
+	-fx-base: #fff700;
+	-fx-background-color: #fff700;
+}
+#errorText{
+	-fx-text-fill: red;
+}
+
+.root{
+    -fx-font-size: 12pt;
+    -fx-font-family: "Courier New Lucida Console";
+    -fx-base: #003b46;
+    -fx-background: #c4dfe6;
+    -fx-border-color: white, white;   
+}
+
+

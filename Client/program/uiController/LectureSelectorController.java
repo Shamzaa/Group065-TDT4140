@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
@@ -17,7 +18,7 @@ public class LectureSelectorController implements AppBinder{
 	
 	// UI components
 	@FXML
-	private TextField CourseCodeField;
+	private ChoiceBox<String> courseCodeChoiceBox;
 	@FXML
 	private Button ConnectButton;
 	@FXML
@@ -34,16 +35,17 @@ public class LectureSelectorController implements AppBinder{
 	
 	private void connectToLecture(){
 		// TODO: check if coursecodefield is not empty, and send a request to the server to see if a lecture is happening in that class.
-		if(CourseCodeField.getText().equals("")){
+		/*if(courseCodeChoiceBox.getSelectionModel().getSelectedItem().equals("")){
+			//TODO Remove? This will never happen with choicebox
 			ErrorLabel.setText("the field for course code is empty");
 			return;
-		}
-		if(!lectureIsHappening(CourseCodeField.getText())){
-			ErrorLabel.setText("No lecture is being held with course code: " + CourseCodeField.getText());
+		}*/
+		if(!lectureIsHappening(courseCodeChoiceBox.getSelectionModel().getSelectedItem())){
+			ErrorLabel.setText("No lecture is being held with course code: " + courseCodeChoiceBox.getSelectionModel().getSelectedItem());
 			return;
 		}
 		
-		main.setClassID(CourseCodeField.getText());
+		main.setClassID(courseCodeChoiceBox.getSelectionModel().getSelectedItem());
 		joinLectureNotify();
 		main.loadUI("ui/StudentWindow.fxml");
 		
@@ -53,7 +55,7 @@ public class LectureSelectorController implements AppBinder{
 	
 	private boolean lectureIsHappening(String classID){
 		// sends request to server to see if a lecture is happening
-		return ServerRequests.serverHasClass(main.getServerManager(), classID);
+		return ServerRequests.serverHasLecture(main.getServerManager(), classID);
 		
 	}
 	
@@ -74,6 +76,11 @@ public class LectureSelectorController implements AppBinder{
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
+		courseCodeChoiceBox.setItems(ServerRequests.getAllSubjectCodes(main.getServerManager()));
+		courseCodeChoiceBox.getSelectionModel().selectFirst();
+		System.out.println("Choicebox initialized");
+
+		main.getRootController().setTitle("Join lecture");
 	}
 
 }

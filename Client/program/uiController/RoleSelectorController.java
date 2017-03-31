@@ -38,6 +38,8 @@ public class RoleSelectorController implements AppBinder{
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
+
+		main.getRootController().setTitle("Select role and server");
 	}
 	
 	// different functions to load next part of UI after connection to the server and load UI
@@ -83,7 +85,7 @@ public class RoleSelectorController implements AppBinder{
 		}
 		main.getServerManager().sendJSON(obj);
 		
-		main.loadUI("ui/CreateLecture.fxml");
+		main.loadUI("ui/LectureLogin.fxml");
 	}
 	
 	// function to check if proposed server adress is online, returns true if able to connect, false otherwise

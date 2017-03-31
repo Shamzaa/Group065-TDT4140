@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.RoleSelectorController">
+<AnchorPane prefHeight="178.0" prefWidth="211.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.RoleSelectorController">
    <children>
-      <Pane prefHeight="300.0" prefWidth="400.0">
+      <HBox alignment="CENTER" prefHeight="320.0" prefWidth="211.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="selectStudent" layoutX="101.0" layoutY="103.0" mnemonicParsing="false" text="Student" />
-            <Button fx:id="selectLecturer" layoutX="241.0" layoutY="103.0" mnemonicParsing="false" text="Lecturer" />
-            <Label layoutX="159.0" layoutY="73.0" text="Select your role" />
-            <TextField fx:id="serverField" layoutX="126.0" layoutY="27.0" promptText="Server IP" />
-            <Label fx:id="errorLabel" layoutX="186.0" layoutY="169.0" text="ErrorLabel" textFill="RED" />
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="168.0" prefWidth="201.0" HBox.hgrow="NEVER">
+               <children>
+                  <Button fx:id="selectStudent" layoutX="2.0" layoutY="80.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" text="Student" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="107.0" />
+                  <Button fx:id="selectLecturer" layoutX="107.0" layoutY="80.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" text="Lecturer" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="2.0" />
+                  <Label alignment="CENTER" contentDisplay="RIGHT" layoutX="4.0" layoutY="46.0" prefHeight="17.0" prefWidth="197.0" text="Select your role:" AnchorPane.leftAnchor="4.0" />
+                  <TextField fx:id="serverField" layoutX="2.0" layoutY="5.0" prefHeight="25.0" prefWidth="198.0" promptText="Server IP" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="5.0" />
+                  <Label fx:id="errorLabel" layoutX="5.0" layoutY="118.0" maxWidth="197.0" prefHeight="46.0" prefWidth="197.0" text="0000000000000000000000000000000000000000000000" textAlignment="CENTER" textFill="RED" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="118.0" />
+               </children>
+            </AnchorPane>
          </children>
-      </Pane>
+         <padding>
+            <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
+         </padding>
+      </HBox>
    </children>
 </AnchorPane>
