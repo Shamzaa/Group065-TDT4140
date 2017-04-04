@@ -1,7 +1,11 @@
 package program.uiController;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,6 +19,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
@@ -32,6 +40,14 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	private int connectedStudents = 0; //Is never updated, can probably be removed
 	
 	@FXML VBox QuestionContainer;
+	@FXML Text LectureNameText;
+	@FXML Text dateText;
+	@FXML Text studPresText;
+	@FXML Text startTimeText;
+	@FXML Text stopTimeText;
+	
+	@FXML LineChart<String, Integer> lostMeLineChart;
+	@FXML CategoryAxis xAxis;
 	//@FXML Arc lostMeRedArc;
 	//@FXML Arc lostMeGreenArc;
 	//@FXML Text lostMeRedText;
@@ -163,23 +179,84 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		}
 	}
 
-
-	@Override
 	public void recieveLectureReview(JSONObject obj){
 		System.out.println(">> RECIEVED STATS");
 		System.out.println(obj);
 		try {
-			JSONArray stampArr = obj.getJSONArray("StampList");
+			//Get info from JSON
 			JSONObject statObj = obj.getJSONObject("JSONStats");
-			System.out.println("STATS:");
-			System.out.println("StudentsJoined: "  + String.valueOf(statObj.getInt("studentsJoined")));
-			System.out.println("Name:           "  + String.valueOf(statObj.getString("name")));
-			System.out.println("Start:          "  + String.valueOf(statObj.getString("start")));
-			System.out.println("Stop:           "  + String.valueOf(statObj.getString("stop")));
-			System.out.println("TIMESTAMPS:");
-			for (int i = 0; i < stampArr.length(); i++) {
-				System.out.println(stampArr.get(i));
+			JSONArray stampArr = obj.getJSONArray("StampList");
+			int studentsJoined = statObj.getInt("studentsJoined");
+			String name = statObj.getString("name");
+			LocalTime start;
+			LocalTime stop;
+			
+			if(stampArr.length() != 0){
+				LocalTime firstStamp = LocalTime.parse(stampArr.getString(0).substring(11));
+				LocalTime lastStamp = LocalTime.parse(stampArr.getString(stampArr.length()-1).substring(11));
+				
+				start = (statObj.getString("start")==""? 
+						LocalTime.parse(statObj.getString("start").substring(11)) 
+						: firstStamp);
+				stop = (statObj.getString("stop")==""? 
+						LocalTime.parse(statObj.getString("stop").substring(11)) 
+						: lastStamp);
+				
+				
+				ObservableList<String> stampTimes = FXCollections.observableArrayList();
+				String oldStamp = "";
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm:ss");
+				System.out.println(">> First stamp: " + firstStamp);
+				System.out.println(">> Last stamp:  " + lastStamp);
+				//TODO Calculate a good division for x-axis labels
+				//Maybe take start and stop, divide to 10 part chunks?
+				
+				
+				
+				for (int i = 0; i < stampArr.length(); i++) {				
+					LocalTime stamp = LocalTime.parse(stampArr.getString(i).substring(11));
+					//They are ordered, so checking the previous stamp is enough
+					String newStamp = stamp.format(formatter);
+					System.out.println(newStamp); //Debug print
+					if(!oldStamp.equals(newStamp)){
+						stampTimes.add(newStamp);
+						oldStamp = newStamp;
+					}
+				}
+				//Platform.runLater(() -> {
+					System.out.println(stampTimes); 
+					xAxis.setCategories(stampTimes);
+				//});
+				
+				
+				
+				
+			} else {
+				start = (statObj.getString("start")==""?
+						LocalTime.parse(statObj.getString("start").substring(11))
+					    : LocalTime.MIN);
+				stop = (statObj.getString("stop")==""?
+						LocalTime.parse(statObj.getString("stop").substring(11))
+					    : LocalTime.MIN);
 			}
+			
+			//Display info
+			LectureNameText.setText(name);
+			studPresText.setText(String.valueOf(studentsJoined));
+			startTimeText.setText(start.toString());
+			stopTimeText.setText(stop.toString());
+			
+			/* Prints for debugg
+			System.out.println("STATS:");
+			System.out.println("StudentsJoined: "  + String.valueOf(studentsJoined));
+			System.out.println("Name:           "  + name);
+			System.out.println("Start:          "  + start);
+			System.out.println("Stop:           "  + stop);
+			
+			System.out.println("TIMESTAMPS:");*/
+			
+			
+			//TODO Display timestamps in graph 
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
