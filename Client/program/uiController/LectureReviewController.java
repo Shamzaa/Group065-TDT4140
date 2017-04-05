@@ -115,7 +115,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	@Override
 	public void setMainApp(ClientMain main){
 		this.main = main;
-		clientProcessingPool.submit(new LectureStatListener(main, this));
+		clientProcessingPool.submit(new LectureStatListener(main, this, 2));
 		fetchLectureReview();
 		
 
@@ -202,7 +202,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				while (tempTime.isBefore(stop)) {
 					tempTime = tempTime.plusHours(hoursToAdd);
 					stampTimes.add(tempTime.format(formatter));
-					System.out.println("Temptime: " + tempTime.format(formatter));
+					//System.out.println("Temptime: " + tempTime.format(formatter));
 				}
 			}
 			else if (diffMin > 10) {
@@ -217,7 +217,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				while (tempTime.isBefore(stop)) {
 					tempTime = tempTime.plusMinutes(minutesToAdd);
 					stampTimes.add(tempTime.format(formatter));
-					System.out.println("Temptime: " + tempTime.format(formatter));
+					//System.out.println("Temptime: " + tempTime.format(formatter));
 				}
 			}
 			else{
@@ -226,17 +226,17 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
 				LocalTime tempTime = start.withSecond(0);
 				long secondstoAdd = diffSec/categoryDiff;
-				System.out.println(secondstoAdd);
+				//System.out.println(secondstoAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
 				while (tempTime.isBefore(stop)) {
 					tempTime = tempTime.plusSeconds(secondstoAdd);
 					stampTimes.add(tempTime.format(formatter));
-					System.out.println("Temptime: " + tempTime.format(formatter));
+					//System.out.println("Temptime: " + tempTime.format(formatter));
 				}					
 			}
 			xAxis.setCategories(stampTimes);
-			System.out.println(stampTimes);
+			//System.out.println(stampTimes);
 			int currentTimeStampIndex = 0;
 			int[] counters = new int[stampTimes.size()];
 			
@@ -244,7 +244,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				String stamp = LocalTime.parse(stampArr.getString(i).substring(11)).format(formatter);
 				//They are ordered, so checking the previous stamp is enough
 				//String newStamp = stamp.format(formatter);
-				System.out.println(stamp); //Debug print
+				//System.out.println(stamp); //Debug print
 				int hh;
 				int mm;
 				int ss;
@@ -257,13 +257,13 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 						//TODO add to the graph by hours
 						hh = Integer.parseInt(stamp);
 						catHH = Integer.parseInt(stampTimes.get(currentTimeStampIndex));
-						System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+						//System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
 						while(hh > catHH){
 							currentTimeStampIndex ++;
 							catHH= Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
 							
-							System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+							//System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
 						}
 						
 						counters[currentTimeStampIndex] ++;
@@ -274,15 +274,15 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 						mm = Integer.parseInt(stamp.substring(3));
 						catHH = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 						catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
-						System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
-						System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+						//System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+						//System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
 						while(hh > catHH || mm > catMM){
 							currentTimeStampIndex ++;
 							catHH= Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
 							
-							System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
-							System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+							//System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+							//System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
 							
 						}
 						
@@ -294,15 +294,15 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 						ss = Integer.parseInt(stamp.substring(3));
 						catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 						catSS = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
-						System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
-						System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
+						//System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+						//System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
 						while(mm > catMM ||ss > catSS){
 							currentTimeStampIndex ++;
 							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 							catSS = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
 							
-							System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
-							System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
+							//System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+							//System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
 							
 						}
 						
@@ -320,19 +320,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			studPresText.setText(String.valueOf(studentsJoined));
 			startTimeText.setText(start.toString());
 			stopTimeText.setText(stop.toString());
-			Platform.runLater(() -> lostMeBarChart.getData().add(series));
-			
-			/* Prints for debugg
-			System.out.println("STATS:");
-			System.out.println("StudentsJoined: "  + String.valueOf(studentsJoined));
-			System.out.println("Name:           "  + name);
-			System.out.println("Start:          "  + start);
-			System.out.println("Stop:           "  + stop);
-			
-			System.out.println("TIMESTAMPS:");*/
-			
-			
-			//TODO Display timestamps in graph 
+			Platform.runLater(() -> lostMeBarChart.getData().add(series));			
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

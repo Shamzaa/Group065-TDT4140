@@ -96,7 +96,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-		LectureStatListener l = new LectureStatListener(main, this);
+		LectureStatListener l = new LectureStatListener(main, this, 1);
 		fetchLectures();
 		classCodeLabel.setText(main.getClassID());
 		clientProcessingPool.submit(l);
