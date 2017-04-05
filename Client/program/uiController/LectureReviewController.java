@@ -3,7 +3,11 @@ package program.uiController;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -37,7 +42,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	private ClientMain main;
 	ArrayList<Question> questionList = new ArrayList<>(); //Is never updated, can probably be removed! TODO
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
-	private int connectedStudents = 0; //Is never updated, can probably be removed
 	
 	@FXML VBox QuestionContainer;
 	@FXML Text LectureNameText;
@@ -46,14 +50,9 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	@FXML Text startTimeText;
 	@FXML Text stopTimeText;
 	
-	@FXML LineChart<String, Integer> lostMeLineChart;
+	//@FXML LineChart<String, Integer> lostMeLineChart;
+	@FXML BarChart<String, Integer> lostMeBarChart; 
 	@FXML CategoryAxis xAxis;
-	//@FXML Arc lostMeRedArc;
-	//@FXML Arc lostMeGreenArc;
-	//@FXML Text lostMeRedText;
-	//@FXML Text lostMeGreenText;
-	
-	//@FXML Text studentsConnectedText;
 	
 	@FXML
 	private void initialize(){
@@ -75,7 +74,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	
 	private void fetchLectureReview(){
-		
 		try {
 			JSONObject obj = new JSONObject();
 			obj.put("Function", "reviewLecture");
@@ -89,39 +87,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-
-	//TODO Unused!
-	/*
-	public void updatePieChartValues(){
-		double percentRed = 0;		
-		if(connectedStudents == 0){
-			percentRed = 0;
-		} else {
-			percentRed =100*lostStudents/connectedStudents;	
-		}
-		
-
-		//System.out.println("Setting angles, ["+String.valueOf(percentRed));
-		
-		lostMeRedText.setText(String.valueOf(percentRed)+"%");
-		lostMeGreenText.setText(String.valueOf(100 - percentRed)+"%");
-		//System.out.println("text done");
-		
-		double newAngle = 360*(percentRed/100);
-		//System.out.println("angles got");
-		
-		lostMeRedArc.setStartAngle(90-newAngle);
-		lostMeRedArc.setLength(newAngle);
-		lostMeGreenArc.setStartAngle(90);
-		lostMeGreenArc.setLength(360-newAngle);
-		
-		//System.out.print(oldAngle);
-		//System.out.print(" -> ");
-		//System.out.println(newAngle);
-	}
-	*/
 	
 	public void updateStudentsConnectedAmount(){
 		//studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
@@ -191,6 +157,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			LocalTime start;
 			LocalTime stop;
 			
+			//Decide start and stop timeStamps, if present
 			if(stampArr.length() != 0){
 				LocalTime firstStamp = LocalTime.parse(stampArr.getString(0).substring(11));
 				LocalTime lastStamp = LocalTime.parse(stampArr.getString(stampArr.length()-1).substring(11));
@@ -201,37 +168,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				stop = (statObj.getString("stop")==""? 
 						LocalTime.parse(statObj.getString("stop").substring(11)) 
 						: lastStamp);
-				
-				
-				ObservableList<String> stampTimes = FXCollections.observableArrayList();
-				String oldStamp = "";
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm:ss");
-				System.out.println(">> First stamp: " + firstStamp);
-				System.out.println(">> Last stamp:  " + lastStamp);
-				//TODO Calculate a good division for x-axis labels
-				//Maybe take start and stop, divide to 10 part chunks?
-				
-				
-				
-				for (int i = 0; i < stampArr.length(); i++) {				
-					LocalTime stamp = LocalTime.parse(stampArr.getString(i).substring(11));
-					//They are ordered, so checking the previous stamp is enough
-					String newStamp = stamp.format(formatter);
-					System.out.println(newStamp); //Debug print
-					if(!oldStamp.equals(newStamp)){
-						stampTimes.add(newStamp);
-						oldStamp = newStamp;
-					}
-				}
-				//Platform.runLater(() -> {
-					System.out.println(stampTimes); 
-					xAxis.setCategories(stampTimes);
-				//});
-				
-				
-				
-				
-			} else {
+			} 
+			else {
 				start = (statObj.getString("start")==""?
 						LocalTime.parse(statObj.getString("start").substring(11))
 					    : LocalTime.MIN);
@@ -240,11 +178,147 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 					    : LocalTime.MIN);
 			}
 			
+			//Set up the graph categories
+			ObservableList<String> stampTimes = FXCollections.observableArrayList();
+			
+			int categoryDiff = 10; //increase this for more graph categories
+			long diffHours = ChronoUnit.HOURS.between(start, stop);
+			long diffMin = ChronoUnit.MINUTES.between(start, stop);
+			long diffSec = ChronoUnit.SECONDS.between(start, stop);
+			
+			String formatPattern;
+			DateTimeFormatter formatter;
+			if(diffHours > 10) {
+				//Graph by hours
+				formatPattern = "HH";
+				formatter = DateTimeFormatter.ofPattern(formatPattern);
+				LocalTime tempTime = start.withSecond(0);
+				long hoursToAdd = diffSec/categoryDiff;
+				System.out.println(hoursToAdd);
+				
+				stampTimes.add(tempTime.format(formatter));
+				while (tempTime.isBefore(stop)) {
+					tempTime = tempTime.plusHours(hoursToAdd);
+					stampTimes.add(tempTime.format(formatter));
+					System.out.println("Temptime: " + tempTime.format(formatter));
+				}
+			}
+			else if (diffMin > 10) {
+				//Graph by minutes
+				formatPattern = "hh:mm";
+				formatter = DateTimeFormatter.ofPattern(formatPattern);
+				LocalTime tempTime = start.withSecond(0);
+				long minutesToAdd = diffMin/categoryDiff;
+				System.out.println(minutesToAdd);
+				
+				stampTimes.add(tempTime.format(formatter));
+				while (tempTime.isBefore(stop)) {
+					tempTime = tempTime.plusMinutes(minutesToAdd);
+					stampTimes.add(tempTime.format(formatter));
+					System.out.println("Temptime: " + tempTime.format(formatter));
+				}
+			}
+			else{
+				//Graph by seconds
+				formatPattern = "mm:ss";
+				formatter = DateTimeFormatter.ofPattern(formatPattern);
+				LocalTime tempTime = start.withSecond(0);
+				long secondstoAdd = diffSec/categoryDiff;
+				System.out.println(secondstoAdd);
+				
+				stampTimes.add(tempTime.format(formatter));
+				while (tempTime.isBefore(stop)) {
+					tempTime = tempTime.plusSeconds(secondstoAdd);
+					stampTimes.add(tempTime.format(formatter));
+					System.out.println("Temptime: " + tempTime.format(formatter));
+				}					
+			}
+			xAxis.setCategories(stampTimes);
+			System.out.println(stampTimes);
+			int currentTimeStampIndex = 0;
+			int[] counters = new int[stampTimes.size()];
+			
+			for (int i = 0; i < stampArr.length(); i++) {				
+				String stamp = LocalTime.parse(stampArr.getString(i).substring(11)).format(formatter);
+				//They are ordered, so checking the previous stamp is enough
+				//String newStamp = stamp.format(formatter);
+				System.out.println(stamp); //Debug print
+				int hh;
+				int mm;
+				int ss;
+				int catHH;
+				int catMM;
+				int catSS;
+				
+				switch(formatPattern) {
+					case "HH":
+						//TODO add to the graph by hours
+						hh = Integer.parseInt(stamp);
+						catHH = Integer.parseInt(stampTimes.get(currentTimeStampIndex));
+						System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+						while(hh > catHH){
+							currentTimeStampIndex ++;
+							catHH= Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
+							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
+							
+							System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+						}
+						
+						counters[currentTimeStampIndex] ++;
+						break;
+					case "hh:mm":
+						//TODO add to the graph by minutes
+						hh = Integer.parseInt(stamp.substring(0, 2));
+						mm = Integer.parseInt(stamp.substring(3));
+						catHH = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
+						catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
+						System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+						System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+						while(hh > catHH || mm > catMM){
+							currentTimeStampIndex ++;
+							catHH= Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
+							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
+							
+							System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+							System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+							
+						}
+						
+						counters[currentTimeStampIndex] ++;
+						break;
+					case "mm:ss":
+						//TODO add to the graph by seconds
+						mm = Integer.parseInt(stamp.substring(0, 2));
+						ss = Integer.parseInt(stamp.substring(3));
+						catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
+						catSS = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
+						System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+						System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
+						while(mm > catMM ||ss > catSS){
+							currentTimeStampIndex ++;
+							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
+							catSS = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
+							
+							System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
+							System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
+							
+						}
+						
+						counters[currentTimeStampIndex] ++;
+						break;
+				}
+			}
+			XYChart.Series<String, Integer> series = new XYChart.Series<>();
+			for (int i = 0; i < counters.length; i++) {
+				series.getData().add(new XYChart.Data<>(stampTimes.get(i), counters[i]));
+			}
+			
 			//Display info
 			LectureNameText.setText(name);
 			studPresText.setText(String.valueOf(studentsJoined));
 			startTimeText.setText(start.toString());
 			stopTimeText.setText(stop.toString());
+			Platform.runLater(() -> lostMeBarChart.getData().add(series));
 			
 			/* Prints for debugg
 			System.out.println("STATS:");
@@ -260,6 +334,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 		

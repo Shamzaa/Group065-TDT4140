@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,27 +21,27 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="350.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="75.0" minHeight="-Infinity" prefHeight="64.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="233.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="168.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="64.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="226.0" minHeight="10.0" prefHeight="214.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="184.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Text fx:id="LectureNameText" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[Lecture Name]" textAlignment="CENTER" wrappingWidth="250.00000044703484" />
-                  <Text id="subInfoText" fx:id="dateText" fill="GREY" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[Date]" textAlignment="CENTER" wrappingWidth="250.0" />
+                  <Text id="subInfoText" fx:id="dateText" fill="GREY" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[Date]" textAlignment="CENTER" wrappingWidth="250.0" />
                </children>
             </AnchorPane>
-            <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <AnchorPane prefHeight="115.0" prefWidth="772.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <LineChart fx:id="lostMeLineChart" animated="false" layoutX="130.0" layoutY="9.0" prefHeight="150.0" prefWidth="792.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <BarChart fx:id="lostMeBarChart" animated="false" layoutX="9.0" legendVisible="false" prefHeight="193.0" prefWidth="774.0" title="Students lost" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="0.0">
                     <xAxis>
-                      <CategoryAxis fx:id="xAxis" />
+                      <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
                       <NumberAxis side="LEFT" />
                     </yAxis>
-                  </LineChart>
+                  </BarChart>
                </children>
             </AnchorPane>
             <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="461.0" vbarPolicy="ALWAYS" GridPane.columnIndex="1" GridPane.rowSpan="2">
