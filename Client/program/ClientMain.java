@@ -70,6 +70,11 @@ public class ClientMain extends Application{
 			// give controller access to main app
 			AppBinder controller = loader.getController();
 			controller.setMainApp(this);
+			
+			if(!rootCont.skipAddPath()){
+				rootCont.addNewPath(path, controller);				
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,6 +94,7 @@ public class ClientMain extends Application{
 		loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
 		root = (BorderPane) loader.load();
 		rootCont = loader.getController();
+		rootCont.setMainApp(this);
 
 		// Show the scene containing the root layout.
 		Scene scene = new Scene(root);
