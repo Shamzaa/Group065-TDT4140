@@ -92,7 +92,8 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		main.loadUI("ui/LectureReview.fxml");
 
 	}
-
+	//- Functions from interfaces ----------------------------------------------------------------------
+	//-> From AppBinder
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -102,10 +103,14 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		clientProcessingPool.submit(l);
 
 		main.getRootController().setTitle("Lectures Overview");
-		
-		
 	}
-
+	
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads and such are closed
+	}
+	
+	//-> From LectureReciever
 	@Override
 	public void recieveLectures(JSONObject obj) {
 		try {
@@ -118,15 +123,12 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 				
 				addLecture(lectureName,studentsJoined,id);
 			}
-			
-
 			progress.setVisible(false);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -141,21 +143,17 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-
-	// unusued in this view.
+	// Unused in this view.
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	// unusued in this view.
+	// unused in this view.
 	@Override
 	public void recieveLectureReview(JSONObject obj) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

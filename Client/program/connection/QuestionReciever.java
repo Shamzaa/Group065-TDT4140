@@ -3,14 +3,34 @@ package program.connection;
 import org.json.JSONObject;
 
 public interface QuestionReciever {
-	//Tell the server to send the numberOfQuestions most recent questions in the database
+	/**
+	 * Tell the server to send the most recent questions in the database
+	 * @param numberOfQuestions The amount of recently asked question to receive
+	 */
 	public void fetchQuestions(int numberOfQuestions);
-	//Add questions as they are sent back
+	
+	/**
+	 * Receives and displays the returned questions
+	 * @param obj A JSONObject containing a list of questions and various meta-data
+	 */
 	public void recieveQuestions(JSONObject obj);
-	//Set a specific ID for this live lecture so the client recieves the correct questions
+	
+	/**
+	 * Gets a specific ID for this live lecture so the client receives the correct questions
+	 */
 	public void fetchLiveLectureID();
+	
+	/**
+	 * Receives and saves the returned lectureID
+	 * @param ID The received live lecture ID
+	 */
 	public void setLiveLectureID(int ID);
-	//Get notified that questions has changed score
+	
+	/**
+	 * Get notified that questions has changed score
+	 * @param questionID The question that changed its score
+	 * @param newScore   The new score the question has
+	 */
 	public void updateQuestionScore(int questionID, int newScore);
 	
 }

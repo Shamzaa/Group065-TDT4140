@@ -41,11 +41,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	
 	//Variables for processing how many students are lost in a window
 	private double lostThreshold = 	0.9;	//Decides how many students must be lost for the program to give the lecturer a notification
-	//private boolean emptyFrame = true; //Lets the program decide if the received lostMe signal is the start of a new time frame
-	//private Timer lostFrameTimer = new Timer("frameTimerThread");
-	private ArrayList<Timestamp> lostTimes = new ArrayList<>();
-	private Timestamp lectureStartTime;
-	
+	//private ArrayList<Timestamp> lostTimes = new ArrayList<>(); //TODO Remove?
 	
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
@@ -63,7 +59,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void initialize(){
 		updatePieChartValues();
 		updateStudentsConnectedAmount();
-		lectureStartTime = new Timestamp(System.currentTimeMillis());	
+		//lectureStartTime = new Timestamp(System.currentTimeMillis());	
 	}
 	
 	/**@author Anders
@@ -130,9 +126,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lostStudents ++;
 		updatePieChartValues();
 		Timestamp recvTime = new Timestamp(System.currentTimeMillis());
-		lostTimes.add(recvTime);
+		//lostTimes.add(recvTime);
 		System.out.println("Recieved lostMe message at: " + recvTime);
-		System.out.println(lostTimes);
+		//System.out.println(lostTimes);
 		
 		if(((double) lostStudents/(double) connectedStudents) > lostThreshold){
 			main.displayAlert("Students lost!", null, "A threshold has been reached, your students are lost! Consider redoing the most recent part of the lecture!");
@@ -185,6 +181,11 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
 		main.getRootController().setTitle("Lecture");
+	}
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads are closed and such. Also notify students that the lecture stopped
+		
 	}
 	//-> Functions for QuestionReciever
 	@Override
@@ -256,4 +257,5 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		}
 		sortQuestionsByScore();
 	}
+
 }

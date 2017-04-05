@@ -65,13 +65,17 @@ public class CreateLectureController implements AppBinder{
 		main.setLectureName(lectureName);
 		main.loadUI("ui/LecturerWindow.fxml");
 	}
-	
+	// Interface inheritance
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
 		System.out.println("Choicebox initialized");
 		main.getRootController().setTitle("Create Lecture");
+	}
+	@Override
+	public void closeController(){
+		//TODO make sure all threads and such is closed
 	}
 
 }

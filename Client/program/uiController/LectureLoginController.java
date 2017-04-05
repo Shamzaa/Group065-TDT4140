@@ -44,7 +44,8 @@ public class LectureLoginController implements AppBinder{
 
 	}
 	
-
+	//- Functions from interfaces ----------------------------------------------------------------------
+	//-> From AppBinder
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -53,5 +54,10 @@ public class LectureLoginController implements AppBinder{
 
 		main.getRootController().setTitle("Login");
 	}
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads and such are closed
+	}
+	
 
 }

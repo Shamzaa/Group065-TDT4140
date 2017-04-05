@@ -17,14 +17,10 @@ public class RoleSelectorController implements AppBinder{
 	ClientMain main;
 	ServerManager serverManager;
 	
-	@FXML 
-	private Button selectStudent;
-	@FXML 
-	private Button selectLecturer;
-	@FXML
-	private TextField serverField;
-	@FXML
-	private Label errorLabel;
+	@FXML private Button selectStudent;
+	@FXML private Button selectLecturer;
+	@FXML private TextField serverField;
+	@FXML private Label errorLabel;
 	
 	@FXML
 	private void initialize(){
@@ -33,13 +29,6 @@ public class RoleSelectorController implements AppBinder{
 				e -> loadStudent());
 		selectLecturer.setOnAction(
 				e -> loadLecturer());
-	}
-	
-	@Override
-	public void setMainApp(ClientMain main) {
-		this.main = main;
-
-		main.getRootController().setTitle("Select role and server");
 	}
 	
 	// different functions to load next part of UI after connection to the server and load UI
@@ -99,8 +88,17 @@ public class RoleSelectorController implements AppBinder{
 	    return false;
 	}
 	
-	
-	
-	
+	//- Functions from interfaces ----------------------------------------------------------------------
+	//-> From AppBinder
+	@Override
+	public void setMainApp(ClientMain main) {
+		this.main = main;
+		
+		main.getRootController().setTitle("Select role and server");
+	}
 
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads and such are closed	
+	}	
 }

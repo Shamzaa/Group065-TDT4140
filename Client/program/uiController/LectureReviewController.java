@@ -40,7 +40,7 @@ import program.connection.QuestionReciever;
 public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	private ClientMain main;
-	ArrayList<Question> questionList = new ArrayList<>(); //Is never updated, can probably be removed! TODO
+	ArrayList<Question> questionList = new ArrayList<>();
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
 	@FXML VBox QuestionContainer;
@@ -50,7 +50,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	@FXML Text startTimeText;
 	@FXML Text stopTimeText;
 	
-	//@FXML LineChart<String, Integer> lostMeLineChart;
 	@FXML BarChart<String, Integer> lostMeBarChart; 
 	@FXML CategoryAxis xAxis;
 	
@@ -112,19 +111,24 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		});
 	}
 	
+	//- Functions from interfaces ----------------------------------------------------------------------
+	//-> From AppBinder
 	@Override
 	public void setMainApp(ClientMain main){
 		this.main = main;
 		clientProcessingPool.submit(new LectureStatListener(main, this, 2));
 		fetchLectureReview();
 		
-
 		main.getRootController().setTitle("Lecture Review");
 	}
+	
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads and such are closed
+		
+	}
 
-
-
-
+	//-> From LectureReciever
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		System.out.println("Review recieved questions");
