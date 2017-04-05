@@ -117,6 +117,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		this.main = main;
 		clientProcessingPool.submit(new LectureStatListener(main, this));
 		fetchLectureReview();
+		
 
 		main.getRootController().setTitle("Lecture Review");
 	}
@@ -126,6 +127,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 
 	@Override
 	public void recieveQuestions(JSONObject obj) {
+		System.out.println("Review recieved questions");
 		try {
 			JSONArray objList = obj.getJSONArray("List");
 			for (int i = 0; i < objList.length(); i++) {
