@@ -21,10 +21,14 @@ public class ClientsManager {
 	private CommandsManager comManager;
 	public ServerMain main;
 	
+	// made so that we can add this clientsManager to parameters inside serverTask
+	private ClientsManager clientsManager;
+	
 	
 	
 	public ClientsManager(int portNumber, ServerMain main){
 		clientsConnected = new ArrayList<ClientConnection>();
+		clientsManager = this;
 		comManager = new CommandsManager(this);
 		this.main = main;
 		classIDToConnection = new HashMap<String, ClientConnection>();
@@ -39,7 +43,7 @@ public class ClientsManager {
 					System.out.println("Waiting for clients...");
 					while(true){
 						Socket clientSocket = serverSocket.accept();
-						ClientConnection client = new ClientConnection(clientSocket, comManager);
+						ClientConnection client = new ClientConnection(clientSocket, comManager, clientsManager);
 						clientProcessingPool.submit(client);
 						clientsConnected.add(client);
 					}
@@ -60,11 +64,22 @@ public class ClientsManager {
 	public void addLecturerToLecture(ClientConnection client, String classID){
 		if(!doesLectureExist(classID)){
 			classIDToConnection.put(classID, client);
+			client.setClassID(classID);
 		}else{
 			// TODO: return error message to client requesting classID
 		}
 	}
 	
+	public void removeLecturerFromLecture(ClientConnection client){
+		if(doesLectureExist(client.getClassID()) && classIDToConnection.get(client.getClassID()) == client){
+			classIDToConnection.remove(client.getClassID());
+		}
+	}
+	
+	public void removeConnection(ClientConnection client){
+		clientsConnected.remove(this);
+		
+	}
 	public void addClientToCollection(ClientConnection client){
 		clientsConnected.add(client);
 	}
