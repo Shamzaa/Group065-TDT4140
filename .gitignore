@@ -6,3 +6,5 @@
 \.metadata/
 
 Server/database/DatabaseKey\.java
+
+Client/program/speech/recognizer/API_Key\.java
