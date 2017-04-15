@@ -33,6 +33,10 @@ public class Recording {
 	public void stop() {
 		mic.close ();
 	}
+	
+	public void delete() {
+		file.delete();
+	}
 
 	public File getRecording() {
 		return file;
@@ -50,7 +54,7 @@ public class Recording {
 			inputStream.skip(startSeconds * bytesPerSecond);
 			long framesOfAudioToCopy = secondsToCopy * (int)format.getFrameRate();
 			shortenedStream = new AudioInputStream(inputStream, format, framesOfAudioToCopy);
-			destinationFile = new File("/tmp/temp_short.wav");
+			destinationFile = new File(file +".destination.wav");
 			AudioSystem.write(shortenedStream, fileFormat.getType(), destinationFile);
 		} catch (Exception e) {
 			System.out.println(e);

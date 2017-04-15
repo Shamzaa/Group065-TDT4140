@@ -16,7 +16,7 @@ public class Transcribe {
 		AudioFileFormat fileFormat = null;
 		AudioFormat format = null;
 		String response = null;
-		Recognizer recognizer = new Recognizer (false, System.getProperty("google-api-key"));
+		Recognizer recognizer = new Recognizer (Recognizer.Languages.ENGLISH_US, System.getProperty("google-api-key"));
 
 		try {
 			fileFormat = AudioSystem.getAudioFileFormat(inputFile);
