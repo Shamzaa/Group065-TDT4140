@@ -10,6 +10,11 @@
 	-fx-text-fill: red;
 }
 
+#subInfoText{
+	-fx-font-size: 9pt;
+	-fx-fill: grey;
+}
+
 .root{
     -fx-font-size: 12pt;
     -fx-font-family: "Courier New Lucida Console";

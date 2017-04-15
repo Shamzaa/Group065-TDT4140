@@ -14,7 +14,7 @@ import program.uiController.LectureReviewController;
 
 public class LectureStatListener implements Runnable{
 	private LectureReciever controller;
-	
+	private int listenerCounter;
 	// connection atributes
 	private Socket client;
 	
@@ -22,10 +22,10 @@ public class LectureStatListener implements Runnable{
 	private BufferedReader in;
 	private boolean interrupted = false;
 	
-	public LectureStatListener(ClientMain main, LectureReciever controller){
+	public LectureStatListener(ClientMain main, LectureReciever controller, int listenerCounter){
 		this.controller = controller;
+		this.listenerCounter = listenerCounter;
 		client = main.getServerManager().getSocket();
-		
 	}
 
 		
@@ -34,17 +34,18 @@ public class LectureStatListener implements Runnable{
 	public void run() {
 		try{
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			System.out.println("Listens for new notifications from server pls no");
-			String input = in.readLine();
-			try{
-				JSONObject obj = new JSONObject(input);
-				System.out.println(obj.getString("Function"));
-				
-				/* just making a switch case because it's very limited 
-				 * what the lecturer will listen to, compared to the server
-				 */
-				switch(obj.getString("Function")){
-				//Lecture Review Only
+			for(int i = 0; i < listenerCounter; i++){
+				System.out.println("Listens for new notifications from server pls no");
+				String input = in.readLine();
+				try{
+					JSONObject obj = new JSONObject(input);
+					System.out.println(obj.getString("Function"));
+					
+					/* just making a switch case because it's very limited 
+					 * what the lecturer will listen to, compared to the server
+					 */
+					switch(obj.getString("Function")){
+					//Lecture Review Only
 					case "lectureReview":
 						((LectureReviewController) controller).recieveLectureReview(obj);
 						break;
@@ -54,17 +55,19 @@ public class LectureStatListener implements Runnable{
 						break;
 						
 					case("addQuestions"):
+						System.out.println(">>>>>>>>> SENDING QUESTIONS");
 						controller.recieveQuestions(obj);
 						break;
-						
-						
+					}
+				}catch(JSONException e){
+					// data recieved wasn't a json object
+					// close connection or ignore.
+					e.printStackTrace();
+				} catch(Exception e){
+					e.printStackTrace();
 				}
-			}catch(JSONException e){
-				// data recieved wasn't a json object
-				// close connection or ignore.
 			}
-			
-			System.out.println("interrupted");
+			System.out.println("Review reciever is done!");
 		}catch (IOException e) {
 			e.printStackTrace();
 			return;

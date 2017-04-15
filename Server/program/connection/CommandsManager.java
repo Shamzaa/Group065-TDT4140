@@ -275,7 +275,8 @@ public class CommandsManager {
 		try {
 			int id = obj.getInt("LectureID"); 
 			System.out.println("Lecturer has requested to get a review of lecture " + obj.getString("ClassID") + " | " + obj.getInt("LectureID"));
-			//getLatestQuestions(obj, client);
+			getLatestQuestions(obj, client);
+			System.out.println(">>>  Questions done");
 			JSONObject retObj = new JSONObject();
 			retObj.put("Function", "lectureReview");
 			retObj.put("StampList", clientsManager.main.getDatabase().getLostMeTimestamps(id)); //JSONArray

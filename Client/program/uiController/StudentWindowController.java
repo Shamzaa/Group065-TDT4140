@@ -206,6 +206,10 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 
 		main.getRootController().setTitle("Lecture");
 	}
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads and such are closed
+	}
 	
 	//-> From QuestionReciever
 	@Override

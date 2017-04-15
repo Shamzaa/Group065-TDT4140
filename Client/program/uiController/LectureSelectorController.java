@@ -71,7 +71,8 @@ public class LectureSelectorController implements AppBinder{
 		}
 	}
 	
-	
+	//- Functions from interfaces ----------------------------------------------------------------------
+	//-> From AppBinder
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -83,4 +84,9 @@ public class LectureSelectorController implements AppBinder{
 		main.getRootController().setTitle("Join lecture");
 	}
 
+
+	@Override
+	public void closeController() {
+		// TODO Make sure all threads and such are closed	
+	}
 }
