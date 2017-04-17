@@ -43,6 +43,8 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	private double lostThreshold = 	0.9;	//Decides how many students must be lost for the program to give the lecturer a notification
 	//private ArrayList<Timestamp> lostTimes = new ArrayList<>(); //TODO Remove?
 	
+	// call CL.stopListening() to stop the listener.
+	ClientListener CL;
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
 	@FXML VBox QuestionContainer;		//QuestionBoxes are added to this container, so they appear in the view as a list
@@ -177,7 +179,8 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-		clientProcessingPool.submit(new ClientListener(main, this));
+		CL = new ClientListener(main, this);
+		clientProcessingPool.submit(CL);
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
 		main.getRootController().setTitle("Lecture");
