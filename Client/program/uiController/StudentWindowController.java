@@ -40,9 +40,12 @@ import program.connection.QuestionReciever;
 public class StudentWindowController implements AppBinder, QuestionReciever {
 	ArrayList<Question> questionList = new ArrayList<>();
 	
-	private ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	private int liveLectureID;
 	private int charLimit = 140;
+	
+	// reference to listener object, so we can call stopListening();
+	private ClientListener CL;
 	
 	ClientMain main;
 	
@@ -93,10 +96,12 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			questionList.sort((q1, q2)-> -1*Integer.compare(q1.getRating(), q2.getRating()));
 			ObservableList<AnchorPane> workingCollection = FXCollections.observableArrayList();
 			for (Question question : questionList) {
+				System.out.println(question.getQuestionText());
 				System.out.println("changing orders");
 				workingCollection.add(question.getRelatedQuestionPane());
 			}
 			QuestionContainer.getChildren().setAll(workingCollection);
+			System.out.println("aylmao");
 		});	
 	}
 	
@@ -202,16 +207,16 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-		
+		CL = new ClientListener(main, this);
+		clientProcessingPool.submit(CL);
 		//fetches all lecture question to fill the list
-		clientProcessingPool.submit(new ClientListener(main, this));
 		fetchLiveLectureID();
 
 		main.getRootController().setTitle("Lecture");
 	}
 	@Override
 	public void closeController() {
-		// TODO Make sure all threads and such are closed
+		CL.stopListening();
 	}
 	
 	//-> From QuestionReciever

@@ -28,81 +28,89 @@ public class ClientListener implements Runnable{
 	// in and out data channels
 	private BufferedReader in;
 	
-	private boolean listening;
 	
 	public ClientListener(ClientMain main, QuestionReciever controller){
 		this.main = main;
 		this.client = main.getServerManager().getSocket();
 		this.controller = controller;
-		listening = true;
 	}
 		
 	public void stopListening(){
 		try {
 			System.out.println("closing listener");
-			listening = false;
+			Thread.currentThread().interrupt();
 			/*
-			 * what I did is that I make the socket throw an exception if it doesn't recieve
-			 * new data within 1 millisecond, and then set it back to infinite when I am able
-			 *  to exit the in.readLine() blocking the object from exiting the loop.
+			 * How this stop listening works:
+			 * I set the interrupt flag to true, and the loop runs while the flag is false.
+			 * Using the .ready() attribute of the bufferedreader, I can run the loop
+			 * without making it freeze this object. I also make this object sleep for 500ms each loop
+			 * so I don't fry the CPU. 8)
 			 */
-			client.setSoTimeout(1);
+			
 			
 			// closing socket makes the server think the user disconnected, when we just want the user to stop this listener and still keep an open connection with the server.
 			//client.close();
 			
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
 	
+	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		try{
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		
-			while(listening){
-				System.out.println("Listens for new notifications from server");
-
+			while(!Thread.currentThread().isInterrupted()){
+				
 				try{
-					String input = in.readLine();
-					JSONObject obj = new JSONObject(input);
-					
-					/* just making a switch case because it's very limited 
-					 * what the lecturer will listen to, compared to the server
-					 */
-					switch(obj.getString("Function")){						
-						//Student Only
+					if(in.ready()){
+						System.out.println("Listens for new notifications from server, client listener");
+						String input = in.readLine();
+						System.out.println("socket: " + input);
+						JSONObject obj = new JSONObject(input);
 						
-						//Both client-types live
-						case "updateScore":
-							controller.updateQuestionScore(obj.getInt("QuestionID"), obj.getInt("Score"));
-							break;
-						case "addQuestions":
-							controller.recieveQuestions(obj);
-							break;
-						case "SetLiveLectureID":
-							controller.setLiveLectureID(obj.getInt("LiveLectureID"));
-							break;
-						//Lecturer Only
-						case "StudentLost":
-							((LecturerWindowController) controller).studentLost();
-							break;
-						case "JoinedLecture":
-							((LecturerWindowController) controller).studentJoined();
-							break;
+						/* just making a switch case because it's very limited 
+						 * what the lecturer will listen to, compared to the server
+						 */
+						switch(obj.getString("Function")){						
+							//Student Only
 							
+							//Both client-types live
+							case "updateScore":
+								controller.updateQuestionScore(obj.getInt("QuestionID"), obj.getInt("Score"));
+								break;
+							case "addQuestions":
+								controller.recieveQuestions(obj);
+								break;
+							case "SetLiveLectureID":
+								controller.setLiveLectureID(obj.getInt("LiveLectureID"));
+								break;
+							//Lecturer Only
+							case "StudentLost":
+								((LecturerWindowController) controller).studentLost();
+								break;
+							case "JoinedLecture":
+								((LecturerWindowController) controller).studentJoined();
+								break;
+								
+						}
+					}else{
+						Thread.currentThread().sleep(500);
 					}
-				}catch(JSONException e){
-					// data recieved wasn't a json object
-					// close connection or ignore.
-					e.printStackTrace();
 				}catch(SocketTimeoutException s){
 					// listener interrupted through stopListening();
 					client.setSoTimeout(0);
 					return; // return from run-while method and object stops running
+				}catch(InterruptedException ie){
+					ie.printStackTrace();
+				}catch(Exception e){
+					// data recieved wasn't a json object
+					// close connection or ignore.
+					e.printStackTrace();
 				}
 			}
 		}catch (IOException e) {

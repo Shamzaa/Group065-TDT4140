@@ -29,6 +29,9 @@ public class ClientMain extends Application{
 	// reference elements
 	private ServerManager serverManager;
 	private final long lostMeTimerLenght = 5; 	//Decides how long it will wait until it discards a lostMeSignal (Seconds).
+
+	FXMLLoader loader = null;
+	
 	
 	// attributes
 	private String classID;
@@ -61,8 +64,11 @@ public class ClientMain extends Application{
 	
 	public void loadUI(String path){
 		try {
+			if(loader != null){
+				loader.setController(null);
+			}
 			// Load overview.
-			FXMLLoader loader = new FXMLLoader();
+			loader = new FXMLLoader();
 			loader.setLocation(ClientMain.class.getResource(path));
 			AnchorPane overview = (AnchorPane) loader.load();
 
@@ -74,7 +80,7 @@ public class ClientMain extends Application{
 			controller.setMainApp(this);
 			
 			if(!rootCont.skipAddPath()){
-				rootCont.addNewPath(path, controller);				
+				rootCont.addNewPath(path);				
 			}
 			
 		} catch (IOException e) {
@@ -99,10 +105,10 @@ public class ClientMain extends Application{
 		this.stage = primaryStage;
 		stage.setTitle("HearMe");
 		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
-		root = (BorderPane) loader.load();
-		rootCont = loader.getController();
+		FXMLLoader loaderR = new FXMLLoader();
+		loaderR.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
+		root = (BorderPane) loaderR.load();
+		rootCont = loaderR.getController();
 		rootCont.setMainApp(this);
 
 		// Show the scene containing the root layout.
@@ -156,5 +162,9 @@ public class ClientMain extends Application{
 	
 	public long getLostMeTimerLenght() {
 		return lostMeTimerLenght;
+	}
+	
+	public AppBinder getActiveController(){
+		return loader.getController();
 	}
 }

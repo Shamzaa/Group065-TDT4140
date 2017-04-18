@@ -1,11 +1,13 @@
 package database;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -190,9 +192,11 @@ public class Database implements AutoCloseable {
 	// creates a new lecture, and returns the lectureID in the database.
 	public int createNewLecture(String lectureName, String classID){
 		// only doable if classID excists in database.
-		
+
+		Time timeStamp = Time.valueOf(LocalTime.now());
+		Date date = Date.valueOf(LocalDate.now());
 		try (Statement stmt = conn.createStatement()) {
-			String query = "insert into lecture(name, subject_code, studentsJoined) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0);";
+			String query = "insert into lecture(name, subject_code, studentsJoined, start, date) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0, '"+ timeStamp +"', '"+ date +"');";
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
 			}
@@ -328,6 +332,10 @@ public class Database implements AutoCloseable {
 			e.printStackTrace();
 		}
 		return retMap;
+	}
+	
+	public void setEndLecture(int lectureID){
+		// TODO set slutt timestamp
 	}
 	
 	@Override
