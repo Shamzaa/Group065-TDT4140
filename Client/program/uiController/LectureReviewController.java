@@ -190,15 +190,20 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			long diffMin = ChronoUnit.MINUTES.between(start, stop);
 			long diffSec = ChronoUnit.SECONDS.between(start, stop);
 			
+			System.out.println(diffHours);
+			System.out.println(diffMin);
+			System.out.println(diffSec);
+			
 			String formatPattern;
 			DateTimeFormatter formatter;
-			if(diffHours > 10) {
+			if(diffHours > 5) {
 				//Graph by hours
 				formatPattern = "HH";
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
 				LocalTime tempTime = start.withSecond(0);
-				long hoursToAdd = diffSec/categoryDiff;
-				System.out.println(hoursToAdd);
+				long hoursToAdd = (diffHours/categoryDiff > 0 ? diffHours/categoryDiff : 1);
+				
+				//System.out.println(hoursToAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
 				while (tempTime.isBefore(stop)) {
@@ -211,8 +216,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				//Graph by minutes
 				formatPattern = "hh:mm";
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
-				LocalTime tempTime = start.withSecond(0);
-				long minutesToAdd = diffMin/categoryDiff;
+				LocalTime tempTime = start;//.withSecond(0);
+				long minutesToAdd = (diffMin/categoryDiff > 0 ? diffMin/categoryDiff : 1);
 				System.out.println(minutesToAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
@@ -226,9 +231,9 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				//Graph by seconds
 				formatPattern = "mm:ss";
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
-				LocalTime tempTime = start.withSecond(0);
-				long secondstoAdd = diffSec/categoryDiff;
-				//System.out.println(secondstoAdd);
+				LocalTime tempTime = start;
+				long secondstoAdd = (diffSec/categoryDiff > 0 ? diffSec/categoryDiff : 1);
+				System.out.println(secondstoAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
 				// TODO: find out why code freezes here.
@@ -239,7 +244,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				}					
 			}
 			xAxis.setCategories(stampTimes);
-			//System.out.println(stampTimes);
+			System.out.println(stampTimes);
 			int currentTimeStampIndex = 0;
 			int[] counters = new int[stampTimes.size()];
 			
@@ -255,6 +260,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				int catMM;
 				int catSS;
 				
+				
+				System.out.println("SWITCH: "+ formatPattern);
 				switch(formatPattern) {
 					case "HH":
 						//TODO add to the graph by hours
@@ -300,6 +307,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 						//System.out.println("> " + String.valueOf(mm) + " || " + String.valueOf(catMM));	
 						//System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
 						while(mm > catMM ||ss > catSS){
+
+							System.out.println(""); //TODO remove
 							currentTimeStampIndex ++;
 							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 							catSS = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
@@ -315,6 +324,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			}
 			XYChart.Series<String, Integer> series = new XYChart.Series<>();
 			for (int i = 0; i < counters.length; i++) {
+				System.out.println("FILLING DATA TO CHART..."); //TODO remove
 				series.getData().add(new XYChart.Data<>(stampTimes.get(i), counters[i]));
 			}
 			
