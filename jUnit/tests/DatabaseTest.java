@@ -1,7 +1,13 @@
 package tests;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Map;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import database.Database;
 
@@ -10,21 +16,44 @@ import database.Database;
  * has to be present. Access to database is also dependent on a VPN connection to
  * the NTNU network.
  */
-public class DatabaseTest extends junit.framework.TestCase {
-	Database db = null;
+public class DatabaseTest {
+	@BeforeClass
+	public void setUpClass(){
+		//Initializes values for ALL tests (runs once)
+	}
+	
+	@Before
+	public void setUp(){
+		//Initializes values before each test (thus runs once for each test)
+	}
+	
+	//Database db = new Database();
 	
 	
-	@Override
-	public void setUp() {
+	
+	
+	
+	/*public void setUp() {
 		db = new Database();
 		db.connect();
 		assertTrue(db instanceof Database);
+	}*/
+	@Test
+	public void testSetup() throws Exception {
+		
 	}
+	
+	
+	/*
 	
 	public void testConnection() {
 		assertTrue(db.connect()); 
 	}
 	
+	@Test
+	public void testName() throws Exception {
+		
+	}
 	public void testCreateNewSubject() {
 		assertFalse(db.executeStatement("delete from subjects where code = 'TEST001'"));
 		assertTrue(db.createNewSubject("TEST001", "TestName"));
@@ -51,5 +80,5 @@ public class DatabaseTest extends junit.framework.TestCase {
 		db.connect();
 		db.executeStatement("delete from questions where question = '#test'");
 		db.close();
-	}
+	}*/
 }
