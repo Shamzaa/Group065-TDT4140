@@ -23,6 +23,8 @@ public class ClientMain extends Application{
 	private Stage stage;
 	private BorderPane root; //all windows are loaded into centerpane via loadUI()
 	private RootController rootCont;
+	private int windowMinWidht = 685;
+	private int windowMinHeight = 470;
 	
 	// reference elements
 	private ServerManager serverManager;
@@ -89,6 +91,8 @@ public class ClientMain extends Application{
 		// loads ui
 		this.stage = primaryStage;
 		stage.setTitle("HearMe");
+		stage.setMinWidth(windowMinWidht);
+		stage.setMinHeight(windowMinHeight);
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
