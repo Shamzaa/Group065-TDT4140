@@ -172,7 +172,24 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 				e.printStackTrace();
 			}			
 		});
-	}	
+	}
+	
+	/** @author Erling
+	 * tells the server the lecture is over, and sets the end timestamp in the database
+	 * 
+	 */
+	private void endLecture(){
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "EndLecture");
+			main.getServerManager().sendJSON(obj);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
@@ -188,7 +205,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@Override
 	public void closeController() {
 		CL.stopListening();
-		
+		endLecture();
 		// TODO: tell server to end lecture.
 	}
 	//-> Functions for QuestionReciever

@@ -67,7 +67,6 @@ public class CommandsManager {
 	
 	private void endLecture(JSONObject obj, ClientConnection client){
 		clientsManager.removeLecturerFromLecture(client);
-		clientsManager.main.getDatabase().setEndLecture(client.getLectureID());
 	}
 	
 	private void fetchLostMeTimeStamps(JSONObject obj, ClientConnection client) {

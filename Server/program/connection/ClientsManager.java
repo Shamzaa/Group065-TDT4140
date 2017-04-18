@@ -73,6 +73,7 @@ public class ClientsManager {
 	public void removeLecturerFromLecture(ClientConnection client){
 		if(doesLectureExist(client.getClassID()) && classIDToConnection.get(client.getClassID()) == client){
 			classIDToConnection.remove(client.getClassID());
+			clientsManager.main.getDatabase().setEndLecture(client.getLectureID());
 		}
 	}
 	
