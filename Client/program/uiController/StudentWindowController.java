@@ -68,6 +68,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 				e -> handleSubmitButtonAction());
 		askQuestionTextField.textProperty().addListener(
 				(e, oldStr, newStr) -> handleAskQuestionTextChange(oldStr, newStr));
+		
+		
+		askQuestionContainer.setVisible(false);
 			
 	}
 	private void handleAskQuestionTextChange(String oldText, String newText){
