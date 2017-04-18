@@ -1,6 +1,7 @@
 package program.uiController;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.Period;
@@ -83,7 +84,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			main.getServerManager().sendJSON(obj);
 			
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -124,7 +124,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	@Override
 	public void closeController() {
-		// TODO Make sure all threads and such are closed
+		// no threads to close here.
 		
 	}
 	
@@ -151,7 +151,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			sortQuestionsByScore();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -165,30 +164,29 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			JSONArray stampArr = obj.getJSONArray("StampList");
 			int studentsJoined = statObj.getInt("studentsJoined");
 			String name = statObj.getString("name");
+			// Time.valueOf(statObj.getString("start")).toLocalTime();
 			LocalTime start;
 			LocalTime stop;
-			
+
 			//Decide start and stop timeStamps, if present
 			if(stampArr.length() != 0){
 				LocalTime firstStamp = LocalTime.parse(stampArr.getString(0).substring(11));
 				LocalTime lastStamp = LocalTime.parse(stampArr.getString(stampArr.length()-1).substring(11));
-				
-				start = (statObj.getString("start")==""? 
-						LocalTime.parse(statObj.getString("start").substring(11)) 
+				start = (!statObj.getString("start").equals("")? 
+						Time.valueOf(statObj.getString("start")).toLocalTime() 
 						: firstStamp);
-				stop = (statObj.getString("stop")==""? 
-						LocalTime.parse(statObj.getString("stop").substring(11)) 
+				stop = (!statObj.getString("stop").equals("")? 
+						Time.valueOf(statObj.getString("stop")).toLocalTime() 
 						: lastStamp);
 			} 
 			else {
-				start = (statObj.getString("start")==""?
-						LocalTime.parse(statObj.getString("start").substring(11))
+				start = (!statObj.getString("start").equals("")?
+						Time.valueOf(statObj.getString("start")).toLocalTime()
 					    : LocalTime.MIN);
-				stop = (statObj.getString("stop")==""?
-						LocalTime.parse(statObj.getString("stop").substring(11))
+				stop = (!statObj.getString("stop").equals("")?
+						Time.valueOf(statObj.getString("stop")).toLocalTime()
 					    : LocalTime.MIN);
 			}
-			
 			//Set up the graph categories
 			ObservableList<String> stampTimes = FXCollections.observableArrayList();
 			
@@ -238,6 +236,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				//System.out.println(secondstoAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
+				// TODO: find out why code freezes here.
 				while (tempTime.isBefore(stop)) {
 					tempTime = tempTime.plusSeconds(secondstoAdd);
 					stampTimes.add(tempTime.format(formatter));
@@ -344,14 +343,12 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	// not used in this view.
 	@Override
 	public void fetchLectures() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	// not used in this view.
 	@Override
 	public void recieveLectures(JSONObject obj) {
-		// TODO Auto-generated method stub
 		
 	}
 }

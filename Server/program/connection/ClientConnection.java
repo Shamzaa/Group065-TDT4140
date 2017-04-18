@@ -64,6 +64,7 @@ public class ClientConnection implements Runnable{
 	private void removeConnectionToClient(){
 		if(role.equals("Lecturer")){
 			clientsManager.removeLecturerFromLecture(this);
+			role = "";
 		}
 		clientsManager.removeConnection(this);
 	}

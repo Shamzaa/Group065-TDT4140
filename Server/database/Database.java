@@ -207,6 +207,18 @@ public class Database implements AutoCloseable {
 		return 0;
 	}
 	
+
+	public void setEndLecture(int lectureID){
+
+		Time timeStamp = Time.valueOf(LocalTime.now());
+		try(Statement stmt = conn.createStatement()){
+			String query = "UPDATE `lecture` SET`stop`='"+ timeStamp +"' WHERE `id`=" + lectureID + ";";
+			stmt.execute(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	// creates a new subject/class
 	public boolean createNewSubject(String classID, String name){		
 		try (Statement stmt = conn.createStatement()) {
@@ -334,9 +346,6 @@ public class Database implements AutoCloseable {
 		return retMap;
 	}
 	
-	public void setEndLecture(int lectureID){
-		// TODO set slutt timestamp
-	}
 	
 	@Override
 	public void close() {
