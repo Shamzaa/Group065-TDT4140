@@ -50,6 +50,8 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> reviewLecture(obj, client));
 		stringToFunction.put("FetchLostMeTimeStamps",
 				(JSONObject obj, ClientConnection client) -> fetchLostMeTimeStamps(obj, client));
+		stringToFunction.put("EndLecture", 
+				(JSONObject obj, ClientConnection client) -> endLecture(obj, client));
 	}
 
 
@@ -61,6 +63,11 @@ public class CommandsManager {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void endLecture(JSONObject obj, ClientConnection client){
+		clientsManager.removeLecturerFromLecture(client);
+		clientsManager.main.getDatabase().setEndLecture(client.getLectureID());
 	}
 	
 	private void fetchLostMeTimeStamps(JSONObject obj, ClientConnection client) {

@@ -187,8 +187,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	}
 	@Override
 	public void closeController() {
-		// TODO Make sure all threads are closed and such. Also notify students that the lecture stopped
-		
+		CL.stopListening();
 	}
 	@Override
 	public void localBackChanges() {

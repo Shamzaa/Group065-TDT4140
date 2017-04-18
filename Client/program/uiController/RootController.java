@@ -10,7 +10,7 @@ import program.ClientMain;
 public class RootController{
 	@FXML Button backButton;
 	@FXML Text titleText;
-	private AppBinder centerController;
+	//private AppBinder centerController;
 	private ArrayList<String> paths;
 	private ClientMain main;
 	private boolean skipAddPath;
@@ -26,9 +26,11 @@ public class RootController{
 	}
 	
 	private void goBack() {
+		main.getActiveController().closeController();
+		//centerController.closeController();
 		System.out.println("Going back");
 		if(backOnlyLocal){
-			centerController.localBackChanges();
+			main.getActiveController().localBackChanges();
 			return;
 		}
 		//System.out.println();
@@ -37,8 +39,6 @@ public class RootController{
 		System.out.println("Prev page:    " + prevPage);
 		
 		removeCurrentPage();
-		centerController.closeController();
-		
 		skipAddPath = true;
 		main.loadUI(prevPage);
 		skipAddPath = false;
@@ -53,10 +53,14 @@ public class RootController{
 		}
 	}
 	
-	public void addNewPath(String path, AppBinder controller){
+	
+	public void addNewPath(String path){
+		if(path.equals("ui/StudentWindow.fxml")){
+			return; // prevents the user from experiencing a bug that occurs if you go back and forth between lectures when you return to lecture selector
+		}
 		System.out.println("adding: " + path);
 		paths.add(path);
-		centerController = controller;
+		//main.getActiveController();
 		System.out.println(paths);
 		if (paths.size() > 1) {
 			backButton.setDisable(false);
