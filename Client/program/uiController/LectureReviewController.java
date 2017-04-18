@@ -127,6 +127,11 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		// TODO Make sure all threads and such are closed
 		
 	}
+	
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
+	}
 
 	//-> From LectureReciever
 	@Override
@@ -349,5 +354,4 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

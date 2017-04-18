@@ -187,6 +187,11 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		// TODO Make sure all threads are closed and such. Also notify students that the lecture stopped
 		
 	}
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
+	}
+	
 	//-> Functions for QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){

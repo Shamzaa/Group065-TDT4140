@@ -109,7 +109,10 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	public void closeController() {
 		// TODO Make sure all threads and such are closed
 	}
-	
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
+	}
 	//-> From LectureReciever
 	@Override
 	public void recieveLectures(JSONObject obj) {

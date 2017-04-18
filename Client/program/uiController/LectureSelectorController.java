@@ -83,10 +83,14 @@ public class LectureSelectorController implements AppBinder{
 
 		main.getRootController().setTitle("Join lecture");
 	}
-
-
+	
 	@Override
 	public void closeController() {
 		// TODO Make sure all threads and such are closed	
+	}
+	
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
 	}
 }

@@ -77,5 +77,8 @@ public class CreateLectureController implements AppBinder{
 	public void closeController(){
 		//TODO make sure all threads and such is closed
 	}
-
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
+	}
 }
