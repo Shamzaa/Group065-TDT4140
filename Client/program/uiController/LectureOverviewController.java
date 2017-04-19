@@ -70,7 +70,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 			
 			
 			// Adds the questionBox ui element to QuestionContainer
-			lectureContainer.getChildren().add(lPane);
+			lectureContainer.getChildren().add(0, lPane);
 			
 			lectures.add(controller);
 			lecturesCount.setText(String.valueOf(Integer.valueOf(lecturesCount.getText()) + 1));
