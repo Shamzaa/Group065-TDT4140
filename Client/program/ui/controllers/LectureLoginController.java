@@ -1,4 +1,4 @@
-package program.uiController;
+package program.ui.controllers;
 
 import org.json.JSONException;
 import org.json.JSONObject;

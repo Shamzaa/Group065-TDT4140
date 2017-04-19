@@ -1,4 +1,4 @@
-package program.uiController;
+package program.ui.controllers;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -18,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import classes.Question;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,9 +35,10 @@ import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import program.ClientMain;
-import program.connection.LectureReciever;
-import program.connection.LectureStatListener;
-import program.connection.QuestionReciever;
+import program.common.Question;
+import program.connection.listeners.LectureReciever;
+import program.connection.listeners.LectureStatListener;
+import program.connection.listeners.QuestionReciever;
 
 public class LectureReviewController implements AppBinder, LectureReciever{
 	

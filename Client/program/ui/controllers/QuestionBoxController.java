@@ -1,6 +1,5 @@
-package program.uiController;
+package program.ui.controllers;
 
-import classes.Question;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import program.common.Question;
 
 public class QuestionBoxController {
 	//Class values
