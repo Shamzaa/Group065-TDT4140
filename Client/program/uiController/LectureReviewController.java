@@ -333,6 +333,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			studPresText.setText(String.valueOf(studentsJoined));
 			startTimeText.setText(start.toString());
 			stopTimeText.setText(stop.toString());
+			dateText.setText(statObj.getString("date"));
 			Platform.runLater(() -> lostMeBarChart.getData().add(series));			
 			
 		} catch (JSONException e) {

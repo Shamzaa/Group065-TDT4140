@@ -315,7 +315,7 @@ public class Database implements AutoCloseable {
 	public HashMap<String, String> getLectureStats(int lectureID){
 		HashMap<String, String> retMap = new HashMap<>();
 		try (Statement stmt = conn.createStatement()){
-			String query = "SELECT name, studentsJoined, start, stop FROM lecture WHERE id = " + String.valueOf(lectureID);
+			String query = "SELECT name, studentsJoined, start, stop, date FROM lecture WHERE id = " + String.valueOf(lectureID);
 			//				SELECT name, studentsJoined, start, stop FROM lecture WHERE id = 170
 			System.out.println("QUERY >> "+ query);
 			if(stmt.execute(query)){
@@ -336,6 +336,10 @@ public class Database implements AutoCloseable {
 						retMap.put("stop", rs.getString(4));
 						if(rs.wasNull()){
 							retMap.replace("stop", "");
+						}
+						retMap.put("date", rs.getString(5));
+						if(rs.wasNull()){
+							retMap.replace("date", "");
 						}
 					}
 				}
