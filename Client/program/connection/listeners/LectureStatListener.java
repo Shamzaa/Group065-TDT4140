@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
-import program.ui.controllers.LectureReviewController;
+import program.ui.controllers.lecturer.LectureReviewController;
 
 
 public class LectureStatListener implements Runnable{

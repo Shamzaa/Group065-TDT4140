@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.lecturer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ import program.ClientMain;
 import program.connection.listeners.ClientListener;
 import program.connection.listeners.LectureReciever;
 import program.connection.listeners.LectureStatListener;
+import program.ui.controllers.AppBinder;
 
 public class LectureOverviewController implements AppBinder, LectureReciever{
 	
@@ -52,7 +53,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	public void addLecture(String lectureName, String date, int lectureID, int studentsJoined){
 		
 		
-		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/LectureBox.fxml"));
+		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/fxml/LectureBox.fxml"));
 		Platform.runLater(() -> {
 			try {
 			AnchorPane lPane = (AnchorPane) loader.load();
@@ -81,7 +82,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	}
 	
 	private void createNewLecture(){
-		main.loadUI("ui/CreateLecture.fxml");
+		main.loadUI("ui/fxml/CreateLecture.fxml");
 	}
 	
 	private void viewLecture(int lectureID){
@@ -89,7 +90,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		main.setLectureID(lectureID);
 
 		clientProcessingPool.shutdown();
-		main.loadUI("ui/LectureReview.fxml");
+		main.loadUI("ui/fxml/LectureReview.fxml");
 
 	}
 	

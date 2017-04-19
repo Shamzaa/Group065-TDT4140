@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.student;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ import program.ClientMain;
 import program.common.Question;
 import program.connection.listeners.ClientListener;
 import program.connection.listeners.QuestionReciever;
+import program.ui.controllers.AppBinder;
+import program.ui.controllers.QuestionBoxController;
 
 public class StudentWindowController implements AppBinder, QuestionReciever {
 	private ArrayList<Question> questionList = new ArrayList<>();
@@ -97,7 +99,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	
 	private void addQuestion(Question question){
 		questionList.add(question);
-		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
+		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/fxml/QuestionBox.fxml"));
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();

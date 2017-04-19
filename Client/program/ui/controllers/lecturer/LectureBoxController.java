@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.lecturer;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
