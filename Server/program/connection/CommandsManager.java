@@ -9,8 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import database.Database;
 import jdk.nashorn.internal.scripts.JS;
+import program.database.Database;
 
 public class CommandsManager {
 	
