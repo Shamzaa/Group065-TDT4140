@@ -15,8 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import program.connection.*;
-import program.uiController.AppBinder;
-import program.uiController.RootController;
+import program.ui.controllers.AppBinder;
+import program.ui.controllers.RootController;
 
 
 public class ClientMain extends Application{

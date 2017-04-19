@@ -1,4 +1,4 @@
-package classes;
+package program.common;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

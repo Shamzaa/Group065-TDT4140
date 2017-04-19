@@ -1,4 +1,4 @@
-package program.connection;
+package program.connection.listeners;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
-import program.uiController.LectureReviewController;
+import program.ui.controllers.LectureReviewController;
 
 
 public class LectureStatListener implements Runnable{

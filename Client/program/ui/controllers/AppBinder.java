@@ -1,4 +1,4 @@
-package program.uiController;
+package program.ui.controllers;
 
 import program.ClientMain;
 

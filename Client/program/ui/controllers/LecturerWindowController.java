@@ -1,4 +1,4 @@
-package program.uiController;
+package program.ui.controllers;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import classes.Question;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,9 +26,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import program.ClientMain;
+import program.common.Question;
 import program.connection.ClientConnection;
-import program.connection.ClientListener;
-import program.connection.QuestionReciever;
+import program.connection.listeners.ClientListener;
+import program.connection.listeners.QuestionReciever;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;										//Reference to the clientMain class that runs the program

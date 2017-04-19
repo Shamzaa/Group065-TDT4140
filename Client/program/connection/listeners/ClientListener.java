@@ -1,4 +1,4 @@
-package program.connection;
+package program.connection.listeners;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
-import program.uiController.LectureReviewController;
-import program.uiController.LecturerWindowController;
-import program.uiController.StudentWindowController;
+import program.ui.controllers.LectureReviewController;
+import program.ui.controllers.LecturerWindowController;
+import program.ui.controllers.StudentWindowController;
 
 public class ClientListener implements Runnable{
 	// references

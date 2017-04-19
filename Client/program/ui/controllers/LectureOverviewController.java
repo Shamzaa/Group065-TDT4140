@@ -1,4 +1,4 @@
-package program.uiController;
+package program.ui.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import program.ClientMain;
-import program.connection.ClientListener;
-import program.connection.LectureReciever;
-import program.connection.LectureStatListener;
+import program.connection.listeners.ClientListener;
+import program.connection.listeners.LectureReciever;
+import program.connection.listeners.LectureStatListener;
 
 public class LectureOverviewController implements AppBinder, LectureReciever{
 	
