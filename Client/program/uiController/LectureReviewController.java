@@ -27,12 +27,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 import program.ClientMain;
 import program.connection.LectureReciever;
 import program.connection.LectureStatListener;
@@ -53,6 +55,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	@FXML BarChart<String, Integer> lostMeBarChart; 
 	@FXML CategoryAxis xAxis;
+	@FXML ValueAxis<Number> yAxis;
 	
 	@FXML
 	private void initialize(){
@@ -62,7 +65,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	private void sortQuestionsByScore(){
 		Platform.runLater(() -> {
 			//The -1 reverses the sorting order
-			questionList.sort((q1, q2)-> -1*Integer.compare(q1.getRating(), q2.getRating()));
+		 	questionList.sort((q1, q2)-> -1*Integer.compare(q1.getRating(), q2.getRating()));
 			ObservableList<AnchorPane> workingCollection = FXCollections.observableArrayList();
 			for (Question question : questionList) {
 				System.out.println("changing orders");
@@ -185,7 +188,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			//Set up the graph categories
 			ObservableList<String> stampTimes = FXCollections.observableArrayList();
 			
-			int categoryDiff = 10; //increase this for more graph categories
+			double categoryDiff = 10; //increase this for more graph categories
 			long diffHours = ChronoUnit.HOURS.between(start, stop);
 			long diffMin = ChronoUnit.MINUTES.between(start, stop);
 			long diffSec = ChronoUnit.SECONDS.between(start, stop);
@@ -196,12 +199,16 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			
 			String formatPattern;
 			DateTimeFormatter formatter;
-			if(diffHours > 5) {
+			if(diffHours >= 5) {
 				//Graph by hours
 				formatPattern = "HH";
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
 				LocalTime tempTime = start.withSecond(0);
-				long hoursToAdd = (diffHours/categoryDiff > 0 ? diffHours/categoryDiff : 1);
+				long hoursToAdd = Math.round(diffHours/categoryDiff);
+				if(hoursToAdd >= 0){ //hoursToAdd might be rounded to zero
+					hoursToAdd = 1;
+				}
+				
 				
 				//System.out.println(hoursToAdd);
 				
@@ -212,12 +219,14 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 					//System.out.println("Temptime: " + tempTime.format(formatter));
 				}
 			}
-			else if (diffMin > 10) {
+			else if (diffMin >= 10) {
 				//Graph by minutes
 				formatPattern = "hh:mm";
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
-				LocalTime tempTime = start;//.withSecond(0);
-				long minutesToAdd = (diffMin/categoryDiff > 0 ? diffMin/categoryDiff : 1);
+				LocalTime tempTime = start.withSecond(0);
+				
+				long minutesToAdd = Math.round(diffSec/categoryDiff);
+				
 				System.out.println(minutesToAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
@@ -232,13 +241,17 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				formatPattern = "mm:ss";
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
 				LocalTime tempTime = start;
-				long secondstoAdd = (diffSec/categoryDiff > 0 ? diffSec/categoryDiff : 1);
-				System.out.println(secondstoAdd);
+				
+				long secondsToAdd = Math.round(diffSec/categoryDiff);
+				if(secondsToAdd <= 0){ //Note that secondsToAdd might be rounded to zero here
+					secondsToAdd = 1;
+				}
+				System.out.println(secondsToAdd);
 				
 				stampTimes.add(tempTime.format(formatter));
 				// TODO: find out why code freezes here.
 				while (tempTime.isBefore(stop)) {
-					tempTime = tempTime.plusSeconds(secondstoAdd);
+					tempTime = tempTime.plusSeconds(secondsToAdd);
 					stampTimes.add(tempTime.format(formatter));
 					//System.out.println("Temptime: " + tempTime.format(formatter));
 				}					
@@ -308,7 +321,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 						//System.out.println("> " + String.valueOf(ss) + " || " + String.valueOf(catSS));
 						while(mm > catMM ||ss > catSS){
 
-							System.out.println(""); //TODO remove
 							currentTimeStampIndex ++;
 							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
 							catSS = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
@@ -323,8 +335,22 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				}
 			}
 			XYChart.Series<String, Integer> series = new XYChart.Series<>();
+			yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+				
+				@Override
+			    public String toString(Number object) {
+			        if(object.intValue()!=object.doubleValue())
+			            return "";
+			        return ""+(object.intValue());
+			    }
+
+			    @Override
+			    public Number fromString(String string) {
+			        Number val = Double.parseDouble(string);
+			        return val.intValue();
+			    }
+			});
 			for (int i = 0; i < counters.length; i++) {
-				System.out.println("FILLING DATA TO CHART..."); //TODO remove
 				series.getData().add(new XYChart.Data<>(stampTimes.get(i), counters[i]));
 			}
 			
