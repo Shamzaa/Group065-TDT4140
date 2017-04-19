@@ -211,7 +211,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		
 	}
-//-> Functions for QuestionReciever
+	//-> Functions for QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){
 		JSONObject obj = new JSONObject();

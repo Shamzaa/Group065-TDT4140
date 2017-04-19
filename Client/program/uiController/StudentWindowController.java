@@ -229,7 +229,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	public void localBackChanges() {
 		askQuestionTextField.setText("");
 		askQuestionContainer.setVisible(false);
-		main.getRootController().setBackOnlyLocal(false);		
+		main.getRootController().setBackOnlyLocal(false);
 	}
 	
 	//-> From QuestionReciever
