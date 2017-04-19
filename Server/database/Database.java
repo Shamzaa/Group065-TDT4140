@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public class Database implements AutoCloseable {
 	public ArrayList<Map<String, String>> getLatestLectures(String classID){
 		ArrayList<Map<String, String>> lectures = new ArrayList<>();
 		try (Statement stmt = conn.createStatement()) {
-			String query = "SELECT name, studentsJoined, id FROM lecture where subject_code = '" + classID + 
+			String query = "SELECT name, studentsJoined, id, date FROM lecture where subject_code = '" + classID + 
 					"'";
 			if (stmt.execute(query)) {
 				try (ResultSet rs = stmt.getResultSet();) {
@@ -153,9 +154,14 @@ public class Database implements AutoCloseable {
 						String lectureName = rs.getString(1);
 						String studentsJoined = Integer.toString(rs.getInt(2));
 						String id = Integer.toString(rs.getInt(3));
+						Date date = rs.getDate(4);
+						SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+						
+						String dateString = sdf.format(date);
 						result.put("lectureName", lectureName);
 						result.put("id", id);
 						result.put("studentsJoined", studentsJoined);
+						result.put("date", dateString);
 						lectures.add(result);
 					}					
 				}

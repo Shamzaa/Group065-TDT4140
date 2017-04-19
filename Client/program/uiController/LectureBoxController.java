@@ -14,7 +14,7 @@ public class LectureBoxController {
 	
 	@FXML Button viewLectureButton;
 	@FXML Label lectureNameLabel;
-	@FXML Label studentsJoinedLabel;
+	@FXML Label dateLabel;
 	
 	@FXML
 	public void initialize(){
@@ -33,9 +33,13 @@ public class LectureBoxController {
 		
 	}
 	
-	public void setStudentsCount(int studentsCount){
+	/*public void setStudentsCount(int studentsCount){
 		this.studentsCount = studentsCount;
 		studentsJoinedLabel.setText(Integer.toString(studentsCount));
+	}*/
+	
+	public void setDate(String date){
+		dateLabel.setText(date);
 	}
 	
 	public int getLectureID(){

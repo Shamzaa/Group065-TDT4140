@@ -49,7 +49,7 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		
 	}
 	
-	public void addLecture(String lectureName, int studentsJoined, int lectureID){
+	public void addLecture(String lectureName, String date, int lectureID, int studentsJoined){
 		
 		
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/LectureBox.fxml"));
@@ -63,7 +63,8 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 
 			controller.setLectureID(lectureID);
 			controller.setLectureName(lectureName);
-			controller.setStudentsCount(studentsJoined);
+			//controller.setStudentsCount(studentsJoined);
+			controller.setDate(date);
 			
 			controller.viewButton().setOnAction(e -> viewLecture(controller.getLectureID()));
 			
@@ -119,9 +120,10 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 				JSONObject part = objList.getJSONObject(i);
 				String lectureName = part.getString("lectureName");
 				int id = part.getInt("id");
+				String date = part.getString("date");
 				int studentsJoined = part.getInt("studentsJoined");
 				
-				addLecture(lectureName,studentsJoined,id);
+				addLecture(lectureName, date, id, studentsJoined);
 			}
 			progress.setVisible(false);
 			
