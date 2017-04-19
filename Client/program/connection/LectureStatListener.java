@@ -35,7 +35,7 @@ public class LectureStatListener implements Runnable{
 		try{
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			for(int i = 0; i < listenerCounter; i++){
-				System.out.println("Listens for new notifications from server pls no");
+				System.out.println("Listens for new notifications, lecture stats");
 				String input = in.readLine();
 				try{
 					JSONObject obj = new JSONObject(input);

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="281.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.StudentWindowController">
+<AnchorPane prefHeight="281.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.uiController.StudentWindowController">
 	<children>
 		<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<columnConstraints>
@@ -37,7 +37,7 @@
                   <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                </GridPane.margin>
                <children>
-      				<Button fx:id="lostMeButton" mnemonicParsing="false" prefHeight="192.0" prefWidth="139.0" text="YOU LOST ME" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      				<Button fx:id="lostMeButton" mnemonicParsing="false" prefHeight="192.0" prefWidth="139.0" text="I AM LOST" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
             <AnchorPane GridPane.rowIndex="1">

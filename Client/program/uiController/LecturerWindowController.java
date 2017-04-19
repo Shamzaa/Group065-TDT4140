@@ -43,6 +43,8 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	private double lostThreshold = 	0.9;	//Decides how many students must be lost for the program to give the lecturer a notification
 	//private ArrayList<Timestamp> lostTimes = new ArrayList<>(); //TODO Remove?
 	
+	// call CL.stopListening() to stop the listener.
+	ClientListener CL;
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	
 	@FXML VBox QuestionContainer;		//QuestionBoxes are added to this container, so they appear in the view as a list
@@ -170,28 +172,45 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 				e.printStackTrace();
 			}			
 		});
-	}	
+	}
+	
+	/** @author Erling
+	 * tells the server the lecture is over, and sets the end timestamp in the database
+	 * 
+	 */
+	private void endLecture(){
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "EndLecture");
+			main.getServerManager().sendJSON(obj);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
-		clientProcessingPool.submit(new ClientListener(main, this));
+		CL = new ClientListener(main, this);
+		clientProcessingPool.submit(CL);
 		fetchLiveLectureID();
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
 		main.getRootController().setTitle("Lecture");
 	}
 	@Override
 	public void closeController() {
-		// TODO Make sure all threads are closed and such. Also notify students that the lecture stopped
-		
+		CL.stopListening();
+		endLecture();
 	}
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		
 	}
-	
 	//-> Functions for QuestionReciever
 	@Override
 	public void fetchQuestions(int numberOfQuestions){

@@ -34,12 +34,6 @@ public class LectureSelectorController implements AppBinder{
 
 	
 	private void connectToLecture(){
-		// TODO: check if coursecodefield is not empty, and send a request to the server to see if a lecture is happening in that class.
-		/*if(courseCodeChoiceBox.getSelectionModel().getSelectedItem().equals("")){
-			//TODO Remove? This will never happen with choicebox
-			ErrorLabel.setText("the field for course code is empty");
-			return;
-		}*/
 		if(!lectureIsHappening(courseCodeChoiceBox.getSelectionModel().getSelectedItem())){
 			ErrorLabel.setText("No lecture is being held with course code: " + courseCodeChoiceBox.getSelectionModel().getSelectedItem());
 			return;

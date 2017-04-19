@@ -64,6 +64,7 @@ public class ClientConnection implements Runnable{
 	private void removeConnectionToClient(){
 		if(role.equals("Lecturer")){
 			clientsManager.removeLecturerFromLecture(this);
+			role = "";
 		}
 		clientsManager.removeConnection(this);
 	}
@@ -89,6 +90,7 @@ public class ClientConnection implements Runnable{
 				}catch(SocketException e){
 					// error with connection to client. Remove Client from server and end lecture if it's a lecturer that got lost.
 					removeConnectionToClient();
+					System.out.println("User disconnected/timed out");
 					return;
 				}
 			}
