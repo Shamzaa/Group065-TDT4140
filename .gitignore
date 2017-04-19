@@ -5,4 +5,4 @@
 .settings/
 \.metadata/
 
-Server/database/DatabaseKey\.java
+Server/program/database/DatabaseKey\.java

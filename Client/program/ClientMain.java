@@ -1,7 +1,6 @@
 package program;
 import java.io.IOException;
 
-import database.Database;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -15,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import program.connection.*;
+import program.database.Database;
 import program.ui.controllers.AppBinder;
 import program.ui.controllers.RootController;
 

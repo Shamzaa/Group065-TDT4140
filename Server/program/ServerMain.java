@@ -1,6 +1,6 @@
 package program;
-import database.Database;
 import program.connection.*;
+import program.database.Database;
 public class ServerMain {
 	private ClientsManager clientsManager;
 	private Database database;
