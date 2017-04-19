@@ -130,6 +130,11 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		// no threads to close here.
 		
 	}
+	
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
+	}
 
 	//-> From LectureReciever
 	@Override
@@ -359,6 +364,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			studPresText.setText(String.valueOf(studentsJoined));
 			startTimeText.setText(start.toString());
 			stopTimeText.setText(stop.toString());
+			dateText.setText(statObj.getString("date"));
 			Platform.runLater(() -> lostMeBarChart.getData().add(series));			
 			
 		} catch (JSONException e) {
@@ -382,5 +388,4 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	public void recieveLectures(JSONObject obj) {
 		
 	}
-
 }

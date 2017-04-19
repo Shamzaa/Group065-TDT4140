@@ -51,7 +51,7 @@
             <ProgressIndicator fx:id="questionLoadIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="73.0" prefWidth="71.0" GridPane.columnIndex="1" GridPane.rowSpan="2" />
 			</children>
 		</GridPane>
-      <GridPane fx:id="askQuestionContainer" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgba(0, 100, 120, 0.8);" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+      <GridPane fx:id="askQuestionContainer" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgba(0, 100, 120, 0.8);" visible="false" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="137.0" />

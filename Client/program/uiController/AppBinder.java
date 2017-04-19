@@ -14,4 +14,11 @@ public interface AppBinder {
 	 * Also notifies the server, if necessary(For example if a live lecture ends)
 	 */
 	public void closeController();
+	
+	/** 
+	 * Used when the rootController doesn't go back, but the center controller wants to change something locally using the backButton
+	 * @author Anders
+	 */
+	public void localBackChanges();
+	
 }

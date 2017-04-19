@@ -76,19 +76,6 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		askQuestionContainer.setVisible(false);
 			
 	}
-	private void handleAskQuestionTextChange(String oldText, String newText){
-		System.out.println("[" + String.valueOf(oldText.length()) + "]" + "old: " + oldText);
-		System.out.println("[" + String.valueOf(newText.length()) + "]" + "new: " + newText);
-		int newLenght = newText.length();
-		int remaining = charLimit - newLenght;
-		remainingCharsLabel.setText(String.valueOf(remaining));
-		if(remaining < 0 && !submitQuestionButton.isDisabled()){
-			submitQuestionButton.setDisable(true);
-		} 
-		else if(remaining >= 0 && submitQuestionButton.isDisabled()){
-			submitQuestionButton.setDisable(false);
-		}
-	}
 	
 	private void sortQuestionsByScore(){
 		Platform.runLater(() -> {
@@ -105,22 +92,6 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		});	
 	}
 	
-	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
-		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
-		JSONObject obj = new JSONObject();
-		try {
-			obj.put("Function", "VoteQuestion");
-			obj.put("QuestionID", controller.getQuestionId());
-			//If the user selects a new vote after already choosing one, its neccessary to move the rating in the database by two increments
-			int swap = (wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))? 2 : 1;
-			obj.put("ScoreChange", (isNowOn.equals("good")? 1*swap : -1*swap ));
-
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		main.getServerManager().sendJSON(obj);
-	}
 	
 	private void addQuestion(Question question){
 		questionList.add(question);
@@ -143,7 +114,40 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		});
 	}
 	
+	private void handleAskQuestionTextChange(String oldText, String newText){
+		System.out.println("[" + String.valueOf(oldText.length()) + "]" + "old: " + oldText);
+		System.out.println("[" + String.valueOf(newText.length()) + "]" + "new: " + newText);
+		int newLenght = newText.length();
+		int remaining = charLimit - newLenght;
+		remainingCharsLabel.setText(String.valueOf(remaining));
+		if(remaining < 0 && !submitQuestionButton.isDisabled()){
+			submitQuestionButton.setDisable(true);
+		} 
+		else if(remaining >= 0 && submitQuestionButton.isDisabled()){
+			submitQuestionButton.setDisable(false);
+		}
+	}
+	
+	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
+		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("Function", "VoteQuestion");
+			obj.put("QuestionID", controller.getQuestionId());
+			//If the user selects a new vote after already choosing one, its neccessary to move the rating in the database by two increments
+			//System.out.println("wasOn: " + wasOn + " | isNowOn" + );
+			int swap = (wasOn.equals("good") && isNowOn.equals("bad")) || (wasOn.equals("bad") && isNowOn.equals("good"))? 2 : 1;
+			
+			
+			obj.put("ScoreChange", (isNowOn.equals("good")? 1*swap : -1*swap ));
 
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		main.getServerManager().sendJSON(obj);
+	}
+	
 	private void handleSubmitButtonAction() {
 		// TODO Auto-generated method stub
 		String question = askQuestionTextField.getText();
@@ -165,6 +169,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		}
 		askQuestionTextField.setText("");
 		askQuestionContainer.setVisible(false);
+		main.getRootController().setBackOnlyLocal(false);
 	}
 
 	private void handleLostMeButtonAction() {
@@ -200,6 +205,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		// TODO Auto-generated method stub
 		System.out.println("Asking question");
 		askQuestionContainer.setVisible(true);
+		main.getRootController().setBackOnlyLocal(true);
 	}
 
 	//- Functions from interfaces ----------------------------------------------------------------------
@@ -217,6 +223,13 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	@Override
 	public void closeController() {
 		CL.stopListening();
+	}
+	
+	@Override
+	public void localBackChanges() {
+		askQuestionTextField.setText("");
+		askQuestionContainer.setVisible(false);
+		main.getRootController().setBackOnlyLocal(false);
 	}
 	
 	//-> From QuestionReciever

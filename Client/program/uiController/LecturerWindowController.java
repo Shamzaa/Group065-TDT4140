@@ -206,7 +206,10 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	public void closeController() {
 		CL.stopListening();
 		endLecture();
-		// TODO: tell server to end lecture.
+	}
+	@Override
+	public void localBackChanges() {
+		//UNUSED in this window at the moment		
 	}
 	//-> Functions for QuestionReciever
 	@Override
