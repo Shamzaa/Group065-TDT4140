@@ -110,7 +110,7 @@ public class ClientMain extends Application{
 		stage.setMinHeight(windowMinHeight);
 		
 		FXMLLoader loaderR = new FXMLLoader();
-		loaderR.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
+		loaderR.setLocation(ClientMain.class.getResource("ui/fxml/Root.fxml"));
 		root = (BorderPane) loaderR.load();
 		rootCont = loaderR.getController();
 		rootCont.setMainApp(this);
@@ -120,11 +120,11 @@ public class ClientMain extends Application{
 
 		//String css = ClientMain.class.getResource("Buttons.css").toExternalForm();
 		//String css = ClientMain.class.getResource("styleSheet.css").toExternalForm();
-		String css = ClientMain.class.getResource("ui/Buttons.css").toExternalForm();
+		String css = ClientMain.class.getResource("ui/fxml/Buttons.css").toExternalForm();
 		scene.getStylesheets().add(css);
 		stage.setScene(scene);
 		stage.show();
-		loadUI("ui/RoleSelector.fxml");
+		loadUI("ui/fxml/RoleSelector.fxml");
 		
 		
 		

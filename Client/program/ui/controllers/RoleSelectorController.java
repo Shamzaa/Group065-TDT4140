@@ -54,7 +54,7 @@ public class RoleSelectorController implements AppBinder{
 		serverManager.sendJSON(obj);
 		
 		// information has been sent, load next part of UI.
-		main.loadUI("ui/StudentLectureSelector.fxml");
+		main.loadUI("ui/fxml/StudentLectureSelector.fxml");
 	}
 	
 	private void loadLecturer(){
@@ -74,7 +74,7 @@ public class RoleSelectorController implements AppBinder{
 		}
 		main.getServerManager().sendJSON(obj);
 		
-		main.loadUI("ui/LectureLogin.fxml");
+		main.loadUI("ui/fxml/LectureLogin.fxml");
 	}
 	
 	// function to check if proposed server adress is online, returns true if able to connect, false otherwise

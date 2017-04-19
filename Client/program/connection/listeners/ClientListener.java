@@ -13,9 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
-import program.ui.controllers.LectureReviewController;
-import program.ui.controllers.LecturerWindowController;
-import program.ui.controllers.StudentWindowController;
+import program.ui.controllers.lecturer.LectureReviewController;
+import program.ui.controllers.lecturer.LecturerWindowController;
+import program.ui.controllers.student.StudentWindowController;
 
 public class ClientListener implements Runnable{
 	// references

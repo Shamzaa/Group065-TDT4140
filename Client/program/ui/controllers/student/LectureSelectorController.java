@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.student;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
 import program.connection.ServerRequests;
+import program.ui.controllers.AppBinder;
 
 public class LectureSelectorController implements AppBinder{
 	
@@ -41,7 +42,7 @@ public class LectureSelectorController implements AppBinder{
 		
 		main.setClassID(courseCodeChoiceBox.getSelectionModel().getSelectedItem());
 		joinLectureNotify();
-		main.loadUI("ui/StudentWindow.fxml");
+		main.loadUI("ui/fxml/StudentWindow.fxml");
 		
 		
 		

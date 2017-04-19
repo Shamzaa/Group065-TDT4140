@@ -55,7 +55,7 @@ public class RootController{
 	
 	
 	public void addNewPath(String path){
-		if(path.equals("ui/StudentWindow.fxml")){
+		if(path.equals("ui/fxml/StudentWindow.fxml")){
 			return; // prevents the user from experiencing a bug that occurs if you go back and forth between lectures when you return to lecture selector
 		}
 		System.out.println("adding: " + path);

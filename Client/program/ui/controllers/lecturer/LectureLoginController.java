@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.lecturer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
 import program.connection.ServerRequests;
+import program.ui.controllers.AppBinder;
 
 public class LectureLoginController implements AppBinder{
 	
@@ -39,7 +40,7 @@ public class LectureLoginController implements AppBinder{
 		
 		
 		// no errors, proceed to create the lecture on the server side
-		main.loadUI("ui/LecturesOverview.fxml");
+		main.loadUI("ui/fxml/LecturesOverview.fxml");
 		
 
 	}

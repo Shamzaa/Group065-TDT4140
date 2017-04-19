@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.lecturer;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -39,6 +39,8 @@ import program.common.Question;
 import program.connection.listeners.LectureReciever;
 import program.connection.listeners.LectureStatListener;
 import program.connection.listeners.QuestionReciever;
+import program.ui.controllers.AppBinder;
+import program.ui.controllers.QuestionBoxController;
 
 public class LectureReviewController implements AppBinder, LectureReciever{
 	
@@ -97,7 +99,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	private void addQuestion(Question question){		
 		questionList.add(question);
-		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
+		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/fxml/QuestionBox.fxml"));
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();

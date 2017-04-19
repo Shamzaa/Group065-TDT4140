@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.lecturer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import program.ClientMain;
 import program.connection.ServerRequests;
+import program.ui.controllers.AppBinder;
 
 public class CreateLectureController implements AppBinder{
 	
@@ -63,7 +64,7 @@ public class CreateLectureController implements AppBinder{
 		// load ui and pass on what lecture ID the lecturer will associate with, client side
 		main.setClassID(lectureID);
 		main.setLectureName(lectureName);
-		main.loadUI("ui/LecturerWindow.fxml");
+		main.loadUI("ui/fxml/LecturerWindow.fxml");
 	}
 	// Interface inheritance
 	@Override

@@ -1,4 +1,4 @@
-package program.ui.controllers;
+package program.ui.controllers.lecturer;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -30,6 +30,8 @@ import program.common.Question;
 import program.connection.ClientConnection;
 import program.connection.listeners.ClientListener;
 import program.connection.listeners.QuestionReciever;
+import program.ui.controllers.AppBinder;
+import program.ui.controllers.QuestionBoxController;
 
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;										//Reference to the clientMain class that runs the program
@@ -154,7 +156,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	private void addQuestion(Question question){		
 		System.out.println("Adding question: " + question);
 		questionList.add(question);
-		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/QuestionBox.fxml"));
+		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/fxml/QuestionBox.fxml"));
 		Platform.runLater(() -> {
 			try {
 			AnchorPane qPane = (AnchorPane) loader.load();
