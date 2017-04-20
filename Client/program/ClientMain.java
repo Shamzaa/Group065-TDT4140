@@ -146,6 +146,19 @@ public class ClientMain extends Application{
 	}
 	
 	public RootController getRootController(){
+		if(rootCont == null){
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
+			try {
+				root = (BorderPane) loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			rootCont = loader.getController();
+			rootCont.setMainApp(this);
+		}
 		return rootCont;
 	}
 	
