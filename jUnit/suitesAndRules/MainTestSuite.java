@@ -1,4 +1,4 @@
-package tests;
+package suitesAndRules;
 
 import static org.junit.Assert.*;
 
@@ -10,10 +10,13 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.sun.net.httpserver.Authenticator.Success;
 
+import tests.ControllerTest;
+import tests.DatabaseTest;
+
 @RunWith(Suite.class)
 @SuiteClasses({
 	ControllerTest.class,	//Test case for fxml controllers
-	DatabaseTest.class		//Test case for database functions
+	//DatabaseTest.class		//Test case for database functions
 })
 
 public class MainTestSuite {
