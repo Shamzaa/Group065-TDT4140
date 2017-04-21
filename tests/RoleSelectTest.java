@@ -1,6 +1,7 @@
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import program.ClientMain;
 import program.uiController.RoleSelectorController;
 
@@ -11,7 +12,7 @@ import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
 
-public class roleSelectTest extends GuiTest{
+public class RoleSelectTest extends GuiTest{
 
 
 	@Override
@@ -39,6 +40,25 @@ public class roleSelectTest extends GuiTest{
 	public void loadStudent(){
 		clickOn("#selectStudent");
 	}
+	
+	@Test
+	public void loadLecturer(){
+		clickOn("#selectLecturer");
+	}
+	
+	@Test
+	public void noServer(){
+		clickOn("#serverField").type("asd");
+		clickOn("#selectStudent");
+
+        assertEquals("No server with proposed IP is currently running", ((Label) find("#errorLabel")).getText());
+
+		clickOn("#selectLecturer");
+		assertEquals("No server with proposed IP is currently running", ((Label) find("#errorLabel")).getText());
+
+	}
+	
+	
 
 }
 

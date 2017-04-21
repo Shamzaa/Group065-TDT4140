@@ -41,6 +41,7 @@ public class ClientListener implements Runnable{
 				System.out.println("Listens for new notifications from server");
 				String input = in.readLine();
 				try{
+					System.out.println("testing: " + input);
 					JSONObject obj = new JSONObject(input);
 					
 					/* just making a switch case because it's very limited 
