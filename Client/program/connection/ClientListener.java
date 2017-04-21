@@ -72,6 +72,15 @@ public class ClientListener implements Runnable{
 						String input = in.readLine();
 						System.out.println("socket: " + input);
 						JSONObject obj = new JSONObject(input);
+					/** TODO check if this is wrong?
+					System.out.println("testing: " + input);
+					JSONObject obj = new JSONObject(input);
+					
+					/* just making a switch case because it's very limited 
+					 * what the lecturer will listen to, compared to the server
+					 *
+					switch(obj.getString("Function")){						
+						//Student Only*/
 						
 						/* just making a switch case because it's very limited 
 						 * what the lecturer will listen to, compared to the server
