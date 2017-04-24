@@ -20,6 +20,8 @@ import program.uiController.RootController;
 
 
 public class ClientMain extends Application{
+	//If TRUE, this tells other controllers to save and return more info 
+	public final boolean DEBUG = true;
 	
 	// UI elements
 	private Stage stage;
@@ -31,7 +33,9 @@ public class ClientMain extends Application{
 	// reference elements
 	private ServerManager serverManager;
 	private final long lostMeTimerLenght = 5; 	//Decides how long it will wait until it discards a lostMeSignal (Seconds).
-
+	private Alert alert;
+	
+	
 	FXMLLoader loader = null;
 	
 	
@@ -51,16 +55,11 @@ public class ClientMain extends Application{
 	public void displayAlert(String title, String header, String content){
 		Platform.runLater(()-> {
 			System.out.println("Displaying alert!");
-			Alert alert = new Alert(AlertType.WARNING);
-			System.out.println(1);
+			alert = new Alert(AlertType.WARNING);
 			alert.setTitle(title);
-			System.out.println(2);
 			alert.setHeaderText(header);
-			System.out.println(3);
 			alert.setContentText(content);
-			System.out.println("show:");
 			alert.show();
-			System.out.println("Alert displayed");
 		});
 	}
 	
@@ -158,6 +157,10 @@ public class ClientMain extends Application{
 	
 	public int getLectureID(){
 		return lectureID;
+	}
+	
+	public Alert viewAlert(){
+		return alert;
 	}
 	
 	public RootController getRootController(){

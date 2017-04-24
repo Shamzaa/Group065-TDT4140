@@ -205,9 +205,11 @@ public class Database implements AutoCloseable {
 		Date date = Date.valueOf(LocalDate.now());
 		try (Statement stmt = conn.createStatement()) {
 			String query = "insert into lecture(name, subject_code, studentsJoined, start, date) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0, '"+ timeStamp +"', '"+ date +"');";
+			System.out.println(query);
 			if (stmt.execute(query)) {
 				return getLiveLectureID(classID);
-			}
+			} 
+			System.out.println("query didnt work");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;

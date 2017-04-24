@@ -82,4 +82,8 @@ public class RootController{
 	public void setBackOnlyLocal(boolean backOnlyLocal) {
 		this.backOnlyLocal = backOnlyLocal;
 	}
+	
+	public Button viewBackButton(){
+		return backButton;
+	}
 }

@@ -29,19 +29,10 @@ public class LectureLoginController implements AppBinder{
 	
 	
 	private void login(String classID){
-		// future build: check if proposed class ID is in the database.
-
-		if(classID.equals("")){
-			errorLabel.setText("Class code is empty, please create a lecture with a valid class code!");
-			return;
-		}
+		// future build: Ability to log in individual lecturers, so there can be more lectures
+		// 				 in any subject
 		main.setClassID(classID);
-		
-		
-		// no errors, proceed to create the lecture on the server side
 		main.loadUI("ui/LecturesOverview.fxml");
-		
-
 	}
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
