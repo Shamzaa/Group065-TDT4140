@@ -4,5 +4,4 @@
 .classpath
 .settings/
 \.metadata/
-
-Server/database/DatabaseKey\.java
+/DatabaseKey.java
