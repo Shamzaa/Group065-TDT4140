@@ -61,8 +61,8 @@ public class CreateLectureTest extends GuiTest {
 	@Test
 	public void errorMessage() throws Exception {
 		//sleep(10000);
-		clickOn("#lectureNameField").type("A test lecture");
-		clickOn("#newLectureButton");
+		click("#lectureNameField").type("A test lecture");
+		click("#newLectureButton");
 		sleep(100);
 		//assertEquals("There is already a lecture going on using that lecture code!", ((Label)find("#errorLabel")).getText());
 		//fail("Unsure how to test this part, implement later?");

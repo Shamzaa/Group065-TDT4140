@@ -275,8 +275,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				int catMM;
 				int catSS;
 				
-				
-				System.out.println("SWITCH: "+ formatPattern);
 				switch(formatPattern) {
 					case "HH":
 						//TODO add to the graph by hours

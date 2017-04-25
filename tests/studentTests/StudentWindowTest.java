@@ -53,7 +53,7 @@ public class StudentWindowTest extends GuiTest{
 
 	@Test
 	public void openQuestionWindow(){
-		clickOn("#questionButton");
+		click("#questionButton");
 		assertEquals(true, ((GridPane) find("#askQuestionContainer")).isVisible());
 	}
 	
@@ -61,7 +61,7 @@ public class StudentWindowTest extends GuiTest{
 	public void youLostMe(){
 		long waitTime = main.getLostMeTimerLenght()*1000;
 		Button b = find("#lostMeButton");
-		clickOn("#lostMeButton");
+		click("#lostMeButton");
 		assertEquals("Notification sent!", b.getText());
 		sleep(waitTime);
 		assertEquals("I AM LOST!", b.getText());
@@ -69,13 +69,13 @@ public class StudentWindowTest extends GuiTest{
 	
 	@Test
 	public void charLimits(){
-		clickOn("#questionButton");
+		click("#questionButton");
 		TextArea t = (TextArea) find("#askQuestionTextField");
 		Button b = (Button) find("#submitQuestionButton");
 		KeyCode kc = KeyCode.BACK_SPACE; 
 		
 		assertTrue(b.isDisabled());
-		clickOn(t).type("s");
+		click(t).type("s");
 		assertFalse(b.isDisabled());
 		press(kc);
 		release(kc);
@@ -94,13 +94,13 @@ public class StudentWindowTest extends GuiTest{
 	
 	@Test
 	public void sendQuestion(){
-		clickOn("#questionButton");
+		click("#questionButton");
 		GridPane gp = ((GridPane) find("#askQuestionContainer"));
 		TextArea t = (TextArea) find("#askQuestionTextField");
 				
-		clickOn("#askQuestionTextField").type("a Q");
+		click("#askQuestionTextField").type("a Q");
 		assertEquals("a Q", t.getText());
-		clickOn("#submitQuestionButton");
+		click("#submitQuestionButton");
 		assertFalse(gp.isVisible());
 		
 	}
@@ -146,7 +146,7 @@ public class StudentWindowTest extends GuiTest{
 	@Test
 	public void localBackChanges(){
 		//Tests the localBackChanges method closes the input overlay, and also removes text
-		clickOn("#questionButton");
+		click("#questionButton");
 		
 		GridPane gp = ((GridPane) find("#askQuestionContainer"));
 		TextArea t = (TextArea) find("#askQuestionTextField");
@@ -155,10 +155,10 @@ public class StudentWindowTest extends GuiTest{
 		c.localBackChanges();
 		assertFalse(gp.isVisible());
 		
-		clickOn("#questionButton");
-		clickOn("#askQuestionTextField").type("test");
+		click("#questionButton");
+		click("#askQuestionTextField").type("test");
 		c.localBackChanges();
-		clickOn("#questionButton");
+		click("#questionButton");
 		assertEquals("", t.getText());
 	}
 	

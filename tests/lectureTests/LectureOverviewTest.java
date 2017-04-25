@@ -54,11 +54,11 @@ public class LectureOverviewTest extends GuiTest {
 		VBox vb = (VBox) find("#lectureContainer");
 		sleep(100);
 		assertEquals(1, vb.getChildren().size());
-		clickOn(c.getLectureBoxController(0).viewButton());
+		click(c.getLectureBoxController(0).viewButton());
 	}
 	
 	@Test
 	public void createNewLecture() throws Exception {
-		clickOn("#createLectureButton");
+		click("#createLectureButton");
 	}
 }

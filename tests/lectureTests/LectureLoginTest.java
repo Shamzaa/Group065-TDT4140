@@ -42,9 +42,9 @@ public class LectureLoginTest extends GuiTest {
 	public void login() {
 		@SuppressWarnings("unchecked")
 		ChoiceBox<String> cb = (ChoiceBox<String>) find("#classChoiceBox");
-		clickOn(cb);
+		click(cb);
 		moveBy(0, 20);
-		clickOn();
-		clickOn("#loginButton");
+		click();
+		click("#loginButton");
 	}
 }

@@ -39,22 +39,22 @@ public class RoleSelectTest extends GuiTest{
 	
 	@Test
 	public void loadStudent(){
-		clickOn("#selectStudent");
+		click("#selectStudent");
 	}
 	
 	@Test
 	public void loadLecturer(){
-		clickOn("#selectLecturer");
+		click("#selectLecturer");
 	}
 	
 	@Test
 	public void noServer(){
-		clickOn("#serverField").type("asd");
-		clickOn("#selectStudent");
+		click("#serverField").type("asd");
+		click("#selectStudent");
 
         assertEquals("No server with proposed IP is currently running", ((Label) find("#errorLabel")).getText());
 
-		clickOn("#selectLecturer");
+		click("#selectLecturer");
 		assertEquals("No server with proposed IP is currently running", ((Label) find("#errorLabel")).getText());
 
 	}

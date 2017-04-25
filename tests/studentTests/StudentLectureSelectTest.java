@@ -43,7 +43,7 @@ public class StudentLectureSelectTest extends GuiTest{
 	@Test
 	public void tryToJoinLectureError(){
 		// test with just a server running and no running lectures.
-		clickOn("#ConnectButton");
+		click("#ConnectButton");
 		@SuppressWarnings("unchecked")
 		String errorExpect = "No lecture is being held with course code: " + ((ChoiceBox<String>)find("#courseCodeChoiceBox")).getSelectionModel().getSelectedItem();
 		assertEquals(errorExpect, ((Label) find("#ErrorLabel")).getText());
