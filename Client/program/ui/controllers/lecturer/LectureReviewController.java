@@ -72,6 +72,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	 */
 	@FXML
 	private void initialize(){
+
+		//updateStudentsConnectedAmount();
 	}
 	
 	/**
@@ -109,8 +111,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			e.printStackTrace();
 		}
 	}
-	
-	
 	/**
 	 * Adds a question box to the list
 	 * @param question question object 

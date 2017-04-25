@@ -50,8 +50,9 @@ public class LectureLoginController implements AppBinder{
 		
 		// no errors, proceed to create the lecture on the server side
 		main.loadUI("ui/fxml/LecturesOverview.fxml");
-		}
-	
+	}
+		
+
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
 	/* (non-Javadoc)

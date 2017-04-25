@@ -227,17 +227,13 @@ public class ClientMain extends Application{
 		return lectureID;
 	}
 	
-<<<<<<< HEAD
 	public Alert viewAlert(){
 		return alert;
 	}
-	
-=======
 	/**
 	 * Getter to get the controller of the root window.
 	 * @return root controller
 	 */
->>>>>>> javadoc for client application
 	public RootController getRootController(){
 		if(rootCont == null){
 			
