@@ -42,6 +42,14 @@ import program.connection.listeners.QuestionReciever;
 import program.ui.controllers.AppBinder;
 import program.ui.controllers.QuestionBoxController;
 
+/**
+ * Controller for the view where the lecture gets all the information about a previous lecture
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	private ClientMain main;
@@ -59,11 +67,17 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	@FXML CategoryAxis xAxis;
 	@FXML ValueAxis<Number> yAxis;
 	
+	/**
+	 * inits view
+	 */
 	@FXML
 	private void initialize(){
-		updateStudentsConnectedAmount();
+		//updateStudentsConnectedAmount();
 	}
 	
+	/**
+	 * a method to sort the list of question boxes based on their score
+	 */
 	private void sortQuestionsByScore(){
 		Platform.runLater(() -> {
 			//The -1 reverses the sorting order
@@ -78,6 +92,10 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	}
 	
 	
+	/**
+	 * method that's called to request the server to send all the information about
+	 * requested lecture
+	 */
 	private void fetchLectureReview(){
 		try {
 			JSONObject obj = new JSONObject();
@@ -93,10 +111,12 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		}
 	}
 	
-	public void updateStudentsConnectedAmount(){
-		//studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
-	}
 	
+	
+	/**
+	 * Adds a question box to the list
+	 * @param question question object 
+	 */
 	private void addQuestion(Question question){		
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/fxml/QuestionBox.fxml"));
@@ -118,6 +138,9 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main){
 		this.main = main;
@@ -127,18 +150,27 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		main.getRootController().setTitle("Lecture Review");
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		// no threads to close here.
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		
 	}
 
 	//-> From LectureReciever
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#recieveQuestions(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		System.out.println("Review recieved questions");
@@ -160,6 +192,9 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#recieveLectureReview(org.json.JSONObject)
+	 */
 	public void recieveLectureReview(JSONObject obj){
 		System.out.println(">> RECIEVED STATS");
 		System.out.println(obj);
@@ -380,12 +415,18 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	
 	// not used in this view.
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#fetchLectures()
+	 */
 	@Override
 	public void fetchLectures() {
 		
 	}
 
 	// not used in this view.
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#recieveLectures(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveLectures(JSONObject obj) {
 		

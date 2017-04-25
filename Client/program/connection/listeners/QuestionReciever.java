@@ -2,6 +2,15 @@ package program.connection.listeners;
 
 import org.json.JSONObject;
 
+/**
+ * interface controllers can implement, to get methods listeners need,
+ * when they have updates and information about questions.
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public interface QuestionReciever {
 	/**
 	 * Tell the server to send the most recent questions in the database

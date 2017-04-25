@@ -12,12 +12,22 @@ import org.json.JSONObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * 
+ * Class with static methods to return the most basic needs from the server
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ */
 public class ServerRequests {
-	/** @author Anders
-	 * 	
-	 * @return an observableList with all Subject codes in the database
-	 */
+
 	
+	/**
+	 * Static method used to get all the subject codes the client can connect to
+	 * @param sm The servermanager object handling the server connection
+	 * @return a list of all the subject codes from the database
+	 */
 	public static ObservableList<String> getAllSubjectCodes(ServerManager sm){
 		JSONObject obj = new JSONObject();
 		try {
@@ -53,7 +63,14 @@ public class ServerRequests {
 	}
 	
 	
-	// static method to request from the server to see if a lecture is being held in requested classID.
+	/**
+	 * static method to request from the server to see if a lecture 
+	 * is being held in requested classID. This is used as a check to see wether
+	 * a client can proceed to a new view.
+	 * @param sm the server manager handling the connection to the database
+	 * @param classID the class code
+	 * @return a boolean confirming if a lecture is being held with the suggested class code
+	 */
 	public static boolean serverHasLecture(ServerManager sm, String classID){
 		JSONObject obj = new JSONObject();
 		try {

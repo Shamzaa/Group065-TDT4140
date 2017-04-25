@@ -12,6 +12,13 @@ import program.ClientMain;
 import program.connection.ServerRequests;
 import program.ui.controllers.AppBinder;
 
+/**
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class LectureLoginController implements AppBinder{
 	
 	ClientMain main;
@@ -21,6 +28,9 @@ public class LectureLoginController implements AppBinder{
 	@FXML ChoiceBox<String> classChoiceBox;	//User chooses a subject code here
 	@FXML Label errorLabel;
 	
+	/**
+	 * inits view
+	 */
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
@@ -29,6 +39,10 @@ public class LectureLoginController implements AppBinder{
 	
 	
 	
+	/**
+	 * Method to let the lecturer login to subject overview page
+	 * @param classID the classcode of the subject
+	 */
 	private void login(String classID){
 		// future build: check if proposed class ID is in the database.
 
@@ -47,6 +61,9 @@ public class LectureLoginController implements AppBinder{
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -55,10 +72,16 @@ public class LectureLoginController implements AppBinder{
 
 		main.getRootController().setTitle("Login");
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		// TODO Make sure all threads and such are closed
 	}	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		

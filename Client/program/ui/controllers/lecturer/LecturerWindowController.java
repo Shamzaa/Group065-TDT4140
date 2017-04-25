@@ -33,6 +33,14 @@ import program.connection.listeners.QuestionReciever;
 import program.ui.controllers.AppBinder;
 import program.ui.controllers.QuestionBoxController;
 
+/**
+ * The controller for the view the lecturer sees when a lecture is happening
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class LecturerWindowController implements AppBinder, QuestionReciever {
 	ClientMain main;										//Reference to the clientMain class that runs the program
 
@@ -59,6 +67,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	@FXML Text lectureNameText;			//The text that shows the name the lecturer decided for the live lecture
 	
 	
+	/**
+	 * inits the view
+	 */
 	@FXML
 	public void initialize(){
 		updatePieChartValues();
@@ -66,21 +77,26 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		//lectureStartTime = new Timestamp(System.currentTimeMillis());	
 	}
 	
-	/**@author Anders
-	 * This method changes the title text and name text
+	/**
+	 * This method changes the title text and lecture name text
+	 * @param newTitle
+	 * @param newName
 	 */
 	public void setTitleAndNameText(String newTitle, String newName){
 		lectureTitleText.setText(newTitle);
 		lectureNameText.setText(newName);
 	}
 	
-	/** @author Anders
+	/**
 	 * This method checks connectedStudents and updates the text
 	 */
 	public void updateStudentsConnectedAmount(){
 		studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
 	}
 	
+	/**
+	 * sorts the question box based on the score of the question.
+	 */
 	private void sortQuestionsByScore(){
 		Platform.runLater(() -> {
 			//The -1 reverses the sorting order
@@ -94,7 +110,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		});	
 	}
 
-	/** @author Anders
+	/**
 	 * This method checks how many students are lost, and updates the pie chart accordingly
 	 */
 	public void updatePieChartValues(){
@@ -115,7 +131,7 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		lostMeGreenArc.setLength(360-newAngle);
 	}
 
-	/** @author Anders
+	/**
 	 *  Increments the number of students, and update ui elements
 	 */
 	public void studentJoined(){
@@ -123,8 +139,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		updateStudentsConnectedAmount();
 		updatePieChartValues();
 	}
-	/** @author Anders
+	/**
 	 *  Increments the number of LOST students, and updates the pieChart. Also checks and warns the teacher if the threshold is reached
+	 *
 	 */
 	public void studentLost(){
 		lostStudents ++;
@@ -149,9 +166,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		}, main.getLostMeTimerLenght()*1000);
 	}
 
-	/** @author Anders
+	/**
 	 *  Adds a new question to the VBox container
-	 *  @param question A Question object of the question that will be displayed
+	 * @param question A Question object of the question that will be displayed
 	 */
 	private void addQuestion(Question question){		
 		System.out.println("Adding question: " + question);
@@ -176,9 +193,8 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		});
 	}
 	
-	/** @author Erling
+	/**
 	 * tells the server the lecture is over, and sets the end timestamp in the database
-	 * 
 	 */
 	private void endLecture(){
 		JSONObject obj = new JSONObject();
@@ -195,6 +211,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -204,16 +223,25 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		setTitleAndNameText(main.getClassID(), main.getLectureName());
 		main.getRootController().setTitle("Lecture");
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		CL.stopListening();
 		endLecture();
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		
 	}
 	//-> Functions for QuestionReciever
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#fetchQuestions(int)
+	 */
 	@Override
 	public void fetchQuestions(int numberOfQuestions){
 		JSONObject obj = new JSONObject();
@@ -228,6 +256,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		main.getServerManager().sendJSON(obj);
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#recieveQuestions(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		// TODO Auto-generated method stub
@@ -254,6 +285,9 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#fetchLiveLectureID()
+	 */
 	@Override
 	public void fetchLiveLectureID() {
 		JSONObject obj = new JSONObject();
@@ -267,12 +301,18 @@ public class LecturerWindowController implements AppBinder, QuestionReciever {
 		main.getServerManager().sendJSON(obj);
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#setLiveLectureID(int)
+	 */
 	@Override
 	public void setLiveLectureID(int ID) {
 		System.out.println("Setting liveLectureID to: " + ID);
 		this.liveLectureID = ID;
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#updateQuestionScore(int, int)
+	 */
 	@Override
 	public void updateQuestionScore(int questionID, int newScore) {
 		for (Question question : questionList) {

@@ -13,6 +13,13 @@ import program.ClientMain;
 import java.net.Socket;
 import program.connection.ServerManager;
 
+/**
+ * View that lets the user select what role to have when using the program
+ * @author Erling Ihlen
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class RoleSelectorController implements AppBinder{
 	ClientMain main;
 	ServerManager serverManager;
@@ -22,6 +29,9 @@ public class RoleSelectorController implements AppBinder{
 	@FXML private TextField serverField;
 	@FXML private Label errorLabel;
 	
+	/**
+	 * inits the view
+	 */
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
@@ -32,6 +42,9 @@ public class RoleSelectorController implements AppBinder{
 	}
 	
 	// different functions to load next part of UI after connection to the server and load UI
+	/**
+	 * Loads the student view
+	 */
 	private void loadStudent(){
 		// does a test connection to proposed IP in the field, and returns if it is not available
 		if(!hostAvailabilityCheck()){
@@ -57,6 +70,9 @@ public class RoleSelectorController implements AppBinder{
 		main.loadUI("ui/fxml/StudentLectureSelector.fxml");
 	}
 	
+	/**
+	 * loads the lecturer view
+	 */
 	private void loadLecturer(){
 		// does a test connection to proposed IP in the field, and returns if it is not available
 		if(!hostAvailabilityCheck()){
@@ -78,6 +94,10 @@ public class RoleSelectorController implements AppBinder{
 	}
 	
 	// function to check if proposed server adress is online, returns true if able to connect, false otherwise
+	/**
+	 * A check to see if the server with proposed IP address is running.
+	 * @return true or false if the server is available
+	 */
 	public boolean hostAvailabilityCheck(){ 
 		// TODO: close connection after successfull test. Server keeps listening for this socket.
 	    try (Socket server = new Socket(serverField.getText(), 2222)) {
@@ -90,6 +110,9 @@ public class RoleSelectorController implements AppBinder{
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -97,11 +120,17 @@ public class RoleSelectorController implements AppBinder{
 		main.getRootController().setTitle("Select role and server");
 	}
 
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		// TODO Make sure all threads and such are closed	
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		

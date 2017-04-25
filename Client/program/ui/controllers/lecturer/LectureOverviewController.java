@@ -27,6 +27,15 @@ import program.connection.listeners.LectureReciever;
 import program.connection.listeners.LectureStatListener;
 import program.ui.controllers.AppBinder;
 
+/**
+ * Controller for the overview page of a subject. This page lets the user see a list
+ * of all previous lectures of a subject, and open them to see stats and other information
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class LectureOverviewController implements AppBinder, LectureReciever{
 	
 	private ClientMain main;
@@ -43,6 +52,9 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	@FXML Label studentsCount;
 	@FXML Button createLectureButton;
 	
+	/**
+	 * 
+	 */
 	@FXML
 	private void initialize(){
 		createLectureButton.setOnAction(
@@ -50,6 +62,13 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		
 	}
 	
+	/**
+	 * Adds a lecture to the list of previous lectures
+	 * @param lectureName name of the lecture
+	 * @param date date of the lecture
+	 * @param lectureID ID of the lecture
+	 * @param studentsJoined how many students joined the lecture
+	 */
 	public void addLecture(String lectureName, String date, int lectureID, int studentsJoined){
 		
 		
@@ -82,10 +101,18 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		});
 	}
 	
+	/**
+	 * loads the view where you can create a new lecture
+	 */
 	private void createNewLecture(){
 		main.loadUI("ui/fxml/CreateLecture.fxml");
 	}
 	
+	/**
+	 * method called from the buttons in the lecture boxes,
+	 * lets the program open a new view showing information about that specific lecture
+	 * @param lectureID ID of the lecture
+	 */
 	private void viewLecture(int lectureID){
 		
 		main.setLectureID(lectureID);
@@ -96,6 +123,9 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 	}
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -107,15 +137,24 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		main.getRootController().setTitle("Lectures Overview");
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		// TODO Make sure all threads and such are closed
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		
 	}
 	//-> From LectureReciever
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#recieveLectures(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveLectures(JSONObject obj) {
 		try {
@@ -137,6 +176,9 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#fetchLectures()
+	 */
 	@Override
 	public void fetchLectures() {
 		JSONObject obj = new JSONObject();
@@ -151,12 +193,18 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		}
 	}
 	// Unused in this view.
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#recieveQuestions(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		// TODO Auto-generated method stub
 		
 	}
 	// unused in this view.
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.LectureReciever#recieveLectureReview(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveLectureReview(JSONObject obj) {
 		// TODO Auto-generated method stub

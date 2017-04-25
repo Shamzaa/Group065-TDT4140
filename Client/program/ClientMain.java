@@ -10,15 +10,22 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import program.connection.*;
-import program.database.Database;
 import program.ui.controllers.AppBinder;
 import program.ui.controllers.RootController;
 
 
+/**
+ * Main class that is instantiated to run the application
+ * 
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class ClientMain extends Application{
 	
 	// UI elements
@@ -40,14 +47,34 @@ public class ClientMain extends Application{
 	private String lectureName;
 	private int lectureID;
 	
+	/** 
+	 * This method sets up our ServerManager object
+	 * that is responsible for managing all requests and incoming info
+	 * from the server.
+	 * 
+	 * @param serverAdress String that is the IP address of the server
+	 */
 	public void startConnection(String serverAdress){
 		serverManager = new ServerManager(serverAdress, 2222);
 	}
 	
+	/**
+	 * Launches the application
+	 * @param args
+	 */
 	public static void main(String[] args){
 		launch(ClientMain.class, args);
 
 	}
+	/**
+	 * This method is used to alert the user of something that happened,
+	 * with a popup window. In our case it's used, for instance, when
+	 * the lecturer has lost a treshold of students during the lecture.
+	 * 
+	 * @param title Title of the window that appears
+	 * @param header Title of the content in the window
+	 * @param content Text that appears in the window informing the user what happened
+	 */
 	public void displayAlert(String title, String header, String content){
 		Platform.runLater(()-> {
 			System.out.println("Displaying alert!");
@@ -64,6 +91,11 @@ public class ClientMain extends Application{
 		});
 	}
 	
+	/**
+	 * This method loads the view related to the fxml file in parameter,
+	 * and sets it in the center window of our root window.
+	 * @param path Relative url to the fxml file
+	 */
 	public void loadUI(String path){
 		try {
 			if(loader != null){
@@ -91,6 +123,9 @@ public class ClientMain extends Application{
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// starts server connection
@@ -129,45 +164,92 @@ public class ClientMain extends Application{
 		
 		
 	}
-	//Runs when window is closed
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#stop()
+	 */
 	@Override
 	public void stop() throws Exception{
 		System.out.println("Window closed....");
-		//TODO add code for proper disconnection
 	}
 	
+	/**
+	 * Getter to get the servermanager.
+	 * @return manager to handle requests and info from server.
+	 */
 	public ServerManager getServerManager(){
 		return serverManager;
 	}
 	
+	/**
+	 * Sets the class code the client is connected to.
+	 * @param classID class code for the subject the client is connected to
+	 */
 	public void setClassID(String classID){
 		this.classID = classID;
 	}
+	/**
+	 * getter to get the class code the client is connected to.
+	 * @return Class code
+	 */
 	public String getClassID(){
 		return classID;
 	}
+	
+	/**
+	 * sets the name of the lecture the client is connected to.
+	 * @param lectureName name of the lecture.
+	 */
 	public void setLectureName(String lectureName) {
 		this.lectureName = lectureName;
 	}
+	/**
+	 * getter to get the name of the lecture the client is connected to
+	 * @return name of the lecture
+	 */
 	public String getLectureName() {
 		return lectureName;
 	}
+	/**
+	 * sets the ID of the lecture the client is connected to.
+	 * This is used to know which lecture in the database info needs to be parsed to,
+	 * as well as for the server to know which clients info and notifications
+	 * should be sent to
+	 * @param lectureID ID of the lecture
+	 */
 	public void setLectureID(int lectureID){
 		this.lectureID = lectureID;
 	}
 	
+	/**
+	 * getter to get the lecture ID the client is connected to
+	 * @return id of the lecture
+	 */
 	public int getLectureID(){
 		return lectureID;
 	}
 	
+	/**
+	 * Getter to get the controller of the root window.
+	 * @return root controller
+	 */
 	public RootController getRootController(){
 		return rootCont;
 	}
 	
+	/**
+	 * Method used to get the length of the timer to controll the cooldown of
+	 * "you lost me" feature
+	 * @return lost-me timer
+	 */
 	public long getLostMeTimerLenght() {
 		return lostMeTimerLenght;
 	}
 	
+	/**
+	 * Method used to get the controller that is currently active in the 
+	 * main window of the root window. Used to make the back button function properly
+	 * @return controller of active window.
+	 */
 	public AppBinder getActiveController(){
 		return loader.getController();
 	}
