@@ -12,6 +12,13 @@ import program.ClientMain;
 import program.connection.ServerRequests;
 import program.ui.controllers.AppBinder;
 
+/**
+ * Controller for the student where he or she can select what subject to join a lecture in 
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ */
 public class LectureSelectorController implements AppBinder{
 	
 	// ClientMain reference for getters.
@@ -26,6 +33,9 @@ public class LectureSelectorController implements AppBinder{
 	private Label ErrorLabel;
 	
 	
+	/**
+	 * inits view
+	 */
 	@FXML
 	private void initialize(){
 		ErrorLabel.setText("");
@@ -34,6 +44,9 @@ public class LectureSelectorController implements AppBinder{
 	}
 
 	
+	/**
+	 * method to connect to the lecture in proposed subject. Checks if a lecture is happening before attempting to connect.
+	 */
 	private void connectToLecture(){
 		if(!lectureIsHappening(courseCodeChoiceBox.getSelectionModel().getSelectedItem())){
 			ErrorLabel.setText("No lecture is being held with course code: " + courseCodeChoiceBox.getSelectionModel().getSelectedItem());
@@ -48,13 +61,23 @@ public class LectureSelectorController implements AppBinder{
 		
 	}
 	
+	/**
+	 * method to return true or false to see if a lecture is happening in selected subject
+	 * @param classID subject code
+	 * @return bool if lecture is happening
+	 */
 	private boolean lectureIsHappening(String classID){
 		// sends request to server to see if a lecture is happening
 		return ServerRequests.serverHasLecture(main.getServerManager(), classID);
 		
 	}
 	
-	public void joinLectureNotify(){
+	/**
+	 * Method to notify the server that you have joined a lecture,
+	 * used to update student count.
+	 * 
+	 */
+	private void joinLectureNotify(){
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "JoinLecture");
@@ -68,6 +91,9 @@ public class LectureSelectorController implements AppBinder{
 	
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -79,11 +105,17 @@ public class LectureSelectorController implements AppBinder{
 		main.getRootController().setTitle("Join lecture");
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		// TODO Make sure all threads and such are closed	
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		

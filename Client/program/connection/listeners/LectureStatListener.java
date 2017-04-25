@@ -12,6 +12,15 @@ import program.ClientMain;
 import program.ui.controllers.lecturer.LectureReviewController;
 
 
+/**
+ * 
+ * Listener that sends info to controllers implementing the LectureReciever interface
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class LectureStatListener implements Runnable{
 	private LectureReciever controller;
 	private int listenerCounter;
@@ -20,8 +29,13 @@ public class LectureStatListener implements Runnable{
 	
 	// in and out data channels
 	private BufferedReader in;
-	private boolean interrupted = false;
 	
+	/**
+	 * @param main reference to the Main class
+	 * @param controller the controller of the active window.
+	 * @param listenerCounter a counter used to count how many times it will recieve information
+	 * before the active view doesn't need more info, and closes the listener
+	 */
 	public LectureStatListener(ClientMain main, LectureReciever controller, int listenerCounter){
 		this.controller = controller;
 		this.listenerCounter = listenerCounter;
@@ -30,6 +44,9 @@ public class LectureStatListener implements Runnable{
 
 		
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		try{
@@ -72,11 +89,6 @@ public class LectureStatListener implements Runnable{
 			e.printStackTrace();
 			return;
 		}
-	}
-	
-	public void interrupt(){
-		interrupted = true;
-		System.out.println("yikes");
 	}
 
 }

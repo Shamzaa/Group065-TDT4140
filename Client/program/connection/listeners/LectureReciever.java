@@ -2,6 +2,14 @@ package program.connection.listeners;
 
 import org.json.JSONObject;
 
+/**
+ * Interface for controllers that are supposed to recieve information about lectures
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public interface LectureReciever {
 	/** 
 	 * Requests all lectures from the database

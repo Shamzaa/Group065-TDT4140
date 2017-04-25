@@ -17,6 +17,17 @@ import program.ui.controllers.lecturer.LectureReviewController;
 import program.ui.controllers.lecturer.LecturerWindowController;
 import program.ui.controllers.student.StudentWindowController;
 
+/**
+ * 
+ * A Listener Class that is instantiated in a new thread to work as a listener
+ * to update info at the client side, without letting the application hold in 
+ * a block of code. The listener recieves JSONObjects and proceeds to call methods
+ * at the UI controllers based on what "function" parameter they get
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ */
 public class ClientListener implements Runnable{
 	// references
 	ClientMain main;
@@ -29,22 +40,30 @@ public class ClientListener implements Runnable{
 	private BufferedReader in;
 	
 	
+	/**
+	 * 
+	 * @param main Reference to the Main object
+	 * @param controller the controller of the active window that created this listener
+	 */
 	public ClientListener(ClientMain main, QuestionReciever controller){
 		this.main = main;
 		this.client = main.getServerManager().getSocket();
 		this.controller = controller;
 	}
 		
+	/**
+	 * A Method made to interrupt the listener and make it escape the code hold from the input stream read
+	 */
 	public void stopListening(){
 		try {
 			System.out.println("closing listener");
 			Thread.currentThread().interrupt();
 			/*
-			 * How this stop listening works:
-			 * I set the interrupt flag to true, and the loop runs while the flag is false.
-			 * Using the .ready() attribute of the bufferedreader, I can run the loop
-			 * without making it freeze this object. I also make this object sleep for 500ms each loop
-			 * so I don't fry the CPU. 8)
+			 How this stop listening works:
+			 I set the interrupt flag to true, and the loop runs while the flag is false.
+			 Using the .ready() attribute of the bufferedreader, I can run the loop
+			 without making it freeze this object. I also make this object sleep for 500ms each loop
+			 so I don't fry the CPU. 8)
 			 */
 			
 			
@@ -58,6 +77,9 @@ public class ClientListener implements Runnable{
 		}	
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
@@ -83,7 +105,7 @@ public class ClientListener implements Runnable{
 						//Student Only*/
 						
 						/* just making a switch case because it's very limited 
-						 * what the lecturer will listen to, compared to the server
+						 what the lecturer will listen to, compared to the server
 						 */
 						switch(obj.getString("Function")){						
 							//Student Only

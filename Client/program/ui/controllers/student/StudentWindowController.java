@@ -39,6 +39,14 @@ import program.connection.listeners.QuestionReciever;
 import program.ui.controllers.AppBinder;
 import program.ui.controllers.QuestionBoxController;
 
+/**
+ * Controller for the student view when attending a lecture
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class StudentWindowController implements AppBinder, QuestionReciever {
 	private ArrayList<Question> questionList = new ArrayList<>();
 	private ArrayList<QuestionBoxController> questionBoxControllers;
@@ -63,6 +71,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	@FXML TextArea askQuestionTextField;
 	@FXML Label remainingCharsLabel;
 	
+	/**
+	 * inits view
+	 */
 	@FXML
 	public void initialize() {
 		System.out.println("Opening studentwindow");
@@ -81,6 +92,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			
 	}
 	
+	/**
+	 * Sorts the question box based on question score
+	 */
 	private void sortQuestionsByScore(){
 		Platform.runLater(() -> {
 			//The -1 reverses the sorting order
@@ -97,6 +111,10 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	}
 	
 	
+	/**
+	 * adds a question to the question box
+	 * @param question Question added
+	 */
 	private void addQuestion(Question question){
 		questionList.add(question);
 		FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("ui/fxml/QuestionBox.fxml"));
@@ -123,6 +141,11 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		});
 	}
 	
+	/**
+	 * Method to limit the user from typing too many characters in the ask question box
+	 * @param oldText question text before button press
+	 * @param newText question text after button press
+	 */
 	private void handleAskQuestionTextChange(String oldText, String newText){
 		int newLenght = newText.length();
 		int remaining = charLimit - newLenght;
@@ -135,6 +158,12 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		}
 	}
 	
+	/**
+	 * Method called whenever the user votes on a question
+	 * @param controller the controller of the questionbox that is voted on
+	 * @param wasOn handler to handle duplicate votes
+	 * @param isNowOn handler to handle duplicate votes
+	 */
 	private void handleQuestionVote(QuestionBoxController controller, String wasOn, String isNowOn){
 		System.out.println("{"+controller.getQuestionId()+"} "+controller.getQuestionText() + " changed from [" + wasOn + "] to [" + isNowOn +"]");
 		JSONObject obj = new JSONObject();
@@ -155,6 +184,10 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		main.getServerManager().sendJSON(obj);
 	}
 	
+	/**
+	 * method called when a student is submitting a question, sends it to server,
+	 * and server distributes it to all clients connected to the lecture.
+	 */
 	private void handleSubmitButtonAction() {
 		// TODO Auto-generated method stub
 		String question = askQuestionTextField.getText();
@@ -179,6 +212,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		main.getRootController().setBackOnlyLocal(false);
 	}
 
+	/**
+	 * Method called whenever the student presses the "I am lost" button
+	 */
 	private void handleLostMeButtonAction() {
 		String classID = main.getClassID();
 		lostMeButton.setDisable(true);
@@ -195,7 +231,6 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		
 		main.getServerManager().sendJSON(obj);
 		
-		// TODO: some visual feedback for the student to let him know that he sendt the notification
 		//triggers the run() block after lostMeButtonCooldown*1000 milliseconds
 		Timer cooldownTimer = new Timer();
 		cooldownTimer.schedule(new TimerTask() {
@@ -208,8 +243,10 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		}, main.getLostMeTimerLenght()*1000);
 	}
 
+	/**
+	 * makes ask question view visible to the student
+	 */
 	private void handleQuestionButtonAction() {
-		// TODO Auto-generated method stub
 		System.out.println("Asking question");
 		askQuestionContainer.setVisible(true);
 		main.getRootController().setBackOnlyLocal(true);
@@ -231,6 +268,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -246,11 +286,17 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			 questionBoxControllers = new ArrayList<>();
 		}
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController() {
 		CL.stopListening();
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		askQuestionTextField.setText("");
@@ -260,6 +306,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	}
 	
 	//-> From QuestionReciever
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#fetchQuestions(int)
+	 */
 	@Override
 	public void fetchQuestions(int numberOfQuestions){
 		System.out.println("Fetching questions.....");
@@ -276,6 +325,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		main.getServerManager().sendJSON(obj);
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#recieveQuestions(org.json.JSONObject)
+	 */
 	@Override
 	public void recieveQuestions(JSONObject obj) {
 		// TODO Auto-generated method stub
@@ -305,6 +357,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#fetchLiveLectureID()
+	 */
 	@Override
 	public void fetchLiveLectureID() {
 		System.out.println("Fetching LiveLecture.....");
@@ -319,6 +374,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		main.getServerManager().sendJSON(obj);
 	}
 	
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#setLiveLectureID(int)
+	 */
 	@Override
 	public void setLiveLectureID(int ID) {
 		System.out.println("Setting liveLectureID to: " + ID);
@@ -326,6 +384,9 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		//Now that the live ID is recieved, we can fetch all the questions the lecture got before this client joined
 		fetchQuestions(Integer.MAX_VALUE);
 	}
+	/* (non-Javadoc)
+	 * @see program.connection.listeners.QuestionReciever#updateQuestionScore(int, int)
+	 */
 	@Override
 	public void updateQuestionScore(int questionID, int newScore) {
 		for (Question question : questionList) {

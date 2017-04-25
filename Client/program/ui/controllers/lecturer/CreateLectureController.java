@@ -12,6 +12,13 @@ import program.ClientMain;
 import program.connection.ServerRequests;
 import program.ui.controllers.AppBinder;
 
+/**
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class CreateLectureController implements AppBinder{
 	
 	private ClientMain main;						//References the ClientMain that runs the program 
@@ -21,6 +28,9 @@ public class CreateLectureController implements AppBinder{
 	@FXML private Button newLectureButton;			//Initializes lecture creation
 	
 	
+	/**
+	 * inits view
+	 */
 	@FXML
 	private void initialize(){
 		errorLabel.setText("");
@@ -33,6 +43,12 @@ public class CreateLectureController implements AppBinder{
 	}
 	
 
+	/**
+	 * Method to create a new lecture. Tells the server about this
+	 * so that other students can connect to it, and save info in the database
+	 * @param lectureID the class code the lecturer wants to create a lecture in
+	 * @param lectureName the name the lecturer wants to give the lecture
+	 */
 	private void createNewLecture(String lectureID, String lectureName){
 		// future build: check if proposed lecture ID is in the database.
 
@@ -68,6 +84,9 @@ public class CreateLectureController implements AppBinder{
 		main.loadUI("ui/fxml/LecturerWindow.fxml");
 	}
 	// Interface inheritance
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#setMainApp(program.ClientMain)
+	 */
 	@Override
 	public void setMainApp(ClientMain main) {
 		this.main = main;
@@ -75,10 +94,16 @@ public class CreateLectureController implements AppBinder{
 		//TODO this print is wrong: System.out.println("Choicebox initialized");
 		main.getRootController().setTitle("Create Lecture");
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#closeController()
+	 */
 	@Override
 	public void closeController(){
 		//TODO make sure all threads and such is closed
 	}
+	/* (non-Javadoc)
+	 * @see program.ui.controllers.AppBinder#localBackChanges()
+	 */
 	@Override
 	public void localBackChanges() {
 		//UNUSED in this window at the moment		
