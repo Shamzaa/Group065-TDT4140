@@ -10,6 +10,7 @@ import lectureTests.LectureLoginTest;
 import lectureTests.LectureOverviewTest;
 import lectureTests.LectureReviewTest;
 import lectureTests.LecturerWindowTest;
+import serverTests.DatabaseTests;
 import studentTests.StudentWindowTest;
 
 @RunWith(Suite.class)
@@ -17,7 +18,7 @@ import studentTests.StudentWindowTest;
 // suite with all the junit tests
 @Suite.SuiteClasses({
 	//- code tests ---------------------------------------------------------------------------------------
-	
+	DatabaseTests.class,
 	//----------------------------------------------------------------------------------------------------
 	//- GUI tests ----------------------------------------------------------------------------------------
 	// needs server running to work.

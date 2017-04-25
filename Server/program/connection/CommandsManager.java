@@ -163,9 +163,11 @@ public class CommandsManager {
 	private void createLecture(JSONObject obj, ClientConnection client){
 		try{
 			System.out.println("create new lecture with class code: " + obj.getString("ClassID"));
-			clientsManager.main.getDatabase().createNewLecture(obj.getString("LectureName"), obj.getString("ClassID"));
+			int lectureID = clientsManager.main.getDatabase().createNewLecture(obj.getString("LectureName"), obj.getString("ClassID"));
+			//clientsManager.main.getDatabase().createNewLecture(obj.getString("LectureName"), obj.getString("ClassID"));
 			clientsManager.addLecturerToLecture(client, obj.getString("ClassID"));
-			client.setLectureID(clientsManager.main.getDatabase().getLiveLectureID(obj.getString("ClassID")));
+			client.setLectureID(lectureID);
+			//client.setLectureID(clientsManager.main.getDatabase().getLiveLectureID(obj.getString("ClassID")));
 		} catch (JSONException e){
 			
 		}
