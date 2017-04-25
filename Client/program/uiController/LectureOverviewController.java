@@ -68,7 +68,6 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 			
 			controller.viewButton().setOnAction(e -> viewLecture(controller.getLectureID()));
 			
-			
 			// Adds the questionBox ui element to QuestionContainer
 			lectureContainer.getChildren().add(0, lPane);
 			
@@ -92,6 +91,13 @@ public class LectureOverviewController implements AppBinder, LectureReciever{
 		clientProcessingPool.shutdown();
 		main.loadUI("ui/LectureReview.fxml");
 
+	}
+	
+	public LectureBoxController getLectureBoxController(int lectureBoxIndex){
+		if(main.DEBUG){
+			return ((ArrayList<LectureBoxController>) lectures).get(lectureBoxIndex);
+		}
+		return null;
 	}
 	//- Functions from interfaces ----------------------------------------------------------------------
 	//-> From AppBinder

@@ -38,7 +38,8 @@ import program.connection.ClientListener;
 import program.connection.QuestionReciever;
 
 public class StudentWindowController implements AppBinder, QuestionReciever {
-	ArrayList<Question> questionList = new ArrayList<>();
+	private ArrayList<Question> questionList = new ArrayList<>();
+	private ArrayList<QuestionBoxController> questionBoxControllers;
 	
 	private ExecutorService clientProcessingPool = Executors.newSingleThreadExecutor();
 	private int liveLectureID;
@@ -74,6 +75,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		
 		
 		askQuestionContainer.setVisible(false);
+		submitQuestionButton.setDisable(true);
 			
 	}
 	
@@ -108,6 +110,11 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			// Adds the questionBox ui element to QuestionContainer
 			QuestionContainer.getChildren().add(qPane);
 			
+			//This is used for debug and unit testing only
+			if(main.DEBUG){
+				questionBoxControllers.add(controller);
+			}
+			
 			} catch (IOException e) {
 				e.printStackTrace();
 			}			
@@ -115,12 +122,10 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	}
 	
 	private void handleAskQuestionTextChange(String oldText, String newText){
-		System.out.println("[" + String.valueOf(oldText.length()) + "]" + "old: " + oldText);
-		System.out.println("[" + String.valueOf(newText.length()) + "]" + "new: " + newText);
 		int newLenght = newText.length();
 		int remaining = charLimit - newLenght;
 		remainingCharsLabel.setText(String.valueOf(remaining));
-		if(remaining < 0 && !submitQuestionButton.isDisabled()){
+		if((remaining < 0 || newLenght == 0) && !submitQuestionButton.isDisabled()){
 			submitQuestionButton.setDisable(true);
 		} 
 		else if(remaining >= 0 && submitQuestionButton.isDisabled()){
@@ -175,7 +180,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	private void handleLostMeButtonAction() {
 		String classID = main.getClassID();
 		lostMeButton.setDisable(true);
-		lostMeButton.setText("Sendt!");
+		lostMeButton.setText("Notification sent!");
 		
 		JSONObject obj = new JSONObject();
 		try {
@@ -195,7 +200,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 			@Override
 			public void run() {
 				lostMeButton.setDisable(false);
-				Platform.runLater(() -> lostMeButton.setText("YOU LOST ME!"));
+				Platform.runLater(() -> lostMeButton.setText("I AM LOST!"));
 				System.out.println("lostButton enabled again!");
 			}
 		}, main.getLostMeTimerLenght()*1000);
@@ -206,6 +211,20 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		System.out.println("Asking question");
 		askQuestionContainer.setVisible(true);
 		main.getRootController().setBackOnlyLocal(true);
+	}
+	
+	/**
+	 * Used for unitTesting and debugging ONLY
+	 * This method requires debug to be true, else it will always return null
+	 * @param questionIndex The index of the question in the vBox container
+	 * @return If main.DEBUG is true, this will return the controller for a specified question, else null
+	 * @author Anders
+	 */
+	public QuestionBoxController getQuestionBoxController(int questionIndex) {
+		if(main.DEBUG && questionIndex < questionBoxControllers.size()){
+			return questionBoxControllers.get(questionIndex);			
+		}
+		return null;
 	}
 
 	//- Functions from interfaces ----------------------------------------------------------------------
@@ -219,6 +238,11 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 		fetchLiveLectureID();
 
 		main.getRootController().setTitle("Lecture");
+		
+		//This is used for unittesting purposes only purposes;
+		if(main.DEBUG){
+			 questionBoxControllers = new ArrayList<>();
+		}
 	}
 	@Override
 	public void closeController() {
@@ -229,6 +253,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	public void localBackChanges() {
 		askQuestionTextField.setText("");
 		askQuestionContainer.setVisible(false);
+		submitQuestionButton.setDisable(true);
 		main.getRootController().setBackOnlyLocal(false);
 	}
 	

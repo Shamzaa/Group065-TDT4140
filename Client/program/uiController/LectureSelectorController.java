@@ -53,7 +53,7 @@ public class LectureSelectorController implements AppBinder{
 		
 	}
 	
-	private void joinLectureNotify(){
+	public void joinLectureNotify(){
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("Function", "JoinLecture");

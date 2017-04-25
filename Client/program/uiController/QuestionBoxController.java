@@ -84,7 +84,7 @@ public class QuestionBoxController {
 	public StringProperty goodProperty(){
 		return vote;
 	}
-	private void viewQuestionScore(int score){
-		
+	public int getQuestionScore(){
+		return Integer.valueOf(pointScoreText.getText());
 	}
 }

@@ -59,7 +59,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 	
 	@FXML
 	private void initialize(){
-		updateStudentsConnectedAmount();
+		//EMPTY
 	}
 	
 	private void sortQuestionsByScore(){
@@ -89,10 +89,6 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void updateStudentsConnectedAmount(){
-		//studentsConnectedText.setText(String.valueOf(connectedStudents) + " Students connected");
 	}
 	
 	private void addQuestion(Question question){		
@@ -172,6 +168,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 			LocalTime stop;
 
 			//Decide start and stop timeStamps, if present
+			System.out.println(stampArr);
 			if(stampArr.length() != 0){
 				LocalTime firstStamp = LocalTime.parse(stampArr.getString(0).substring(11));
 				LocalTime lastStamp = LocalTime.parse(stampArr.getString(stampArr.length()-1).substring(11));
@@ -230,7 +227,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				formatter = DateTimeFormatter.ofPattern(formatPattern);
 				LocalTime tempTime = start.withSecond(0);
 				
-				long minutesToAdd = Math.round(diffSec/categoryDiff);
+				long minutesToAdd = Math.round(diffMin/categoryDiff);
 				
 				System.out.println(minutesToAdd);
 				
@@ -238,7 +235,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 				while (tempTime.isBefore(stop)) {
 					tempTime = tempTime.plusMinutes(minutesToAdd);
 					stampTimes.add(tempTime.format(formatter));
-					//System.out.println("Temptime: " + tempTime.format(formatter));
+					System.out.println("Temptime: " + tempTime.format(formatter));
 				}
 			}
 			else{
@@ -288,12 +285,8 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 						//System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
 						while(hh > catHH){
 							currentTimeStampIndex ++;
-							catHH= Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));
-							catMM = Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(3));
-							
-							//System.out.println("> " + String.valueOf(hh) + " || " + String.valueOf(catHH));
+							catHH= Integer.parseInt(stampTimes.get(currentTimeStampIndex).substring(0, 2));	
 						}
-						
 						counters[currentTimeStampIndex] ++;
 						break;
 					case "hh:mm":
@@ -370,10 +363,7 @@ public class LectureReviewController implements AppBinder, LectureReciever{
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch(Exception e){
-			e.printStackTrace();
 		}
-		
 	}
 	
 	

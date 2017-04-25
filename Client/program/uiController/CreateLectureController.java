@@ -36,6 +36,7 @@ public class CreateLectureController implements AppBinder{
 		// future build: check if proposed lecture ID is in the database.
 
 		if(lectureID.equals("")){
+			//TODO this code is never reached?
 			errorLabel.setText("Lecture code is empty, please create a lecture with a valid lecture code!");
 			return;
 		}
@@ -70,7 +71,7 @@ public class CreateLectureController implements AppBinder{
 	public void setMainApp(ClientMain main) {
 		this.main = main;
 		
-		System.out.println("Choicebox initialized");
+		//TODO this print is wrong: System.out.println("Choicebox initialized");
 		main.getRootController().setTitle("Create Lecture");
 	}
 	@Override

@@ -16,6 +16,8 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import program.database.DatabaseKey;
+
 
 
 /**
@@ -32,16 +34,6 @@ public class Database implements AutoCloseable {
 	private Connection conn = null;
 	private static String KEY_URL = DatabaseKey.KEY_URL;
 	
-	
-	// delete this
-	public static void main(String[] args) throws Exception {  // Denne main-klassen eksisterer kun for testformål.
-		try (Database db = new Database()) {   // Fordi den implementerer AutoCloseable, vil den automatisk close.
-			db.connect();
-			// db.postNewQuestion("Hei, hei hei. Dette er et spørsmål", 1);
-			db.testSporring();
-		}
-	}
-	
 	public boolean connect() {
 		// Class.forName("com.mysql.jdbc.Driver");  Not needed if Eclipse?
 		try {
@@ -52,24 +44,6 @@ public class Database implements AutoCloseable {
 			return false;
 		}
 		return true;
-	}
-	
-	public void testSporring() {
-		try (Statement stmt = conn.createStatement()) {
-			String query = "SELECT question, time FROM questions";
-			if (stmt.execute(query)) {
-				try (ResultSet rs = stmt.getResultSet();) {
-					while (rs.next()) {
-						String question = rs.getString(1);
-						String time = rs.getString(2);
-						System.out.println(question + " - " + time);
-					}					
-				}
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 /**
@@ -90,9 +64,11 @@ public class Database implements AutoCloseable {
 		return false;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean executeStatement(String statement_as_String){
 		try (Statement stmt = conn.createStatement()) {
-			if (stmt.execute(statement_as_String)) {
+			stmt.execute(statement_as_String);
+			if (0 != stmt.EXECUTE_FAILED) {
 				return true;
 			}					
 		} catch (SQLException e) {
@@ -107,8 +83,6 @@ public class Database implements AutoCloseable {
 	 * Takes in lecture_id as in, and the number of desired questions.
 	 * Returns an ArrayList of dictionaries with keys: question, time, rating
 	 */
-
-	
 	public ArrayList<Map<String, String>> getLastestQuestions(int lecture_id, int numberOfQuestions) {
 		ArrayList<Map<String, String>> questions = new ArrayList<>();
 		try (Statement stmt = conn.createStatement()) {
@@ -203,25 +177,32 @@ public class Database implements AutoCloseable {
 		Date date = Date.valueOf(LocalDate.now());
 		try (Statement stmt = conn.createStatement()) {
 			String query = "insert into lecture(name, subject_code, studentsJoined, start, date) values ('"+ lectureName +"', '" + classID.toUpperCase() + "',0, '"+ timeStamp +"', '"+ date +"');";
-			if (stmt.execute(query)) {
+			System.out.println(query);
+			int i = stmt.executeUpdate(query);
+			if (i > 0) {
 				return getLiveLectureID(classID);
 			}
+			System.out.println("query didnt work");
+			return 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
 		}
-		return 0;
 	}
 	
 
-	public void setEndLecture(int lectureID){
-
+	public int setEndLecture(int lectureID){
 		Time timeStamp = Time.valueOf(LocalTime.now());
 		try(Statement stmt = conn.createStatement()){
 			String query = "UPDATE `lecture` SET`stop`='"+ timeStamp +"' WHERE `id`=" + lectureID + ";";
-			stmt.execute(query);
+			int i = stmt.executeUpdate(query);
+			if(i > 0){
+				return 1;				
+			}
+			return 0;
 		}catch(SQLException e){
 			e.printStackTrace();
+			return 0;
 		}
 	}
 	
@@ -240,13 +221,18 @@ public class Database implements AutoCloseable {
 	
 	// can vote for a question and change the score. Takes in the question ID, and a boolean to upvote(true) or downvote(false)
 	
-	public void voteQuestion(int questionID, int val){
+	public int voteQuestion(int questionID, int val){
 		try(Statement stmt = conn.createStatement()){
 			String query = "UPDATE `questions` SET `rating`=`rating` + "+ Integer.toString(val) + " WHERE id="+questionID+ ";";
-			stmt.execute(query);
+			int i = stmt.executeUpdate(query);
+			if(i > 0){
+				return 1;
+			}
+			return 0;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return 0;
 		}
 	}
 	
@@ -281,24 +267,28 @@ public class Database implements AutoCloseable {
 		return sCodes;
 	}
 	
-	public void addStudentCountToLecture(int lectureID){
+	public int addStudentCountToLecture(int lectureID){
 		try(Statement stmt = conn.createStatement()){
 			String query = "UPDATE `lecture` SET `studentsJoined`=`studentsJoined`+1 WHERE `id`=" + lectureID + ";";
-			stmt.executeUpdate(query);
+			int i = stmt.executeUpdate(query);
+			return i>0 ? 1 : 0;
 		}catch(SQLException e){
 			e.printStackTrace();
+			return 0;
 		}
 	}
 	
-	public void createYouLostMe(int lectureID){
+	public int createYouLostMe(int lectureID){
 		Time timeStamp = Time.valueOf(LocalTime.now());
 		try(Statement stmt = conn.createStatement()){
 			String query = "INSERT INTO `youlostme`(`lectureID`, `timeStamp`) VALUES ("+ lectureID +",'"+ timeStamp +"');";
-			stmt.execute(query);
+			int i = stmt.executeUpdate(query);
+			return i>0 ? 1 : 0;
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return 0;
 		}
 	}
 
