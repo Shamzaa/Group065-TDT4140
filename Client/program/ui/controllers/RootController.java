@@ -128,4 +128,16 @@ public class RootController implements AppBinder{
 	public Button viewBackButton(){
 		return backButton;
 	}
+
+	@Override
+	public void closeController() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void localBackChanges() {
+		// TODO Auto-generated method stub
+		
+	}
 }
