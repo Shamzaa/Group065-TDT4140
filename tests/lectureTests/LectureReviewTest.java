@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONWriter;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
@@ -15,8 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import program.ClientMain;
-import program.uiController.LectureOverviewController;
-import program.uiController.LectureReviewController;
+import program.ui.controllers.lecturer.LectureReviewController;
 
 public class LectureReviewTest extends GuiTest {
 	static ClientMain main;

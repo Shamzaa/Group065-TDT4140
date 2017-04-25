@@ -1,6 +1,5 @@
 package program.connection;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +7,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import jdk.nashorn.internal.scripts.JS;
-import program.database.Database;
 
 public class CommandsManager {
 	

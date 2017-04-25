@@ -4,8 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import program.ClientMain;
-import program.uiController.RoleSelectorController;
-
+import program.ui.controllers.RoleSelectorController;
 
 import static org.junit.Assert.*;
 

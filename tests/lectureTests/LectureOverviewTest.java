@@ -13,8 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import program.ClientMain;
-import program.uiController.LectureLoginController;
-import program.uiController.LectureOverviewController;
+import program.ui.controllers.lecturer.LectureOverviewController;
 
 public class LectureOverviewTest extends GuiTest {
 	static ClientMain main;

@@ -1,15 +1,11 @@
 package program.ui.controllers;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import program.common.Question;
 

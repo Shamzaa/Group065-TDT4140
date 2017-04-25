@@ -1,6 +1,14 @@
 package program;
 import program.connection.*;
 import program.database.Database;
+
+/**
+ * The main program for running the server
+ * @author Erling Ihlen
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class ServerMain {
 	private ClientsManager clientsManager;
 	private Database database;

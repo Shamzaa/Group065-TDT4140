@@ -1,8 +1,5 @@
 package program.ui.controllers.lecturer;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;

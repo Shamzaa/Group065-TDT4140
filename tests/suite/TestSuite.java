@@ -16,6 +16,7 @@ import studentTests.StudentWindowTest;
 @RunWith(Suite.class)
 
 // suite with all the junit tests
+// OBS: main.DEBUG must be true for some of these tests to work!
 @Suite.SuiteClasses({
 	//- code tests ---------------------------------------------------------------------------------------
 	DatabaseTests.class,

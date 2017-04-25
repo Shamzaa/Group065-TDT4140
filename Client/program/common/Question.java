@@ -2,7 +2,6 @@ package program.common;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.scene.layout.AnchorPane;
 
 /**

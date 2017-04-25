@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,10 +12,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import database.Database;
+import program.database.Database;
+
 
 /**
- * For this integration testcase to succeed, the file DatabaseKey.java (not checked in to git)
+ * For this integration test-case to succeed, the file DatabaseKey.java (not checked in to git)
  * has to be present. Access to database is also dependent on a VPN connection to
  * the NTNU network.
  */

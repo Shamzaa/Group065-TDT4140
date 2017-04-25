@@ -10,7 +10,7 @@ import org.loadui.testfx.GuiTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import program.ClientMain;
-import program.uiController.RootController;
+import program.ui.controllers.RootController;
 
 public class RootTest extends GuiTest {
 	static ClientMain main;

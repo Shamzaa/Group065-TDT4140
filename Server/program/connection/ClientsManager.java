@@ -36,6 +36,7 @@ public class ClientsManager {
 		
 		
 		Runnable serverTask = new Runnable(){
+			@SuppressWarnings("resource")
 			@Override
 			public void run(){
 				try{

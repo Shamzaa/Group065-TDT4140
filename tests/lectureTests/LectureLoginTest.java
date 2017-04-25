@@ -1,7 +1,5 @@
 package lectureTests;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import org.junit.Test;
@@ -11,8 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import program.ClientMain;
-import program.uiController.CreateLectureController;
-import program.uiController.LectureLoginController;
+import program.ui.controllers.lecturer.LectureLoginController;
 
 public class LectureLoginTest extends GuiTest {
 	static ClientMain main;

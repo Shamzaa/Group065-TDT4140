@@ -17,7 +17,7 @@ public class LectureBoxController {
 	// attributes
 	private int lectureID;
 	private String lectureName;
-	private int studentsCount;
+	//TODO remove? private int studentsCount;
 	
 	
 	@FXML Button viewLectureButton;
@@ -48,7 +48,7 @@ public class LectureBoxController {
 	 */
 	public void setLectureName(String lectureName){
 		this.lectureName = lectureName;
-		lectureNameLabel.setText(lectureName);
+		lectureNameLabel.setText(this.lectureName);
 		
 	}
 	

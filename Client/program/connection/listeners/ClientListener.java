@@ -2,20 +2,14 @@ package program.connection.listeners;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import program.ClientMain;
-import program.ui.controllers.lecturer.LectureReviewController;
 import program.ui.controllers.lecturer.LecturerWindowController;
-import program.ui.controllers.student.StudentWindowController;
 
 /**
  * 

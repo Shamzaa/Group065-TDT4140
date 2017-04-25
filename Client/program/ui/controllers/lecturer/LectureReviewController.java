@@ -2,15 +2,10 @@ package program.ui.controllers.lecturer;
 
 import java.io.IOException;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,20 +20,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import program.ClientMain;
 import program.common.Question;
 import program.connection.listeners.LectureReciever;
 import program.connection.listeners.LectureStatListener;
-import program.connection.listeners.QuestionReciever;
 import program.ui.controllers.AppBinder;
 import program.ui.controllers.QuestionBoxController;
 

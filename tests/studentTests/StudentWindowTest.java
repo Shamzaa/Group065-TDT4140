@@ -5,25 +5,19 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.AfterClass;
 import org.junit.Test;
 import org.loadui.testfx.GuiTest;
 
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import program.ClientMain;
-import program.uiController.LectureSelectorController;
-import program.uiController.QuestionBoxController;
-import program.uiController.RoleSelectorController;
-import program.uiController.StudentWindowController;
+import program.ui.controllers.QuestionBoxController;
+import program.ui.controllers.student.StudentWindowController;
 
 public class StudentWindowTest extends GuiTest{
 	ClientMain main;

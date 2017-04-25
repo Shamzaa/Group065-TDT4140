@@ -28,7 +28,7 @@ import program.ui.controllers.RootController;
  */
 public class ClientMain extends Application{
 	//If TRUE, this tells other controllers to save and return more info 
-	public final boolean DEBUG = true;
+	public final boolean DEBUG = false;
 	
 	// UI elements
 	private Stage stage;
@@ -42,9 +42,7 @@ public class ClientMain extends Application{
 	private final long lostMeTimerLenght = 5; 	//Decides how long it will wait until it discards a lostMeSignal (Seconds).
 	private Alert alert;
 	
-	
 	FXMLLoader loader = null;
-	
 	
 	// attributes
 	private String classID;

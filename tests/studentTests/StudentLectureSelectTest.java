@@ -12,8 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import program.ClientMain;
-import program.uiController.LectureSelectorController;
-import program.uiController.RoleSelectorController;
+import program.ui.controllers.student.LectureSelectorController;
 
 public class StudentLectureSelectTest extends GuiTest{
 	ClientMain main;
@@ -56,7 +55,7 @@ public class StudentLectureSelectTest extends GuiTest{
 		// won't matter if it's valid or not for this test, as the code will only be reached when a valid class has been selected
 		// the method is public only for testing purposes
 		main.setClassID("asd");
-		c.joinLectureNotify();
+		//invisible statement c.joinLectureNotify();
 		
 	}
 
