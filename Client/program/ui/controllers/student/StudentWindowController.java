@@ -251,6 +251,7 @@ public class StudentWindowController implements AppBinder, QuestionReciever {
 	 * @return If main.DEBUG is true, this will return the controller for a specified question, else null
 	 * @author Anders
 	 */
+	@SuppressWarnings("unused")
 	public QuestionBoxController getQuestionBoxController(int questionIndex) {
 		if(main.DEBUG && questionIndex < questionBoxControllers.size()){
 			return questionBoxControllers.get(questionIndex);			

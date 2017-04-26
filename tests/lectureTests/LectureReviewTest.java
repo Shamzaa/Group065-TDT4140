@@ -25,7 +25,7 @@ public class LectureReviewTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/LectureReview.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/LectureReview.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);

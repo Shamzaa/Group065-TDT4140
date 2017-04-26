@@ -20,7 +20,7 @@ public class LectureLoginTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/LectureLogin.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/LectureLogin.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
@@ -39,9 +39,9 @@ public class LectureLoginTest extends GuiTest {
 	public void login() {
 		@SuppressWarnings("unchecked")
 		ChoiceBox<String> cb = (ChoiceBox<String>) find("#classChoiceBox");
-		click(cb);
+		clickOn(cb);
 		moveBy(0, 20);
-		click();
-		click("#loginButton");
+		clickOn();
+		clickOn("#loginButton");
 	}
 }

@@ -24,7 +24,7 @@ public class StudentLectureSelectTest extends GuiTest{
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/StudentLectureSelector.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/StudentLectureSelector.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
@@ -42,7 +42,7 @@ public class StudentLectureSelectTest extends GuiTest{
 	@Test
 	public void tryToJoinLectureError(){
 		// test with just a server running and no running lectures.
-		click("#ConnectButton");
+		clickOn("#ConnectButton");
 		@SuppressWarnings("unchecked")
 		String errorExpect = "No lecture is being held with course code: " + ((ChoiceBox<String>)find("#courseCodeChoiceBox")).getSelectionModel().getSelectedItem();
 		assertEquals(errorExpect, ((Label) find("#ErrorLabel")).getText());

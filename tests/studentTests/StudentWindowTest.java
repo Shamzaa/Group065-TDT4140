@@ -29,7 +29,7 @@ public class StudentWindowTest extends GuiTest{
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/StudentWindow.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/StudentWindow.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
@@ -47,7 +47,7 @@ public class StudentWindowTest extends GuiTest{
 
 	@Test
 	public void openQuestionWindow(){
-		click("#questionButton");
+		clickOn("#questionButton");
 		assertEquals(true, ((GridPane) find("#askQuestionContainer")).isVisible());
 	}
 	
@@ -55,7 +55,7 @@ public class StudentWindowTest extends GuiTest{
 	public void youLostMe(){
 		long waitTime = main.getLostMeTimerLenght()*1000;
 		Button b = find("#lostMeButton");
-		click("#lostMeButton");
+		clickOn("#lostMeButton");
 		assertEquals("Notification sent!", b.getText());
 		sleep(waitTime);
 		assertEquals("I AM LOST!", b.getText());
@@ -63,13 +63,13 @@ public class StudentWindowTest extends GuiTest{
 	
 	@Test
 	public void charLimits(){
-		click("#questionButton");
+		clickOn("#questionButton");
 		TextArea t = (TextArea) find("#askQuestionTextField");
 		Button b = (Button) find("#submitQuestionButton");
 		KeyCode kc = KeyCode.BACK_SPACE; 
 		
 		assertTrue(b.isDisabled());
-		click(t).type("s");
+		clickOn(t).type("s");
 		assertFalse(b.isDisabled());
 		press(kc);
 		release(kc);
@@ -88,13 +88,13 @@ public class StudentWindowTest extends GuiTest{
 	
 	@Test
 	public void sendQuestion(){
-		click("#questionButton");
+		clickOn("#questionButton");
 		GridPane gp = ((GridPane) find("#askQuestionContainer"));
 		TextArea t = (TextArea) find("#askQuestionTextField");
 				
-		click("#askQuestionTextField").type("a Q");
+		clickOn("#askQuestionTextField").type("a Q");
 		assertEquals("a Q", t.getText());
-		click("#submitQuestionButton");
+		clickOn("#submitQuestionButton");
 		assertFalse(gp.isVisible());
 		
 	}
@@ -140,7 +140,7 @@ public class StudentWindowTest extends GuiTest{
 	@Test
 	public void localBackChanges(){
 		//Tests the localBackChanges method closes the input overlay, and also removes text
-		click("#questionButton");
+		clickOn("#questionButton");
 		
 		GridPane gp = ((GridPane) find("#askQuestionContainer"));
 		TextArea t = (TextArea) find("#askQuestionTextField");
@@ -149,10 +149,10 @@ public class StudentWindowTest extends GuiTest{
 		c.localBackChanges();
 		assertFalse(gp.isVisible());
 		
-		click("#questionButton");
-		click("#askQuestionTextField").type("test");
+		clickOn("#questionButton");
+		clickOn("#askQuestionTextField").type("test");
 		c.localBackChanges();
-		click("#questionButton");
+		clickOn("#questionButton");
 		assertEquals("", t.getText());
 	}
 	

@@ -20,7 +20,7 @@ public class CreateLectureTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/CreateLecture.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/CreateLecture.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
@@ -39,8 +39,8 @@ public class CreateLectureTest extends GuiTest {
 	@Test
 	public void errorMessage() throws Exception {
 		//sleep(10000);
-		click("#lectureNameField").type("A test lecture");
-		click("#newLectureButton");
+		clickOn("#lectureNameField").type("A test lecture");
+		clickOn("#newLectureButton");
 		sleep(100);
 		//assertEquals("There is already a lecture going on using that lecture code!", ((Label)find("#errorLabel")).getText());
 		//fail("Unsure how to test this part, implement later?");

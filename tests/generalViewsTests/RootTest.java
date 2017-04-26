@@ -22,7 +22,7 @@ public class RootTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/Root.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/Root.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);

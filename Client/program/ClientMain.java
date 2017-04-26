@@ -236,7 +236,7 @@ public class ClientMain extends Application{
 		if(rootCont == null){
 			
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(ClientMain.class.getResource("ui/Root.fxml"));
+			loader.setLocation(ClientMain.class.getResource("ui/fxml/Root.fxml"));
 			try {
 				root = (BorderPane) loader.load();
 			} catch (IOException e) {

@@ -24,7 +24,7 @@ public class LectureOverviewTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/LecturesOverview.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/LecturesOverview.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
@@ -53,11 +53,11 @@ public class LectureOverviewTest extends GuiTest {
 		VBox vb = (VBox) find("#lectureContainer");
 		sleep(100);
 		assertEquals(1, vb.getChildren().size());
-		click(c.getLectureBoxController(0).viewButton());
+		clickOn(c.getLectureBoxController(0).viewButton());
 	}
 	
 	@Test
 	public void createNewLecture() throws Exception {
-		click("#createLectureButton");
+		clickOn("#createLectureButton");
 	}
 }

@@ -26,7 +26,7 @@ public class LecturerWindowTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/LecturerWindow.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/LecturerWindow.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
