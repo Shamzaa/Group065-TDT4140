@@ -105,7 +105,7 @@ public class ClientsManager {
 	 * @param client The connection to be removed
 	 */
 	public void removeConnection(ClientConnection client){
-		clientsConnected.remove(this);
+		clientsConnected.remove(client);
 	}
 	/**
 	 * Adds a given {@code ClientConnection} to the list of connected clients
