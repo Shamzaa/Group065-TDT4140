@@ -14,7 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import classes.Question;
 import javafx.application.Platform;
