@@ -20,8 +20,13 @@ public class ServerMain {
 	 */
 	private void init(int portNumber){
 		database = new Database();
-		database.connect();
-		clientsManager = new ClientsManager(portNumber, this);
+		System.out.println("Connecting to database");
+		if(database.connect()){
+			System.out.println("Connected to the database!");
+			clientsManager = new ClientsManager(portNumber, this);
+		}else{
+			System.out.println("couldn't connect to the database, stopping server.");
+		}
 	}
 	
 	/**
