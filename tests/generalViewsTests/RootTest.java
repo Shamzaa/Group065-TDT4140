@@ -10,7 +10,7 @@ import org.loadui.testfx.GuiTest;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import program.ClientMain;
-import program.uiController.RootController;
+import program.ui.controllers.RootController;
 
 public class RootTest extends GuiTest {
 	static ClientMain main;
@@ -22,7 +22,7 @@ public class RootTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/Root.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/Root.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);

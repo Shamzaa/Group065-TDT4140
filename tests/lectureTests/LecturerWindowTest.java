@@ -12,13 +12,10 @@ import org.loadui.testfx.GuiTest;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import program.ClientMain;
-import program.uiController.LectureReviewController;
-import program.uiController.LecturerWindowController;
+import program.ui.controllers.lecturer.LecturerWindowController;
 
 public class LecturerWindowTest extends GuiTest {
 	static ClientMain main;
@@ -29,7 +26,7 @@ public class LecturerWindowTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/LecturerWindow.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/LecturerWindow.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);

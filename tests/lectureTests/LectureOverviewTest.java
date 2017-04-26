@@ -13,8 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import program.ClientMain;
-import program.uiController.LectureLoginController;
-import program.uiController.LectureOverviewController;
+import program.ui.controllers.lecturer.LectureOverviewController;
 
 public class LectureOverviewTest extends GuiTest {
 	static ClientMain main;
@@ -25,7 +24,7 @@ public class LectureOverviewTest extends GuiTest {
 		try {
 			//return 
 			main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/LecturesOverview.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/LecturesOverview.fxml"));
 			
 			main.startConnection("");
 			//c.setMainApp(main);
@@ -54,11 +53,11 @@ public class LectureOverviewTest extends GuiTest {
 		VBox vb = (VBox) find("#lectureContainer");
 		sleep(100);
 		assertEquals(1, vb.getChildren().size());
-		click(c.getLectureBoxController(0).viewButton());
+		clickOn(c.getLectureBoxController(0).viewButton());
 	}
 	
 	@Test
 	public void createNewLecture() throws Exception {
-		click("#createLectureButton");
+		clickOn("#createLectureButton");
 	}
 }

@@ -4,8 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import program.ClientMain;
-import program.uiController.RoleSelectorController;
-
+import program.ui.controllers.RoleSelectorController;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +21,7 @@ public class RoleSelectTest extends GuiTest{
 		try {
 			//return 
 			ClientMain main = new ClientMain();
-			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/RoleSelector.fxml"));
+			FXMLLoader l = new FXMLLoader(main.getClass().getResource("ui/fxml/RoleSelector.fxml"));
 			
 			//main.startConnection("");
 			//c.setMainApp(main);
@@ -39,22 +38,22 @@ public class RoleSelectTest extends GuiTest{
 	
 	@Test
 	public void loadStudent(){
-		click("#selectStudent");
+		clickOn("#selectStudent");
 	}
 	
 	@Test
 	public void loadLecturer(){
-		click("#selectLecturer");
+		clickOn("#selectLecturer");
 	}
 	
 	@Test
 	public void noServer(){
-		click("#serverField").type("asd");
-		click("#selectStudent");
+		clickOn("#serverField").type("asd");
+		clickOn("#selectStudent");
 
         assertEquals("No server with proposed IP is currently running", ((Label) find("#errorLabel")).getText());
 
-		click("#selectLecturer");
+		clickOn("#selectLecturer");
 		assertEquals("No server with proposed IP is currently running", ((Label) find("#errorLabel")).getText());
 
 	}

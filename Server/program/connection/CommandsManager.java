@@ -1,6 +1,5 @@
 package program.connection;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,18 +8,29 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import database.Database;
-import jdk.nashorn.internal.scripts.JS;
-
+/**
+ * This class decodes all incoming JSONObjects and encodes and sends return-JSONs
+ * @author Erling Ihlen
+ * @author Anders Hunderi
+ * @version "%I%, %G%"
+ * @since 1.0
+ *
+ */
 public class CommandsManager {
-	
+	/**
+	 * This interface is used to allows the stringToFunction map to refer to the different methods of this class
+	 */
 	public interface Command{
 		void doFunction(JSONObject obj, ClientConnection client);
 	}
-	
+	//Refference objects
 	private Map<String, Command> stringToFunction = new HashMap<String, Command>();
 	private ClientsManager clientsManager;
 	
+	/**
+	 * This constructor sets up the reference elements
+	 * @param clientsManager The {@code ClientsManager} that allows this class to get refferences to the clients that are connected to the server
+	 */
 	public CommandsManager(ClientsManager clientsManager){
 		this.clientsManager = clientsManager;
 		// Add supported functions from jsonobject
@@ -48,13 +58,15 @@ public class CommandsManager {
 				(JSONObject obj, ClientConnection client) -> getLatestLectures(obj, client));
 		stringToFunction.put("reviewLecture", 
 				(JSONObject obj, ClientConnection client) -> reviewLecture(obj, client));
-		stringToFunction.put("FetchLostMeTimeStamps",
-				(JSONObject obj, ClientConnection client) -> fetchLostMeTimeStamps(obj, client));
 		stringToFunction.put("EndLecture", 
 				(JSONObject obj, ClientConnection client) -> endLecture(obj, client));
 	}
 
-
+	/**
+	 * This method analyzes a given JSONObject and passes it to the correct handler-method
+	 * @param obj A {@code JSONObject} with data to be passed to the method. Only the key {@code "Function"} is used here
+	 * @param client A {@code ClientConnection} referencing the client that sent the object
+	 */
 	public void analyzeFunction(JSONObject obj, ClientConnection client){
 		try {
 			stringToFunction.get(obj.get("Function")).doFunction(obj, client);;
@@ -65,19 +77,20 @@ public class CommandsManager {
 		
 	}
 	
+	/**
+	 * This method removes a client with the lecturer role from a live lecture they are currently set to be doing
+	 * @param obj A {@code JSONObject} containing data the method needs <i>NO DATA IS NEEDED IN THIS METHOD</i>
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void endLecture(JSONObject obj, ClientConnection client){
 		clientsManager.removeLecturerFromLecture(client);
 	}
 	
-	private void fetchLostMeTimeStamps(JSONObject obj, ClientConnection client) {
-		try {
-			int lectureID = obj.getInt("lectureID");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+	/**
+	 * This finds the id of a currently live lecture, and returns it via the {@code ClientConnection}
+	 * @param obj A {@code JSONObject} containing data the method needs <i>NO DATA IS NEEDED IN THIS METHOD</i>
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void getLiveLectureID(JSONObject obj, ClientConnection client) {
 		
 		try {
@@ -94,12 +107,19 @@ public class CommandsManager {
 		
 	}
 	
-	// functions that we can do
+	/**
+	 * This method gets a given number of the newest questions for a given lecture id
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"QuestionAmount" = int</pre>
+	 * <pre>"ClassID" = String</pre>
+	 * <pre>"LectureID" = int</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void getLatestQuestions(JSONObject obj, ClientConnection client){
 		try {
 			System.out.println("Fetching " + String.valueOf(obj.getInt("QuestionAmount")) + "questions for class " + obj.getString("ClassID") +"["+obj.getInt("LectureID")+"]");
 			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(obj.getInt("LectureID"), obj.getInt("QuestionAmount"));
-			
 			
 			JSONObject retObj = new JSONObject();
 			retObj.put("Function", "addQuestions");
@@ -112,9 +132,15 @@ public class CommandsManager {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		//db.close();
 	}
 	
+	/**
+	 * This method sets a given role to a given client
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"Role" = String</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void assignRoleToClient(JSONObject obj, ClientConnection client){
 		try {
 			client.setRole(obj.getString("Role"));
@@ -129,6 +155,11 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This method fetches all subject codes from the database
+	 * @param obj A {@code JSONObject} containing data the method needs <i>NO DATA NEEDED FOR THIS MEHTOD</i>
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void getAllSubjectCodes(JSONObject obj, ClientConnection client) {
 		JSONObject reply = new JSONObject();
 		System.out.println("Fetching all subject codes");
@@ -147,9 +178,15 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This checks if a lecture is happening in a given subject
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"Class" = String</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void isLectureHappening(JSONObject obj, ClientConnection client){
 		JSONObject reply = new JSONObject();
-
 		try {
 			System.out.println("requests to see if lecture excists: " + obj.getString("Class") + ": " + clientsManager.doesLectureExist(obj.getString("Class")));
 			reply.put("ClassExcist", clientsManager.doesLectureExist(obj.getString("Class")));
@@ -160,6 +197,13 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This method sets up a lecture in a given subject
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"ClassID" = String</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void createLecture(JSONObject obj, ClientConnection client){
 		try{
 			System.out.println("create new lecture with class code: " + obj.getString("ClassID"));
@@ -169,10 +213,17 @@ public class CommandsManager {
 			client.setLectureID(lectureID);
 			//client.setLectureID(clientsManager.main.getDatabase().getLiveLectureID(obj.getString("ClassID")));
 		} catch (JSONException e){
-			
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * This method adds a time-stamp for lost students in the database, and informs the lecturer of a given lecture that a student is lost.
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"ClassID" = String</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void studentLost(JSONObject obj, ClientConnection client){
 		JSONObject notification = new JSONObject();
 
@@ -190,6 +241,13 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This method adds a student to a lecture, updates the database, and informs the lecturer
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"ClassID" = String </pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void studentJoin(JSONObject obj, ClientConnection client){
 		JSONObject notification = new JSONObject();
 		try {
@@ -209,6 +267,14 @@ public class CommandsManager {
 		
 	}
 	
+	/**
+	 * This method changes the score of a given question by a given increment, and informs all clients in the lecture 
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"ScoreChange" = int </pre>
+	 * <pre>"QuestionID" = int </pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	public void voteQuestion(JSONObject obj, ClientConnection client) {
 		try {
 			int val = obj.getInt("ScoreChange");
@@ -233,6 +299,14 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This method posts a new question in a given lecture to the database, and informs all clients in the lecture
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"Question" = String</pre>
+	 * <pre>"ClassID" = String</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void newQuestion(JSONObject obj, ClientConnection client){
 		// student submitted new question.
 		try{
@@ -245,7 +319,7 @@ public class CommandsManager {
 			 */
 			
 			// send the new question to all clients
-			// Using excisting functions to just get the latest question we just posted in the database
+			// Using existing functions to just get the latest question we just posted in the database
 			ArrayList<Map<String, String>> retArr = clientsManager.main.getDatabase().getLastestQuestions(client.getLectureID(), 1);
 			JSONObject retObj = new JSONObject();
 			retObj.put("Function", "addQuestions");
@@ -257,14 +331,19 @@ public class CommandsManager {
 				if(c.getLectureID() == client.getLectureID()){
 					c.sendJSON(retObj);
 				}
-			}
-			
-			
+			}	
 		}catch(JSONException e){
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * This method fetches all lectures that has happened in a given lecture, and sends them back to the client
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"ClassID" = String</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void getLatestLectures(JSONObject obj, ClientConnection client){
 		try {
 			System.out.println("Lecturer has requested to get an overview of all lectures in class " + obj.getString("ClassID"));
@@ -279,6 +358,14 @@ public class CommandsManager {
 		}
 	}
 	
+	/**
+	 * This method gets all info on a  given lecture, including questions, lostMe time-stamps and general info
+	 * <br>The keys used by the {@code JSONObject} is as follows:
+	 * <pre>"ClassID" = String</pre>
+	 * <pre>"LectureID" = int</pre>
+	 * @param obj A {@code JSONObject} containing data the method needs
+	 * @param client A {@code ClientConnection} referencing the client that sent the command
+	 */
 	private void reviewLecture(JSONObject obj, ClientConnection client){
 		try {
 			int id = obj.getInt("LectureID"); 
