@@ -32,7 +32,7 @@ public class ClientsManager {
 		comManager = new CommandsManager(this);
 		this.main = main;
 		classIDToConnection = new HashMap<String, ClientConnection>();
-		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
+		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(500);
 		
 		
 		Runnable serverTask = new Runnable(){
